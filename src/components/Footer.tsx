@@ -7,9 +7,9 @@ export default function Footer() {
   return (
     <div>
       <div className="bg-white text-textPrimary h-auto">
-        <div className="flex justify-between px-4 py-6">
+        <div className="flex justify-between px-4 py-8">
           <div className="flex flex-col">
-            <div className="flex items-center space-x-4 mb-2">
+            <div className="flex items-center space-x-2 mb-2">
               <div className="w-8 h-8 relative">
                 <Image
                   src="/MatMaster-60x60.svg"
@@ -20,7 +20,7 @@ export default function Footer() {
               </div>
               <span className="text-lg font-semibold">MatMaster</span>
             </div>
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-gray-500 sm:w-full w-3/4">
               From setup to completion, MatMaster handles the details so you can
               focus on wrestling.
             </span>
@@ -29,7 +29,7 @@ export default function Footer() {
             <span className="text-sm font-semibold mb-2 text-primary">
               Get the app
             </span>
-            <div className="flex flex-col space-y-2">
+            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
               <a href="#" target="_blank" rel="noopener noreferrer">
                 <Image
                   src="/AppleStoreBadge.svg"
