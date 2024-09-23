@@ -1,6 +1,8 @@
 import React from "react";
 import Image from "next/image";
-import { FaBars, FaSearch, FaBell } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
+import HamburgerMenuDropdown from "./HamburgerMenuDropdown";
+import NotificationDropdown from "./NotificationDropdown";
 
 export default function Header() {
   return (
@@ -8,7 +10,7 @@ export default function Header() {
       <div className="bg-white w-full h-16 flex items-center justify-between px-4 shadow-md text-textPrimary">
         <div className="flex items-center space-x-4 pl-6">
           <button className="text-textPrimary">
-            <FaBars size={24} />
+            <HamburgerMenuDropdown />
           </button>
           <div className="w-8 h-8 relative">
             <Image
@@ -25,7 +27,7 @@ export default function Header() {
             <FaSearch size={20} />
           </button>
           <button className="text-textPrimary">
-            <FaBell size={20} />
+            <NotificationDropdown />
           </button>
         </div>
       </div>
