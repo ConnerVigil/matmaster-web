@@ -1,5 +1,5 @@
 import React from "react";
-import MainCard from "./EventCard";
+import EventCard from "./EventCard";
 
 interface EventRowProps {
   title: string;
@@ -12,52 +12,54 @@ export default function EventRow({ title }: EventRowProps) {
         <span className="text-textPrimary text-l font-bold">{title}</span>
         <span className="text-primary text-l font-bold">See more</span>
       </div>
-      <div className="flex items-center justify-between w-full h-72 px-4">
-        <MainCard
-          title="The Rockwell Rumble"
-          dateRange="Jan/1/24 - Jan/4/24"
-          attendees={64}
-          style="Folkstyle"
-          location="Herriman, UT"
-          price="$60/team"
-          status="In Progress"
-        />
-        <MainCard
-          title="The Rockwell Rumble"
-          dateRange="Jan/1/24 - Jan/4/24"
-          attendees={64}
-          style="Folkstyle"
-          location="Herriman, UT"
-          price="$60/team"
-          status="Early Bird"
-        />
-        <MainCard
-          title="The Rockwell Rumble"
-          dateRange="Jan/1/24 - Jan/4/24"
-          attendees={64}
-          style="Folkstyle"
-          location="Herriman, UT"
-          price="$60/team"
-          status="Registration Closing"
-        />
-        <MainCard
-          title="The Rockwell Rumble"
-          dateRange="Jan/1/24 - Jan/4/24"
-          attendees={64}
-          style="Folkstyle"
-          location="Herriman, UT"
-          price="$60/team"
-          status="Registration Open"
-        />
-        <MainCard
-          title="The Rockwell Rumble"
-          dateRange="Jan/1/24 - Jan/4/24"
-          attendees={64}
-          style="Folkstyle"
-          location="Herriman, UT"
-          price="$60/team"
-          status="In Progress"
-        />
+      <div className="overflow-x-auto w-full h-72 px-4">
+        <div className="flex space-x-4 w-max">
+          <EventCard
+            title="The Rockwell Rumble"
+            dateRange="Jan/1/24 - Jan/4/24"
+            attendees={64}
+            style="Folkstyle"
+            location="Herriman, UT"
+            price="$60/team"
+            status="In Progress"
+          />
+          <EventCard
+            title="The Rockwell Rumble"
+            dateRange="Jan/1/24 - Jan/4/24"
+            attendees={64}
+            style="Folkstyle"
+            location="Herriman, UT"
+            price="$60/team"
+            status="Early Bird"
+          />
+          <EventCard
+            title="The Rockwell Rumble"
+            dateRange="Jan/1/24 - Jan/4/24"
+            attendees={64}
+            style="Folkstyle"
+            location="Herriman, UT"
+            price="$60/team"
+            status="Registration Closing"
+          />
+          <EventCard
+            title="The Rockwell Rumble"
+            dateRange="Jan/1/24 - Jan/4/24"
+            attendees={64}
+            style="Folkstyle"
+            location="Herriman, UT"
+            price="$60/team"
+            status="Registration Open"
+          />
+          <EventCard
+            title="The Rockwell Rumble"
+            dateRange="Jan/1/24 - Jan/4/24"
+            attendees={64}
+            style="Folkstyle"
+            location="Herriman, UT"
+            price="$60/team"
+            status="In Progress"
+          />
+        </div>
       </div>
     </>
   );
