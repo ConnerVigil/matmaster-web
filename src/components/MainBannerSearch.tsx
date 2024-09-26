@@ -4,7 +4,13 @@ import { FaSearch } from "react-icons/fa";
 
 export default function MainBannerSearch() {
   return (
-    <div className="bg-primary w-full py-16 flex flex-col items-center">
+    <div className="bg-primary w-full py-16 flex flex-col items-center relative">
+      <div className="absolute bottom-0 left-0">
+        <LeftTriangle />
+      </div>
+      <div className="absolute bottom-0 right-0 transform">
+        <RightTriangle />
+      </div>
       <div className="flex items-center mb-4">
         <div className="w-14 h-14 relative mr-4">
           <Image
@@ -32,5 +38,17 @@ export default function MainBannerSearch() {
         </div>
       </div>
     </div>
+  );
+}
+
+function LeftTriangle() {
+  return (
+    <div className="w-0 h-0 border-b-[100px] border-b-white border-r-[200px] border-r-transparent"></div>
+  );
+}
+
+function RightTriangle() {
+  return (
+    <div className="w-0 h-0 border-b-[100px] border-b-white border-l-[200px] border-l-transparent"></div>
   );
 }
