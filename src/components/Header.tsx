@@ -20,7 +20,7 @@ export default function Header() {
               objectFit="contain"
             />
           </div>
-          <span className="text-lg font-semibold">MatMaster</span>
+          <span className="text-lg font-bold">MatMaster</span>
         </div>
         <div className="flex items-center space-x-4 pr-6">
           <button className="text-textPrimary">

@@ -1,25 +1,13 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Work_Sans } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+const workSans = Work_Sans({
+  subsets: ["latin"],
+  variable: "--font-work-sans",
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
-
-// const workSans = localFont({
-//   src: "./fonts/WorkSansWoff/WorkSans-Regular.woff",
-//   variable: "--font-work-sans",
-//   weight: "100 900",
-// });
 
 export const metadata: Metadata = {
   title: "MatMaster",
@@ -36,10 +24,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" type="image/svg+xml" href="/MatMaster-60x60.svg" />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        // className={`${workSans.variable} antialiased`}
-      >
+      <body className={workSans.className}>
         <Header />
         {children}
         <Footer />

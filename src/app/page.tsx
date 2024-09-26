@@ -1,16 +1,11 @@
-import EventRow from "@/components/EventRow";
-import MainBannerSearch from "@/components/MainBannerSearch";
+import Link from "next/link";
 
 export default function Page() {
   return (
     <div className="bg-white min-h-screen flex flex-col items-center">
-      <MainBannerSearch />
-      <div className="w-full px-12">
-        <EventRow title="Featured Tournaments" />
-        <EventRow title="Local Tournaments" />
-        <EventRow title="Freestyle Tournaments" />
-        <EventRow title="Dual meets" />
-      </div>
+      <Link href="/homepage">
+        <button className="text-black">Go to home page</button>
+      </Link>
     </div>
   );
 }

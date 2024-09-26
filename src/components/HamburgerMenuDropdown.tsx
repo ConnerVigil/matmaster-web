@@ -2,7 +2,6 @@
 
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import React from "react";
-import Image from "next/image";
 import {
   FaBars,
   FaTrophy,
@@ -16,6 +15,7 @@ import {
   FaSignOutAlt,
   FaSignInAlt,
 } from "react-icons/fa";
+import MiniAvatar from "./MiniAvatar";
 
 const MenuItemStyle =
   "block px-4 py-2 text-sm text-gray-600 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 flex items-center";
@@ -87,7 +87,7 @@ export default function HamburgerMenuDropdown() {
           )}
 
           <MenuItem>
-            <div className="h-10"></div>
+            <div className="h-10 cursor-default"></div>
           </MenuItem>
         </div>
         <div className="py-1">
@@ -96,14 +96,7 @@ export default function HamburgerMenuDropdown() {
               <MenuItem>
                 <a href="#" className={MenuItemStyle}>
                   <div className="flex items-center">
-                    <div className="w-4 h-4 rounded-full overflow-hidden mr-2">
-                      <Image
-                        src="/avatar1.webp"
-                        alt="User Avatar"
-                        width={24}
-                        height={24}
-                      />
-                    </div>
+                    <MiniAvatar />
                     Randy Lubin
                   </div>
                 </a>

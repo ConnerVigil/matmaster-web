@@ -22,7 +22,7 @@ export default function MainBannerSearch() {
         </div>
         <h1 className="text-5xl font-bold text-white">MatMaster</h1>
       </div>
-      <p className="text-lg text-white mb-6">
+      <p className="text-white weight-500 text-base mb-6">
         we innovate how you experience wrestling
       </p>
       <div className="w-full max-w-lg sm: px-2">
