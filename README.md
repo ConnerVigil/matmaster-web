@@ -37,7 +37,11 @@ These instructions will help you set up and run the project on your local machin
 
 This project uses Prisma as an ORM.
 
-1. Run Prisma migrations:
+1. Run formatting
+   ```
+   npx prisma format
+   ```
+2. Run Prisma migrations:
    ```
    npx prisma migrate dev --name <name of migration>
    ```

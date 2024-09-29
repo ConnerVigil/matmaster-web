@@ -14,31 +14,31 @@ datasource db {
 }
 
 model User {
-  User_ID               Int      @id @default(autoincrement())
-  User_Username         String   @unique @db.VarChar(50)
-  User_Email            String   @unique @db.VarChar(50)
-  User_DOB              DateTime
-  User_Parental_Consent Boolean?
-  Worker_ID             Int?
-  Participant_ID        Int?
-  Coach_ID              Int?
-  Coordinator_ID        Int?
-  Is_Viewer             Boolean
-  Is_Active             Boolean
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  ID               Int      @id @default(autoincrement())
+  Username         String   @unique @db.VarChar(50)
+  Email            String   @unique @db.VarChar(50)
+  DOB              DateTime
+  Parental_Consent Boolean?
+  Worker_ID        Int?
+  Participant_ID   Int?
+  Coach_ID         Int?
+  Coordinator_ID   Int?
+  Is_Viewer        Boolean
+  Is_Active        Boolean
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   // Relationships
-  Worker      Workers?      @relation(fields: [Worker_ID], references: [Worker_ID])
-  Participant Participants? @relation(fields: [Participant_ID], references: [Participant_ID])
-  Coach       Coaches?      @relation(fields: [Coach_ID], references: [Coach_ID])
-  Coordinator Coordinators? @relation(fields: [Coordinator_ID], references: [Coordinator_ID])
+  Worker      Workers?      @relation(fields: [ID], references: [ID])
+  Participant Participants? @relation(fields: [Participant_ID], references: [ID])
+  Coach       Coaches?      @relation(fields: [Coach_ID], references: [ID])
+  Coordinator Coordinators? @relation(fields: [Coordinator_ID], references: [ID])
 
   Auth Auth[]
 }
 
 model Auth {
-  Auth_ID       Int      @id @default(autoincrement())
+  ID            Int      @id @default(autoincrement())
   User_ID       Int
   User_Username String   @db.VarChar(50)
   User_Password String
@@ -46,16 +46,16 @@ model Auth {
   updatedAt     DateTime @updatedAt
 
   // Relationships
-  User User @relation(fields: [User_ID], references: [User_ID])
+  User User @relation(fields: [User_ID], references: [ID])
 }
 
 model Participants {
-  Participant_ID    Int      @id @default(autoincrement())
-  Participant_FName String   @db.VarChar(50)
-  Participant_LName String   @db.VarChar(50)
-  Participant_Bio   String?  @db.VarChar(300)
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  ID        Int      @id @default(autoincrement())
+  FirstName String   @db.VarChar(50)
+  LastName  String   @db.VarChar(50)
+  Bio       String?  @db.VarChar(300)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relationships
   Teams           ParticipantsTeams[]
@@ -66,12 +66,12 @@ model Participants {
 }
 
 model Coaches {
-  Coach_ID    Int      @id @default(autoincrement())
-  Coach_FName String   @db.VarChar(50)
-  Coach_LName String   @db.VarChar(50)
-  Coach_Bio   String?  @db.VarChar(300)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  ID        Int      @id @default(autoincrement())
+  FName     String   @db.VarChar(50)
+  LName     String   @db.VarChar(50)
+  Bio       String?  @db.VarChar(300)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relationships
   Teams        CoachesTeams[]
@@ -80,19 +80,19 @@ model Coaches {
 }
 
 model Coordinators {
-  Coordinator_ID Int      @id @default(autoincrement())
-  Coach_ID       Int?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  ID        Int      @id @default(autoincrement())
+  Coach_ID  Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relationships
-  Coach   Coaches?  @relation(fields: [Coach_ID], references: [Coach_ID])
+  Coach   Coaches?  @relation(fields: [Coach_ID], references: [ID])
   Workers Workers[]
   User    User[]
 }
 
 model Workers {
-  Worker_ID      Int      @id @default(autoincrement())
+  ID             Int      @id @default(autoincrement())
   Coordinator_ID Int
   Event_ID       Int
   Privileges_ID  Int
@@ -100,18 +100,18 @@ model Workers {
   updatedAt      DateTime @updatedAt
 
   // Relationships
-  Coordinator Coordinators @relation(fields: [Coordinator_ID], references: [Coordinator_ID])
+  Coordinator Coordinators @relation(fields: [Coordinator_ID], references: [ID])
   User        User[]
 }
 
 model Teams {
-  Team_ID         Int      @id @default(autoincrement())
-  Team_Name       String   @db.VarChar(50)
-  Team_Name_Short String   @db.VarChar(4)
-  Team_Mascot     String   @db.VarChar(25)
-  Division_ID     Int
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  ID          Int      @id @default(autoincrement())
+  Name        String   @db.VarChar(50)
+  Name_Short  String   @db.VarChar(4)
+  Mascot      String   @db.VarChar(25)
+  Division_ID Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   // Relationships
   CoachesTeams           CoachesTeams[]
@@ -121,48 +121,48 @@ model Teams {
 }
 
 model CoachesTeams {
-  Coach_Team_ID Int      @id @default(autoincrement())
-  Coach_ID      Int
-  Team_ID       Int
-  Is_Active     Boolean
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  ID        Int      @id @default(autoincrement())
+  Coach_ID  Int
+  Team_ID   Int
+  Is_Active Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relationships
-  Coach Coaches @relation(fields: [Coach_ID], references: [Coach_ID])
-  Team  Teams   @relation(fields: [Team_ID], references: [Team_ID])
+  Coach Coaches @relation(fields: [Coach_ID], references: [ID])
+  Team  Teams   @relation(fields: [Team_ID], references: [ID])
 }
 
 model ParticipantsTeams {
-  Participant_Team_ID Int      @id @default(autoincrement())
-  Participant_ID      Int
-  Team_ID             Int
-  Is_Active           Boolean
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  ID             Int      @id @default(autoincrement())
+  Participant_ID Int
+  Team_ID        Int
+  Is_Active      Boolean
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   // Relationships
-  Participant Participants @relation(fields: [Participant_ID], references: [Participant_ID])
-  Team        Teams        @relation(fields: [Team_ID], references: [Team_ID])
+  Participant Participants @relation(fields: [Participant_ID], references: [ID])
+  Team        Teams        @relation(fields: [Team_ID], references: [ID])
 }
 
 model ParticipantWeightPlans {
-  Participant_Weight_Plan_ID Int      @id @default(autoincrement())
-  Participant_ID             Int
-  Team_ID                    Int
-  Projected_Weight           Int
-  Weight                     Int
-  Weight_Deadline            DateTime
-  createdAt                  DateTime @default(now())
-  updatedAt                  DateTime @updatedAt
+  ID               Int      @id @default(autoincrement())
+  Participant_ID   Int
+  Team_ID          Int
+  Projected_Weight Int
+  Weight           Int
+  Weight_Deadline  DateTime
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   // Relationships
-  Participant Participants @relation(fields: [Participant_ID], references: [Participant_ID])
-  Team        Teams        @relation(fields: [Team_ID], references: [Team_ID])
+  Participant Participants @relation(fields: [Participant_ID], references: [ID])
+  Team        Teams        @relation(fields: [Team_ID], references: [ID])
 }
 
 model ParticipantWeightHistory {
-  Participant_Weight_History_ID   Int      @id @default(autoincrement())
+  ID                              Int      @id @default(autoincrement())
   Participant_ID                  Int
   Roster_ID                       Int
   Weight                          Int
@@ -171,17 +171,18 @@ model ParticipantWeightHistory {
   updatedAt                       DateTime @updatedAt
 
   // Relationships
-  Participant Participants @relation(fields: [Participant_ID], references: [Participant_ID])
+  Participant     Participants    @relation(fields: [Participant_ID], references: [ID])
+  EventTeamRoster EventTeamRoster @relation(fields: [Roster_ID], references: [ID])
 }
 
 model Event {
-  Event_ID            Int      @id @default(autoincrement())
-  Event_Type_ID       Int
-  Event_Category_ID   Int
-  Event_Name          String   @db.VarChar(50)
-  Event_Start_Date    DateTime
-  Event_End_Date      DateTime
-  Event_Number_Matts  Int
+  ID                  Int      @id @default(autoincrement())
+  Type_ID             Int
+  Category_ID         Int
+  Name                String   @db.VarChar(50)
+  Start_Date          DateTime
+  End_Date            DateTime
+  Number_Matts        Int
   USA_Wrestling_Event Boolean
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
@@ -194,7 +195,7 @@ model Event {
 }
 
 model EventTeamRoster {
-  Roster_ID      Int      @id @default(autoincrement())
+  ID             Int      @id @default(autoincrement())
   Event_ID       Int
   Team_ID        Int
   Participant_ID Int
@@ -203,57 +204,58 @@ model EventTeamRoster {
   updatedAt      DateTime @updatedAt
 
   // Relationships
-  Event              Event                @relation(fields: [Event_ID], references: [Event_ID])
-  Team               Teams                @relation(fields: [Team_ID], references: [Team_ID])
-  Participant        Participants         @relation(fields: [Participant_ID], references: [Participant_ID])
-  BrakcketPlacements BrakcketPlacements[]
+  Event                    Event                      @relation(fields: [Event_ID], references: [ID])
+  Team                     Teams                      @relation(fields: [Team_ID], references: [ID])
+  Participant              Participants               @relation(fields: [Participant_ID], references: [ID])
+  BrakcketPlacements       BrakcketPlacements[]
+  ParticipantWeightHistory ParticipantWeightHistory[]
 }
 
 model Weights {
-  Weight_ID         Int @id @default(autoincrement())
+  ID                Int @id @default(autoincrement())
   Event_Category_ID Int
   Weight            Int
 
   // Relationships
-  EventCategory EventCategories @relation(fields: [Event_Category_ID], references: [Event_Categories_ID])
+  EventCategory EventCategories @relation(fields: [Event_Category_ID], references: [ID])
   Brackets      Brackets[]
 }
 
 model Divisions {
-  Division_ID   Int    @id @default(autoincrement())
-  Division_Name String @db.VarChar(100)
+  ID   Int    @id @default(autoincrement())
+  Name String @db.VarChar(100)
 
   // Relationships
   Brackets Brackets[]
 }
 
 model CompetitionType {
-  Competition_Type_ID   Int    @id @default(autoincrement())
-  Competition_Type_Name String @db.VarChar(100)
+  ID   Int    @id @default(autoincrement())
+  Name String @db.VarChar(100)
 
   // Relationships
   Brackets Brackets[]
 }
 
 model Matts {
-  Matt_ID          Int    @id @default(autoincrement())
-  Matt_Description String @db.VarChar(100)
+  ID          Int    @id @default(autoincrement())
+  Description String @db.VarChar(100)
 
   // Relationships
   Bouts Bouts[]
 }
 
 model Rounds {
-  Round_ID          Int    @id @default(autoincrement())
-  Round_Description String @db.VarChar(100)
+  ID          Int    @id @default(autoincrement())
+  Description String @db.VarChar(100)
 
   // Relationships
   Bouts Bouts[]
 }
 
 model EventCategories {
-  Event_Categories_ID Int    @id @default(autoincrement())
-  Event_Categories    String @db.VarChar(100)
+  ID               Int    @id @default(autoincrement())
+  Event_Categories String @db.VarChar(100)
 
   // Relationships
   Events  Event[]
@@ -262,35 +264,35 @@ model EventCategories {
 }
 
 model EventTypes {
-  Event_Type_ID Int    @id @default(autoincrement())
-  Event_Type    String @db.VarChar(100)
+  ID         Int    @id @default(autoincrement())
+  Event_Type String @db.VarChar(100)
 
   // Relationships
   Events Event[]
 }
 
 model Score {
-  Score_ID            Int    @id @default(autoincrement())
+  ID                  Int    @id @default(autoincrement())
   Event_Categories_ID Int
   Point_Value         Int
   Score_Desc          String @db.VarChar(100)
 
   // Relationships
-  EventCategory         EventCategories         @relation(fields: [Event_Categories_ID], references: [Event_Categories_ID])
-  BoutParticipantsScore BoutParticipantsScore[]
+  EventCategory                EventCategories                @relation(fields: [Event_Categories_ID], references: [ID])
+  BoutParticipantsScoreHistory BoutParticipantsScoreHistory[]
 }
 
 model WinConditions {
-  Win_Condition_ID          Int    @id @default(autoincrement())
-  Win_Condition_Desc        String @db.VarChar(100)
-  Win_Condition_Team_Points Int
+  ID          Int    @id @default(autoincrement())
+  Desc        String @db.VarChar(100)
+  Team_Points Int
 
   // Relationships
   Bouts Bouts[]
 }
 
 model Brackets {
-  Bracket_ID          Int      @id @default(autoincrement())
+  ID                  Int      @id @default(autoincrement())
   Event_ID            Int
   Competition_Type_ID Int
   Weight_ID           Int
@@ -299,16 +301,16 @@ model Brackets {
   updatedAt           DateTime @updatedAt
 
   // Relationships
-  Event              Event                @relation(fields: [Event_ID], references: [Event_ID])
-  CompetitionType    CompetitionType      @relation(fields: [Competition_Type_ID], references: [Competition_Type_ID])
-  Weight             Weights              @relation(fields: [Weight_ID], references: [Weight_ID])
-  Division           Divisions            @relation(fields: [Division_ID], references: [Division_ID])
+  Event              Event                @relation(fields: [Event_ID], references: [ID])
+  CompetitionType    CompetitionType      @relation(fields: [Competition_Type_ID], references: [ID])
+  Weight             Weights              @relation(fields: [Weight_ID], references: [ID])
+  Division           Divisions            @relation(fields: [Division_ID], references: [ID])
   Bouts              Bouts[]
   BrakcketPlacements BrakcketPlacements[]
 }
 
 model Bouts {
-  Bout_ID     Int      @id @default(autoincrement())
+  ID          Int      @id @default(autoincrement())
   Bracket_ID  Int
   Event_ID    Int
   Matt_ID     Int
@@ -326,38 +328,38 @@ model Bouts {
 }
 
 model BoutParticipants {
-  Bout_Participant_ID Int      @id @default(autoincrement())
-  Bout_ID             Int
-  Event_Roster_ID     Int
-  Win_Condition_ID    Int?
+  ID               Int      @id @default(autoincrement())
+  Bout_ID          Int
+  Event_Roster_ID  Int
+  Win_Condition_ID Int?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  // Relationships
+  BoutParticipantsScoreHistory BoutParticipantsScoreHistory[]
+}
+
+model BoutParticipantsScoreHistory {
+  ID                  Int      @id @default(autoincrement())
+  Bout_Participant_ID Int
+  Score_ID            Int
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 
   // Relationships
-  BoutParticipantsScore BoutParticipantsScore[]
-}
-
-model BoutParticipantsScore {
-  Bout_Participant_Score_Hst_ID Int      @id @default(autoincrement())
-  Bout_Participant_ID           Int
-  Score_ID                      Int
-  createdAt                     DateTime @default(now())
-  updatedAt                     DateTime @updatedAt
-
-  // Relationships
-  BoutParticipant BoutParticipants @relation(fields: [Bout_Participant_ID], references: [Bout_Participant_ID])
-  Score           Score            @relation(fields: [Score_ID], references: [Score_ID])
+  BoutParticipant BoutParticipants @relation(fields: [Bout_Participant_ID], references: [ID])
+  Score           Score            @relation(fields: [Score_ID], references: [ID])
 }
 
 model BrakcketPlacements {
-  Bracket_Placement_ID Int      @id @default(autoincrement())
-  Event_Roster_ID      Int
-  Bracket_ID           Int
-  Placement            Int
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+  ID              Int      @id @default(autoincrement())
+  Event_Roster_ID Int
+  Bracket_ID      Int
+  Placement       Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   // Relationships
-  EventTeamRoster EventTeamRoster @relation(fields: [Event_Roster_ID], references: [Roster_ID])
-  Bracket         Brackets        @relation(fields: [Bracket_ID], references: [Bracket_ID])
+  EventTeamRoster EventTeamRoster @relation(fields: [Event_Roster_ID], references: [ID])
+  Bracket         Brackets        @relation(fields: [Bracket_ID], references: [ID])
 }
