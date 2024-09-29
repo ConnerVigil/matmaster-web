@@ -58,12 +58,10 @@ model Participants {
   updatedAt         DateTime @updatedAt
 
   // Relationships
-  Teams         ParticipantsTeams[]
-  WeightPlans   ParticipantWeightPlans[]
-  WeightHistory ParticipantWeightHistory[]
-
-  User User[]
-
+  Teams           ParticipantsTeams[]
+  WeightPlans     ParticipantWeightPlans[]
+  WeightHistory   ParticipantWeightHistory[]
+  User            User[]
   EventTeamRoster EventTeamRoster[]
 }
 
@@ -90,8 +88,7 @@ model Coordinators {
   // Relationships
   Coach   Coaches?  @relation(fields: [Coach_ID], references: [Coach_ID])
   Workers Workers[]
-
-  User User[]
+  User    User[]
 }
 
 model Workers {
@@ -104,8 +101,7 @@ model Workers {
 
   // Relationships
   Coordinator Coordinators @relation(fields: [Coordinator_ID], references: [Coordinator_ID])
-
-  User User[]
+  User        User[]
 }
 
 model Teams {
@@ -118,12 +114,10 @@ model Teams {
   updatedAt       DateTime @updatedAt
 
   // Relationships
-  CoachesTeams      CoachesTeams[]
-  ParticipantsTeams ParticipantsTeams[]
-
+  CoachesTeams           CoachesTeams[]
+  ParticipantsTeams      ParticipantsTeams[]
   ParticipantWeightPlans ParticipantWeightPlans[]
-
-  EventTeamRoster EventTeamRoster[]
+  EventTeamRoster        EventTeamRoster[]
 }
 
 model CoachesTeams {
@@ -195,10 +189,8 @@ model Event {
   // Relationships
   EventTeamRoster EventTeamRoster[]
   Brackets        Brackets[]
-
   EventCategories EventCategories[]
-
-  EventTypes EventTypes[]
+  EventTypes      EventTypes[]
 }
 
 model EventTeamRoster {
@@ -211,10 +203,9 @@ model EventTeamRoster {
   updatedAt      DateTime @updatedAt
 
   // Relationships
-  Event       Event        @relation(fields: [Event_ID], references: [Event_ID])
-  Team        Teams        @relation(fields: [Team_ID], references: [Team_ID])
-  Participant Participants @relation(fields: [Participant_ID], references: [Participant_ID])
-
+  Event              Event                @relation(fields: [Event_ID], references: [Event_ID])
+  Team               Teams                @relation(fields: [Team_ID], references: [Team_ID])
+  Participant        Participants         @relation(fields: [Participant_ID], references: [Participant_ID])
   BrakcketPlacements BrakcketPlacements[]
 }
 
@@ -225,8 +216,7 @@ model Weights {
 
   // Relationships
   EventCategory EventCategories @relation(fields: [Event_Category_ID], references: [Event_Categories_ID])
-
-  Brackets Brackets[]
+  Brackets      Brackets[]
 }
 
 model Divisions {
@@ -268,8 +258,7 @@ model EventCategories {
   // Relationships
   Events  Event[]
   Weights Weights[]
-
-  Score Score[]
+  Score   Score[]
 }
 
 model EventTypes {
@@ -287,8 +276,7 @@ model Score {
   Score_Desc          String @db.VarChar(100)
 
   // Relationships
-  EventCategory EventCategories @relation(fields: [Event_Categories_ID], references: [Event_Categories_ID])
-
+  EventCategory         EventCategories         @relation(fields: [Event_Categories_ID], references: [Event_Categories_ID])
   BoutParticipantsScore BoutParticipantsScore[]
 }
 
@@ -311,13 +299,11 @@ model Brackets {
   updatedAt           DateTime @updatedAt
 
   // Relationships
-  Event           Event           @relation(fields: [Event_ID], references: [Event_ID])
-  CompetitionType CompetitionType @relation(fields: [Competition_Type_ID], references: [Competition_Type_ID])
-  Weight          Weights         @relation(fields: [Weight_ID], references: [Weight_ID])
-  Division        Divisions       @relation(fields: [Division_ID], references: [Division_ID])
-
-  Bouts Bouts[]
-
+  Event              Event                @relation(fields: [Event_ID], references: [Event_ID])
+  CompetitionType    CompetitionType      @relation(fields: [Competition_Type_ID], references: [Competition_Type_ID])
+  Weight             Weights              @relation(fields: [Weight_ID], references: [Weight_ID])
+  Division           Divisions            @relation(fields: [Division_ID], references: [Division_ID])
+  Bouts              Bouts[]
   BrakcketPlacements BrakcketPlacements[]
 }
 
