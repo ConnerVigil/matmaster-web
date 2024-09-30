@@ -16,16 +16,13 @@ import {
   FaSignInAlt,
 } from "react-icons/fa";
 import MiniAvatar from "./MiniAvatar";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 const MenuItemStyle =
   "block px-4 py-2 text-sm text-gray-600 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 flex items-center";
 
 export default function HamburgerMenuDropdown() {
-  const [loggedIn, setLoggedIn] = React.useState(true);
-
-  const toggleLoggedIn = () => {
-    setLoggedIn((prevState) => !prevState);
-  };
+  const { user } = useUser();
 
   return (
     <Menu as="div" className="relative inline-block text-left">
@@ -37,7 +34,6 @@ export default function HamburgerMenuDropdown() {
           <FaBars size={24} />
         </MenuButton>
       </div>
-
       <MenuItems
         transition
         className="absolute left-0 z-10 mt-3 w-56 divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
@@ -69,7 +65,7 @@ export default function HamburgerMenuDropdown() {
             </a>
           </MenuItem>
 
-          {loggedIn ? (
+          {user ? (
             <>
               <MenuItem>
                 <a href="#" className={MenuItemStyle}>
@@ -91,7 +87,7 @@ export default function HamburgerMenuDropdown() {
           </MenuItem>
         </div>
         <div className="py-1">
-          {loggedIn ? (
+          {user ? (
             <>
               <MenuItem>
                 <a href="#" className={MenuItemStyle}>
@@ -112,7 +108,7 @@ export default function HamburgerMenuDropdown() {
                 </a>
               </MenuItem>
               <MenuItem>
-                <a className={MenuItemStyle} onClick={toggleLoggedIn}>
+                <a className={MenuItemStyle} href="/api/auth/logout">
                   <FaSignOutAlt className="mr-2" /> Log out
                 </a>
               </MenuItem>
@@ -122,12 +118,11 @@ export default function HamburgerMenuDropdown() {
               <button className="flex-1 px-4 py-2 bg-primary text-white rounded-md text-sm font-semibold">
                 Sign up
               </button>
-              <button
-                onClick={toggleLoggedIn}
-                className="flex-1 px-4 py-2 bg-white text-gray-600 border border-gray-300 rounded-md text-sm font-semibold flex items-center justify-center"
-              >
-                <FaSignInAlt className="mr-2" /> Log in
-              </button>
+              <a href="/api/auth/login">
+                <button className="flex-1 px-4 py-2 bg-white text-gray-600 border border-gray-300 rounded-md text-sm font-semibold flex items-center justify-center">
+                  <FaSignInAlt className="mr-2" /> Log in
+                </button>
+              </a>
             </div>
           )}
         </div>

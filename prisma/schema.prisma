@@ -29,7 +29,7 @@ model User {
   updatedAt        DateTime @updatedAt
 
   // Relationships
-  Worker      Workers?      @relation(fields: [ID], references: [ID])
+  Worker      Workers?      @relation(fields: [Worker_ID], references: [ID])
   Participant Participants? @relation(fields: [Participant_ID], references: [ID])
   Coach       Coaches?      @relation(fields: [Coach_ID], references: [ID])
   Coordinator Coordinators? @relation(fields: [Coordinator_ID], references: [ID])

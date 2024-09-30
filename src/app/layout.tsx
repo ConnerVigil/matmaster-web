@@ -3,6 +3,7 @@ import { Work_Sans } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { UserProvider } from "@auth0/nextjs-auth0/client";
 
 const workSans = Work_Sans({
   subsets: ["latin"],
@@ -24,11 +25,13 @@ export default function RootLayout({
       <head>
         <link rel="icon" type="image/svg+xml" href="/MatMaster-60x60.svg" />
       </head>
-      <body className={workSans.className}>
-        <Header />
-        {children}
-        <Footer />
-      </body>
+      <UserProvider>
+        <body className={workSans.className}>
+          <Header />
+          {children}
+          <Footer />
+        </body>
+      </UserProvider>
     </html>
   );
 }

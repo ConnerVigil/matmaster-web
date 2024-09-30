@@ -1,12 +1,10 @@
-import { PostgresDBDAOFactory } from "@/lib/backend/daoPackages/postgresDBDAO/postgresDBDAOFactory";
-import { UserService } from "@/lib/backend/services/userService";
+import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function GET(): Promise<NextResponse> {
   try {
-    const userService = new UserService(new PostgresDBDAOFactory());
-    const user = await userService.getUser("123");
-    return NextResponse.json({ user }, { status: 200 });
+    const users = await prisma.user.findMany();
+    return NextResponse.json({ users }, { status: 200 });
   } catch (error) {
     console.error("Error fetching users:", error);
     return NextResponse.json(
@@ -18,9 +16,34 @@ export async function GET(): Promise<NextResponse> {
 
 export async function POST(request: Request): Promise<NextResponse> {
   try {
-    const userService = new UserService(new PostgresDBDAOFactory());
-    const { firstName, lastName } = await request.json();
-    const user = await userService.createUser(firstName, lastName);
+    const {
+      Username,
+      Email,
+      DOB,
+      Parental_Consent,
+      Worker_ID,
+      Participant_ID,
+      Coach_ID,
+      Coordinator_ID,
+      Is_Viewer,
+      Is_Active,
+    } = await request.json();
+
+    const user = await prisma.user.create({
+      data: {
+        Username,
+        Email,
+        DOB: new Date(DOB),
+        Parental_Consent,
+        Worker_ID,
+        Participant_ID,
+        Coach_ID,
+        Coordinator_ID,
+        Is_Viewer,
+        Is_Active,
+      },
+    });
+
     return NextResponse.json({ user }, { status: 201 });
   } catch (error) {
     console.error("Error creating user:", error);
