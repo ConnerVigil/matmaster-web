@@ -16,8 +16,8 @@ export default function Header() {
             <Image
               src="/MatMaster-60x60.svg"
               alt="Company Logo"
-              layout="fill"
-              objectFit="contain"
+              width={60}
+              height={60}
             />
           </div>
           <span className="text-lg font-bold">MatMaster</span>

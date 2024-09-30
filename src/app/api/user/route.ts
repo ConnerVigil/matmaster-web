@@ -14,42 +14,22 @@ export async function GET(): Promise<NextResponse> {
   }
 }
 
-export async function POST(request: Request): Promise<NextResponse> {
-  try {
-    const {
-      Username,
-      Email,
-      DOB,
-      Parental_Consent,
-      Worker_ID,
-      Participant_ID,
-      Coach_ID,
-      Coordinator_ID,
-      Is_Viewer,
-      Is_Active,
-    } = await request.json();
+// export async function POST(
+//   request: NextApiRequest,
+//   response: NextApiResponse
+// ): Promise<NextResponse> {
+//   try {
+//     console.log("User: ", user);
+//     if (!user) {
+//       return NextResponse.json({ error: "User not found" }, { status: 404 });
+//     }
 
-    const user = await prisma.user.create({
-      data: {
-        Username,
-        Email,
-        DOB: new Date(DOB),
-        Parental_Consent,
-        Worker_ID,
-        Participant_ID,
-        Coach_ID,
-        Coordinator_ID,
-        Is_Viewer,
-        Is_Active,
-      },
-    });
-
-    return NextResponse.json({ user }, { status: 201 });
-  } catch (error) {
-    console.error("Error creating user:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
-  }
-}
+//     return NextResponse.json({ user }, { status: 201 });
+//   } catch (error) {
+//     console.error("Error creating user:", error);
+//     return NextResponse.json(
+//       { error: "Internal Server Error" },
+//       { status: 500 }
+//     );
+//   }
+// }

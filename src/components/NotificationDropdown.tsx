@@ -30,6 +30,8 @@ export default function NotificationDropdown() {
             title="Report to Mat 9 by 9:55"
             description="You are late to your match. Please check in or risk being DQd."
             action="Forfeit"
+            onAction={() => {}}
+            onDismiss={() => {}}
           />
         )}
         <div className="py-1">
@@ -40,17 +42,17 @@ export default function NotificationDropdown() {
           </MenuItem>
           <MenuItem>
             <a href="#" className={MenuItemStyle}>
-              <MiniAvatar /> Followed Wrestler
+              <MiniAvatar src={"/defaultuser.png"} /> Followed Wrestler
             </a>
           </MenuItem>
           <MenuItem>
             <a href="#" className={MenuItemStyle}>
-              <MiniAvatar /> Followed Team
+              <MiniAvatar src={"/rockwellRumble.webp"} /> Followed Team
             </a>
           </MenuItem>
           <MenuItem>
             <a href="#" className={MenuItemStyle}>
-              <MiniAvatar /> Tourney Announcement
+              <MiniAvatar src={"/defaultuser.png"} /> Tourney Announcement
             </a>
           </MenuItem>
           <MenuItem>

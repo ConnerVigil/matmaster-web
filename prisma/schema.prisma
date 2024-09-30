@@ -14,10 +14,11 @@ datasource db {
 }
 
 model User {
-  ID               Int      @id @default(autoincrement())
-  Username         String   @unique @db.VarChar(50)
-  Email            String   @unique @db.VarChar(50)
-  DOB              DateTime
+  ID               Int       @id @default(autoincrement())
+  Auth0_ID         String    @unique @db.VarChar(50)
+  Username         String    @unique @db.VarChar(50)
+  Email            String    @unique @db.VarChar(50)
+  DOB              DateTime?
   Parental_Consent Boolean?
   Worker_ID        Int?
   Participant_ID   Int?
@@ -25,8 +26,8 @@ model User {
   Coordinator_ID   Int?
   Is_Viewer        Boolean
   Is_Active        Boolean
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 
   // Relationships
   Worker      Workers?      @relation(fields: [Worker_ID], references: [ID])

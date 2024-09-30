@@ -13,9 +13,9 @@ export default function Footer() {
               <div className="w-8 h-8 relative">
                 <Image
                   src="/MatMaster-60x60.svg"
-                  alt="Company Logo"
-                  layout="fill"
-                  objectFit="contain"
+                  alt="MatMaster Logo"
+                  width={60}
+                  height={60}
                 />
               </div>
               <span className="text-lg font-semibold">MatMaster</span>

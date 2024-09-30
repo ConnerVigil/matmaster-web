@@ -16,8 +16,8 @@ export default function MainBannerSearch() {
           <Image
             src="/MatMaster-60x60.svg"
             alt="Company Logo"
-            layout="fill"
-            objectFit="contain"
+            width={60}
+            height={60}
           />
         </div>
         <h1 className="text-5xl font-bold text-white">MatMaster</h1>

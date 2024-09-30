@@ -92,8 +92,8 @@ export default function HamburgerMenuDropdown() {
               <MenuItem>
                 <a href="#" className={MenuItemStyle}>
                   <div className="flex items-center">
-                    <MiniAvatar />
-                    Randy Lubin
+                    <MiniAvatar src={"/defaultuser.png"} />
+                    {user.name}
                   </div>
                 </a>
               </MenuItem>
@@ -114,14 +114,16 @@ export default function HamburgerMenuDropdown() {
               </MenuItem>
             </>
           ) : (
-            <div className="p-2 flex gap-2">
-              <button className="flex-1 px-4 py-2 bg-primary text-white rounded-md text-sm font-semibold">
-                Sign up
-              </button>
-              <a href="/api/auth/login">
-                <button className="flex-1 px-4 py-2 bg-white text-gray-600 border border-gray-300 rounded-md text-sm font-semibold flex items-center justify-center">
+            <div className="p-2 flex justify-between">
+              <a href="/api/auth/login" className="w-[48%]">
+                <div className="w-full px-4 py-2 bg-primary text-white rounded-md text-sm font-semibold text-center">
+                  Sign up
+                </div>
+              </a>
+              <a href="/api/auth/login" className="w-[48%]">
+                <div className="w-full px-4 py-2 bg-white text-gray-600 border border-gray-300 rounded-md text-sm font-semibold flex items-center justify-center">
                   <FaSignInAlt className="mr-2" /> Log in
-                </button>
+                </div>
               </a>
             </div>
           )}

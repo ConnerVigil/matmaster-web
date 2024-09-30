@@ -31,7 +31,12 @@ export default function EventCard({
   return (
     <div className="w-64 bg-white rounded-lg shadow-md overflow-hidden">
       <div className="h-24 bg-gray-200 relative">
-        <Image src="/rockwellRumble.webp" alt="Company Logo" fill={true} />
+        <Image
+          src="/rockwellRumble.webp"
+          alt="Company Logo"
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
         {status && (
           <span
             className={`absolute bottom-2 right-2 ${
