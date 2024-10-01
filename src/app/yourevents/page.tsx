@@ -1,6 +1,7 @@
 import EventTable from "@/components/EventTable";
 import React from "react";
 import CreateEventButton from "./CreateEventButton";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 
 const events = [
   {
@@ -45,7 +46,7 @@ const events = [
   },
 ];
 
-export default function Page() {
+const Page = () => {
   return (
     <div className="bg-white min-h-screen flex flex-col items-center">
       <div className="w-full px-12 mt-6">
@@ -57,4 +58,6 @@ export default function Page() {
       </div>
     </div>
   );
-}
+};
+
+export default withPageAuthRequired(async () => <Page />);
