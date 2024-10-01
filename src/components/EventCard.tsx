@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { FaRegCalendar, FaRegUser, FaRegClock, FaRegMap } from "react-icons/fa";
+import { getStatusColor } from "@/lib/frontend/EventColor";
 
 interface EventCardProps {
   title: string;
@@ -11,13 +12,6 @@ interface EventCardProps {
   price: string;
   status?: string;
 }
-
-const statusColors: Record<string, string> = {
-  "In Progress": "bg-yellow-100 text-yellow-800",
-  "Early Bird": "bg-blue-100 text-blue-800",
-  "Registration Closing": "bg-red-100 text-red-800",
-  "Registration Open": "bg-green-100 text-green-800",
-};
 
 export default function EventCard({
   title,
@@ -40,7 +34,7 @@ export default function EventCard({
         {status && (
           <span
             className={`absolute bottom-2 right-2 ${
-              statusColors[status] || "bg-gray-100 text-gray-800"
+              getStatusColor(status) || "bg-gray-100 text-gray-800"
             } text-xs font-medium px-2.5 py-0.5 rounded`}
           >
             {status}

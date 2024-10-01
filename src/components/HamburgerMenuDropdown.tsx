@@ -17,6 +17,7 @@ import {
 } from "react-icons/fa";
 import MiniAvatar from "./MiniAvatar";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import Link from "next/link";
 
 const MenuItemStyle =
   "block px-4 py-2 text-sm text-gray-600 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 flex items-center";
@@ -98,9 +99,9 @@ export default function HamburgerMenuDropdown() {
                 </a>
               </MenuItem>
               <MenuItem>
-                <a href="#" className={MenuItemStyle}>
+                <Link href="/yourevents" className={MenuItemStyle}>
                   <FaCalendarAlt className="mr-2" /> Your events
-                </a>
+                </Link>
               </MenuItem>
               <MenuItem>
                 <a href="#" className={MenuItemStyle}>
