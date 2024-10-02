@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
-import { FaRegCalendar, FaRegUser, FaRegClock, FaRegMap } from "react-icons/fa";
 import { getStatusColor } from "@/lib/frontend/EventColor";
+import { Calendar, Clock, Map01, User01 } from "@untitled-ui/icons-react";
 
 interface EventCardProps {
   title: string;
@@ -44,20 +44,20 @@ export default function EventCard({
       <div className="p-2 text-gray-800">
         <h2 className="text-xl font-bold mb-2 text-textPrimary">{title}</h2>
         <div className="flex items-center mb-1">
-          <FaRegCalendar className="w-4 h-4 mr-2 text-gray-600" />
+          <Calendar className="w-4 h-4 mr-2 text-gray-600" />
           <span className="text-sm">{dateRange}</span>
         </div>
         <div className="flex items-center mb-1">
-          <FaRegUser className="w-4 h-4 mr-2 text-gray-600" />
+          <User01 className="w-4 h-4 mr-2 text-gray-600" />
           <span className="text-sm">{attendees} Attendees</span>
         </div>
         <div className="flex items-center mb-1">
-          <FaRegClock className="w-4 h-4 mr-2 text-gray-600" />
+          <Clock className="w-4 h-4 mr-2 text-gray-600" />
           <span className="text-sm">{style}</span>
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <FaRegMap className="w-4 h-4 mr-2 text-gray-600" />
+            <Map01 className="w-4 h-4 mr-2 text-gray-600" />
             <span className="text-sm">{location}</span>
           </div>
           <span className="text-textPrimary">{price}</span>

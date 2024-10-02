@@ -1,5 +1,5 @@
+import { AlertCircle } from "@untitled-ui/icons-react";
 import React from "react";
-import { FaExclamationCircle } from "react-icons/fa";
 
 interface NotificationProps {
   title: string;
@@ -19,7 +19,7 @@ export default function Notification({
   return (
     <div className="p-4">
       <div className="flex items-center mb-2 text-textPrimary cursor-default">
-        <FaExclamationCircle className="mr-1" />
+        <AlertCircle className="mr-1" />
         <span className="text-sm font-semibold">{title}</span>
       </div>
       <p className="text-sm text-gray-600 mb-3 cursor-default">{description}</p>

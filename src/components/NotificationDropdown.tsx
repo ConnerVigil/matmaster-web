@@ -2,9 +2,9 @@
 
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import React, { useState } from "react";
-import { FaBell, FaPenSquare } from "react-icons/fa";
 import MiniAvatar from "./MiniAvatar";
 import Notification from "./Notification";
+import { Bell01, Edit01 } from "@untitled-ui/icons-react";
 const MenuItemStyle =
   "block px-4 py-2 text-sm text-gray-600 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 flex items-center";
 
@@ -18,7 +18,7 @@ export default function NotificationDropdown() {
           as="div"
           className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-textPrimary cursor-pointer"
         >
-          <FaBell size={20} />
+          <Bell01 />
         </MenuButton>
       </div>
       <MenuItems
@@ -37,7 +37,7 @@ export default function NotificationDropdown() {
         <div className="py-1">
           <MenuItem>
             <a href="#" className={MenuItemStyle}>
-              <FaBell className="mr-2" /> Match Results
+              <Bell01 className="mr-2" /> Match Results
             </a>
           </MenuItem>
           <MenuItem>
@@ -57,7 +57,7 @@ export default function NotificationDropdown() {
           </MenuItem>
           <MenuItem>
             <a href="#" className={MenuItemStyle}>
-              <FaPenSquare className="mr-2" /> Bracket Announcement
+              <Edit01 className="mr-2" /> Bracket Announcement
             </a>
           </MenuItem>
         </div>

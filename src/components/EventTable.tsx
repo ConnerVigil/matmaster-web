@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
-import { FaShareAlt, FaTrash } from "react-icons/fa";
 import { getStatusColor } from "@/lib/frontend/EventColor";
+import { Share02, Trash01 } from "@untitled-ui/icons-react";
 
 interface Event {
   id: number;
@@ -89,11 +89,11 @@ const EventTable: React.FC<EventTableProps> = ({ events }) => {
                 ${event.price}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                <button className="text-gray-400 hover:text-gray-500 mr-2">
-                  <FaShareAlt className="h-5 w-5" />
+                <button className="text-textPrimary hover:text-gray-500 mr-2">
+                  <Share02 className="h-5 w-5" />
                 </button>
-                <button className="text-gray-400 hover:text-gray-500">
-                  <FaTrash className="h-5 w-5" />
+                <button className="text-textPrimary hover:text-gray-500">
+                  <Trash01 className="h-5 w-5" />
                 </button>
               </td>
             </tr>

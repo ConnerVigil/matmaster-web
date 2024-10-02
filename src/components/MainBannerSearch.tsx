@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { FaSearch } from "react-icons/fa";
+import { SearchLg } from "@untitled-ui/icons-react";
 
 export default function MainBannerSearch() {
   return (
@@ -28,7 +28,7 @@ export default function MainBannerSearch() {
       <div className="w-full max-w-lg sm: px-2">
         <div className="relative">
           <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-            <FaSearch size={18} />
+            <SearchLg />
           </div>
           <input
             type="text"

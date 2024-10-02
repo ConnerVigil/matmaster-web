@@ -1,9 +1,9 @@
 import React from "react";
 import Image from "next/image";
-import { FaSearch } from "react-icons/fa";
 import HamburgerMenuDropdown from "./HamburgerMenuDropdown";
 import NotificationDropdown from "./NotificationDropdown";
 import Link from "next/link";
+import { SearchMd } from "@untitled-ui/icons-react";
 
 export default function Header() {
   return (
@@ -29,7 +29,7 @@ export default function Header() {
         </div>
         <div className="flex items-center space-x-4 pr-6">
           <button className="text-textPrimary">
-            <FaSearch size={20} />
+            <SearchMd />
           </button>
           <button className="text-textPrimary">
             <NotificationDropdown />

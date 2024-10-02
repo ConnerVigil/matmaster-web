@@ -2,22 +2,21 @@
 
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import React from "react";
-import {
-  FaBars,
-  FaTrophy,
-  FaChartBar,
-  FaUsers,
-  FaBell,
-  FaCog,
-  FaQuestionCircle,
-  FaUserPlus,
-  FaCalendarAlt,
-  FaSignOutAlt,
-  FaSignInAlt,
-} from "react-icons/fa";
 import MiniAvatar from "./MiniAvatar";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Link from "next/link";
+import {
+  Award01,
+  Bell01,
+  HelpCircle,
+  LogIn01,
+  LogOut01,
+  Menu01,
+  MinusCircle,
+  Settings01,
+  UserPlus01,
+  Users01,
+} from "@untitled-ui/icons-react";
 
 const MenuItemStyle =
   "block px-4 py-2 text-sm text-gray-600 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 flex items-center";
@@ -32,7 +31,7 @@ export default function HamburgerMenuDropdown() {
           as="div"
           className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-textPrimary cursor-pointer"
         >
-          <FaBars size={24} />
+          <Menu01 />
         </MenuButton>
       </div>
       <MenuItems
@@ -42,27 +41,27 @@ export default function HamburgerMenuDropdown() {
         <div className="py-1">
           <MenuItem>
             <a href="#" className={MenuItemStyle}>
-              <FaTrophy className="mr-2" /> Tournaments & Meets
+              <MinusCircle className="mr-2" /> Tournaments & Meets
             </a>
           </MenuItem>
           <MenuItem>
             <a href="#" className={MenuItemStyle}>
-              <FaChartBar className="mr-2" /> Rankings
+              <Award01 className="mr-2" /> Rankings
             </a>
           </MenuItem>
           <MenuItem>
             <a href="#" className={MenuItemStyle}>
-              <FaUsers className="mr-2" /> Teams & Clubs
+              <Users01 className="mr-2" /> Teams & Clubs
             </a>
           </MenuItem>
           <MenuItem>
             <a href="#" className={MenuItemStyle}>
-              <FaBell className="mr-2" /> Notifications
+              <Bell01 className="mr-2" /> Notifications
             </a>
           </MenuItem>
           <MenuItem>
             <a href="#" className={MenuItemStyle}>
-              <FaCog className="mr-2" /> Settings
+              <Settings01 className="mr-2" /> Settings
             </a>
           </MenuItem>
 
@@ -70,12 +69,12 @@ export default function HamburgerMenuDropdown() {
             <>
               <MenuItem>
                 <a href="#" className={MenuItemStyle}>
-                  <FaQuestionCircle className="mr-2" /> Support
+                  <HelpCircle className="mr-2" /> Support
                 </a>
               </MenuItem>
               <MenuItem>
                 <a href="#" className={MenuItemStyle}>
-                  <FaUserPlus className="mr-2" /> Invite colleagues
+                  <UserPlus01 className="mr-2" /> Invite colleagues
                 </a>
               </MenuItem>
             </>
@@ -100,17 +99,17 @@ export default function HamburgerMenuDropdown() {
               </MenuItem>
               <MenuItem>
                 <Link href="/yourevents" className={MenuItemStyle}>
-                  <FaCalendarAlt className="mr-2" /> Your events
+                  <MinusCircle className="mr-2" /> Your events
                 </Link>
               </MenuItem>
               <MenuItem>
                 <a href="#" className={MenuItemStyle}>
-                  <FaUsers className="mr-2" /> Your teams
+                  <Users01 className="mr-2" /> Your teams
                 </a>
               </MenuItem>
               <MenuItem>
                 <a className={MenuItemStyle} href="/api/auth/logout">
-                  <FaSignOutAlt className="mr-2" /> Log out
+                  <LogOut01 className="mr-2" /> Log out
                 </a>
               </MenuItem>
             </>
@@ -123,7 +122,7 @@ export default function HamburgerMenuDropdown() {
               </a>
               <a href="/api/auth/login" className="w-[48%]">
                 <div className="w-full px-4 py-2 bg-white text-gray-600 border border-gray-300 rounded-md text-sm font-semibold flex items-center justify-center">
-                  <FaSignInAlt className="mr-2" /> Log in
+                  <LogIn01 className="mr-2" /> Log in
                 </div>
               </a>
             </div>

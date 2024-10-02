@@ -1,7 +1,7 @@
 "use client";
 
+import { Plus } from "@untitled-ui/icons-react";
 import React from "react";
-import { FaPlus } from "react-icons/fa";
 
 export default function CreateEventButton() {
   const handleCreateNewEvent = () => {
@@ -13,7 +13,7 @@ export default function CreateEventButton() {
       className="flex items-center bg-primary text-white px-4 py-2 rounded-md"
       onClick={handleCreateNewEvent}
     >
-      <FaPlus className="mr-2" />
+      <Plus className="mr-2" />
       Create new event
     </button>
   );
