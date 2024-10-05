@@ -14,20 +14,21 @@ datasource db {
 }
 
 model User {
-  ID               Int       @id @default(autoincrement())
-  Auth0_ID         String    @unique @db.VarChar(50)
-  Username         String    @unique @db.VarChar(50)
-  Email            String    @unique @db.VarChar(50)
-  DOB              DateTime?
-  Parental_Consent Boolean?
-  Worker_ID        Int?
-  Participant_ID   Int?
-  Coach_ID         Int?
-  Coordinator_ID   Int?
-  Is_Viewer        Boolean
-  Is_Active        Boolean
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
+  ID                  Int       @id @default(autoincrement())
+  Auth0_ID            String    @unique @db.VarChar(50)
+  Username            String    @unique @db.VarChar(50)
+  Email               String    @unique @db.VarChar(50)
+  DOB                 DateTime?
+  Parental_Consent    Boolean?
+  Worker_ID           Int?
+  Participant_ID      Int?
+  Coach_ID            Int?
+  Coordinator_ID      Int?
+  Is_Viewer           Boolean
+  Is_Active           Boolean
+  Onboarding_Complete Boolean
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
 
   // Relationships
   Worker      Workers?      @relation(fields: [Worker_ID], references: [ID])

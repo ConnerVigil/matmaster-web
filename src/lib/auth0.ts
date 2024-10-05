@@ -17,6 +17,7 @@ export async function syncUser(session: Session | null | undefined) {
       Email: user.email,
       Is_Viewer: false,
       Is_Active: false,
+      Onboarding_Complete: false,
     },
   });
 

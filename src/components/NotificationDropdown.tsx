@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import MiniAvatar from "./MiniAvatar";
 import Notification from "./Notification";
 import { Bell01, Edit01 } from "@untitled-ui/icons-react";
+
 const MenuItemStyle =
   "block px-4 py-2 text-sm text-gray-600 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 flex items-center";
 
