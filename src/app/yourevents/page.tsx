@@ -1,7 +1,7 @@
-import EventTable from "@/components/EventTable";
 import React from "react";
 import CreateEventButton from "./CreateEventButton";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+import EventTable from "./EventTable";
 
 const events = [
   {
@@ -17,7 +17,7 @@ const events = [
   {
     id: 2,
     name: "The Rockwell Rumble",
-    status: "Early Bird",
+    status: "In Progress",
     date: "Jan/1/24 - Jan/4/24",
     style: "Folkstyle",
     location: "Regional Sport Complex",
@@ -27,7 +27,7 @@ const events = [
   {
     id: 3,
     name: "The Rockwell Rumble",
-    status: "Early Bird",
+    status: "Registration Closed",
     date: "Jan/1/24 - Jan/4/24",
     style: "Folkstyle",
     location: "Regional Sport Complex",
@@ -37,7 +37,7 @@ const events = [
   {
     id: 4,
     name: "The Rockwell Rumble",
-    status: "Early Bird",
+    status: "Registration Open",
     date: "Jan/1/24 - Jan/4/24",
     style: "Folkstyle",
     location: "Regional Sport Complex",

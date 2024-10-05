@@ -27,7 +27,7 @@ export default function MainBannerSearch() {
       </p>
       <div className="w-full max-w-lg sm: px-2">
         <div className="relative">
-          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-textSecondary">
             <SearchLg width={20} height={20} />
           </div>
           <input
@@ -43,12 +43,12 @@ export default function MainBannerSearch() {
 
 function LeftTriangle() {
   return (
-    <div className="w-0 h-0 border-b-[100px] border-b-white border-r-[200px] border-r-transparent"></div>
+    <div className="w-0 h-0 border-b-[10vw] border-b-white border-r-[20vw] border-r-transparent"></div>
   );
 }
 
 function RightTriangle() {
   return (
-    <div className="w-0 h-0 border-b-[100px] border-b-white border-l-[200px] border-l-transparent"></div>
+    <div className="w-0 h-0 border-b-[10vw] border-b-white border-l-[20vw] border-l-transparent"></div>
   );
 }

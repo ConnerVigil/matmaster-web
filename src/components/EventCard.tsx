@@ -6,6 +6,7 @@ import {
   MarkerPin01,
   Users01,
 } from "@untitled-ui/icons-react";
+import { getStatusColor } from "@/lib/frontend/EventColor";
 
 interface EventCardProps {
   title: string;
@@ -15,26 +16,6 @@ interface EventCardProps {
   location: string;
   price: string;
   status?: string;
-}
-
-// TODO: Move this somewhere to be reused
-function getStatusColor(status: string): string {
-  switch (status.toLowerCase()) {
-    case "early bird":
-      return "bg-blue-100 text-blue-800";
-    case "in progress":
-      return "bg-yellow-100 text-yellow-800";
-    case "complete":
-      return "bg-gray-100 text-gray-800";
-    case "registration open":
-      return "bg-green-100 text-green-800";
-    case "registration closed":
-      return "bg-red-100 text-red-800";
-    case "registration closing":
-      return "bg-red-100 text-red-800";
-    default:
-      return "bg-black text-white";
-  }
 }
 
 export default function EventCard({
@@ -57,9 +38,9 @@ export default function EventCard({
         />
         {status && (
           <span
-            className={`absolute bottom-2 right-2 ${getStatusColor(
+            className={`absolute bottom-2 right-2 text-xs px-2.5 py-0.5 rounded-full ${getStatusColor(
               status
-            )} text-xs px-2.5 py-0.5 rounded`}
+            )}`}
           >
             {status}
           </span>
