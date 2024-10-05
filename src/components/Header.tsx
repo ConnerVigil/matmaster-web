@@ -9,7 +9,7 @@ export default function Header() {
   return (
     <header className="w-full">
       <div className="bg-white w-full h-16 flex items-center justify-between px-4 shadow-md text-textPrimary border-b border-gray-100">
-        <div className="flex items-center space-x-4 pl-6">
+        <div className="flex items-center space-x-2 pl-6">
           <button className="text-textPrimary">
             <HamburgerMenuDropdown />
           </button>
@@ -29,7 +29,7 @@ export default function Header() {
         </div>
         <div className="flex items-center space-x-4 pr-6">
           <button className="text-textPrimary">
-            <SearchMd />
+            <SearchMd width={24} height={24} />
           </button>
           <button className="text-textPrimary">
             <NotificationDropdown />

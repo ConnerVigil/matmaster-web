@@ -28,7 +28,7 @@ export default function MainBannerSearch() {
       <div className="w-full max-w-lg sm: px-2">
         <div className="relative">
           <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-            <SearchLg />
+            <SearchLg width={20} height={20} />
           </div>
           <input
             type="text"

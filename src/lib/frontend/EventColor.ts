@@ -13,6 +13,6 @@ export function getStatusColor(status: string): string {
     case "registration closing":
       return "bg-red-100 text-red-800";
     default:
-      return "bg-gray-100 text-gray-800";
+      return "bg-black text-white";
   }
 }

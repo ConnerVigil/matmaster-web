@@ -1,7 +1,11 @@
 import React from "react";
 import Image from "next/image";
-import { getStatusColor } from "@/lib/frontend/EventColor";
-import { Calendar, Clock, Map01, User01 } from "@untitled-ui/icons-react";
+import {
+  Calendar,
+  InfoCircle,
+  MarkerPin01,
+  Users01,
+} from "@untitled-ui/icons-react";
 
 interface EventCardProps {
   title: string;
@@ -11,6 +15,26 @@ interface EventCardProps {
   location: string;
   price: string;
   status?: string;
+}
+
+// TODO: Move this somewhere to be reused
+function getStatusColor(status: string): string {
+  switch (status.toLowerCase()) {
+    case "early bird":
+      return "bg-blue-100 text-blue-800";
+    case "in progress":
+      return "bg-yellow-100 text-yellow-800";
+    case "complete":
+      return "bg-gray-100 text-gray-800";
+    case "registration open":
+      return "bg-green-100 text-green-800";
+    case "registration closed":
+      return "bg-red-100 text-red-800";
+    case "registration closing":
+      return "bg-red-100 text-red-800";
+    default:
+      return "bg-black text-white";
+  }
 }
 
 export default function EventCard({
@@ -33,34 +57,34 @@ export default function EventCard({
         />
         {status && (
           <span
-            className={`absolute bottom-2 right-2 ${
-              getStatusColor(status) || "bg-gray-100 text-gray-800"
-            } text-xs font-medium px-2.5 py-0.5 rounded`}
+            className={`absolute bottom-2 right-2 ${getStatusColor(
+              status
+            )} text-xs px-2.5 py-0.5 rounded`}
           >
             {status}
           </span>
         )}
       </div>
-      <div className="p-2 text-gray-800">
+      <div className="p-2 text-textSecondary">
         <h2 className="text-xl font-bold mb-2 text-textPrimary">{title}</h2>
         <div className="flex items-center mb-1">
-          <Calendar className="w-4 h-4 mr-2 text-gray-600" />
+          <Calendar className="w-3 h-3 mr-2 text-textSecondary" />
           <span className="text-sm">{dateRange}</span>
         </div>
         <div className="flex items-center mb-1">
-          <User01 className="w-4 h-4 mr-2 text-gray-600" />
+          <Users01 className="w-3 h-3 mr-2 text-textSecondary" />
           <span className="text-sm">{attendees} Attendees</span>
         </div>
         <div className="flex items-center mb-1">
-          <Clock className="w-4 h-4 mr-2 text-gray-600" />
+          <InfoCircle className="w-3 h-3 mr-2 text-textSecondary" />
           <span className="text-sm">{style}</span>
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <Map01 className="w-4 h-4 mr-2 text-gray-600" />
+            <MarkerPin01 className="w-3 h-3 mr-2 text-textSecondary" />
             <span className="text-sm">{location}</span>
           </div>
-          <span className="text-textPrimary">{price}</span>
+          <span className="text-sm">{price}</span>
         </div>
       </div>
     </div>

@@ -29,9 +29,9 @@ export default function HamburgerMenuDropdown() {
       <div>
         <MenuButton
           as="div"
-          className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-textPrimary cursor-pointer"
+          className="inline-flex w-full justify-center gap-x-1.5 bg-white px-3 py-2 text-sm font-semibold text-textPrimary cursor-pointer"
         >
-          <Menu01 />
+          <Menu01 width={24} height={24} />
         </MenuButton>
       </div>
       <MenuItems
@@ -41,27 +41,28 @@ export default function HamburgerMenuDropdown() {
         <div className="py-1">
           <MenuItem>
             <a href="#" className={MenuItemStyle}>
-              <MinusCircle className="mr-2" /> Tournaments & Meets
+              <MinusCircle className="mr-2" width={16} height={16} />{" "}
+              Tournaments & Meets
             </a>
           </MenuItem>
           <MenuItem>
             <a href="#" className={MenuItemStyle}>
-              <Award01 className="mr-2" /> Rankings
+              <Award01 className="mr-2" width={16} height={16} /> Rankings
             </a>
           </MenuItem>
           <MenuItem>
             <a href="#" className={MenuItemStyle}>
-              <Users01 className="mr-2" /> Teams & Clubs
+              <Users01 className="mr-2" width={16} height={16} /> Teams & Clubs
             </a>
           </MenuItem>
           <MenuItem>
             <a href="#" className={MenuItemStyle}>
-              <Bell01 className="mr-2" /> Notifications
+              <Bell01 className="mr-2" width={16} height={16} /> Notifications
             </a>
           </MenuItem>
           <MenuItem>
             <a href="#" className={MenuItemStyle}>
-              <Settings01 className="mr-2" /> Settings
+              <Settings01 className="mr-2" width={16} height={16} /> Settings
             </a>
           </MenuItem>
 
@@ -69,12 +70,13 @@ export default function HamburgerMenuDropdown() {
             <>
               <MenuItem>
                 <a href="#" className={MenuItemStyle}>
-                  <HelpCircle className="mr-2" /> Support
+                  <HelpCircle className="mr-2" width={16} height={16} /> Support
                 </a>
               </MenuItem>
               <MenuItem>
                 <a href="#" className={MenuItemStyle}>
-                  <UserPlus01 className="mr-2" /> Invite colleagues
+                  <UserPlus01 className="mr-2" width={16} height={16} /> Invite
+                  colleagues
                 </a>
               </MenuItem>
             </>
@@ -99,17 +101,18 @@ export default function HamburgerMenuDropdown() {
               </MenuItem>
               <MenuItem>
                 <Link href="/yourevents" className={MenuItemStyle}>
-                  <MinusCircle className="mr-2" /> Your events
+                  <MinusCircle className="mr-2" width={16} height={16} /> Your
+                  events
                 </Link>
               </MenuItem>
               <MenuItem>
                 <a href="#" className={MenuItemStyle}>
-                  <Users01 className="mr-2" /> Your teams
+                  <Users01 className="mr-2" width={16} height={16} /> Your teams
                 </a>
               </MenuItem>
               <MenuItem>
                 <a className={MenuItemStyle} href="/api/auth/logout">
-                  <LogOut01 className="mr-2" /> Log out
+                  <LogOut01 className="mr-2" width={16} height={16} /> Log out
                 </a>
               </MenuItem>
             </>
@@ -122,7 +125,7 @@ export default function HamburgerMenuDropdown() {
               </a>
               <a href="/api/auth/login" className="w-[48%]">
                 <div className="w-full px-4 py-2 bg-white text-gray-600 border border-gray-300 rounded-md text-sm font-semibold flex items-center justify-center">
-                  <LogIn01 className="mr-2" /> Log in
+                  <LogIn01 className="mr-2" width={16} height={16} /> Log in
                 </div>
               </a>
             </div>

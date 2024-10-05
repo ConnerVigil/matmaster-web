@@ -18,7 +18,7 @@ export default function NotificationDropdown() {
           as="div"
           className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-textPrimary cursor-pointer"
         >
-          <Bell01 />
+          <Bell01 width={24} height={24} />
         </MenuButton>
       </div>
       <MenuItems
@@ -37,7 +37,7 @@ export default function NotificationDropdown() {
         <div className="py-1">
           <MenuItem>
             <a href="#" className={MenuItemStyle}>
-              <Bell01 className="mr-2" /> Match Results
+              <Bell01 className="mr-2" width={16} height={16} /> Match Results
             </a>
           </MenuItem>
           <MenuItem>
@@ -57,7 +57,8 @@ export default function NotificationDropdown() {
           </MenuItem>
           <MenuItem>
             <a href="#" className={MenuItemStyle}>
-              <Edit01 className="mr-2" /> Bracket Announcement
+              <Edit01 className="mr-2" width={16} height={16} /> Bracket
+              Announcement
             </a>
           </MenuItem>
         </div>
