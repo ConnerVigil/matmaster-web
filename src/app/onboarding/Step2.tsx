@@ -1,24 +1,49 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useOnboarding } from "./OnboardingProvider";
 import StepButtons from "./StepButtons";
 
-function DigitThing() {
+interface DigitDisplayProps {
+  value: string;
+  isFocused: boolean;
+}
+
+function DigitDisplay({ value, isFocused }: DigitDisplayProps) {
   return (
-    <div className="w-16 rounded-lg flex-col justify-start items-start gap-2.5 inline-flex">
-      <div className="self-stretch h-16 p-2 bg-white rounded-lg shadow border border-[#cfd4dc] justify-start items-center gap-2 inline-flex">
-        <div className="grow shrink basis-0 text-center text-[#cfd4dc] text-5xl font-medium font-['Work Sans'] leading-[60px]">
-          0
-        </div>
-      </div>
+    <div
+      className={`w-16 h-16 rounded-lg flex items-center justify-center border ${
+        isFocused ? "border-blue-500" : "border-[#cfd4dc]"
+      } bg-white shadow`}
+    >
+      <span
+        className={`text-5xl font-medium font-['Work Sans'] ${
+          value ? "text-primary" : "text-[#cfd4dc]"
+        }`}
+      >
+        {value || "0"}
+      </span>
     </div>
   );
 }
 
 const Step2 = () => {
   const { nextStep, prevStep } = useOnboarding();
+  const [code, setCode] = useState<string>("");
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [isFocused, setIsFocused] = useState(false);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
+  const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newCode = e.target.value.replace(/\D/g, "").slice(0, 4);
+    setCode(newCode);
+  };
 
   const handleNext = () => {
-    // Validate profile setup
+    console.log("Verification code:", code);
     nextStep();
   };
 
@@ -26,13 +51,30 @@ const Step2 = () => {
     <div className="max-w-md mx-auto p-6">
       <h1 className="text-textPrimary text-xl font-bold mb-2">Verification</h1>
       <p className="text-textSecondary mb-6">
-        You have received an sms message with a verification code.
+        You have received an SMS message with a verification code.
       </p>
-      <div className="flex justify-center items-center py-6 gap-1.5">
-        <DigitThing />
-        <DigitThing />
-        <DigitThing />
-        <DigitThing />
+      <div className="relative">
+        <div className="flex justify-center items-center py-6 gap-1.5">
+          {[0, 1, 2, 3].map((index) => (
+            <DigitDisplay
+              key={index}
+              value={code[index] || ""}
+              isFocused={isFocused && index === code.length}
+            />
+          ))}
+        </div>
+        <input
+          ref={inputRef}
+          type="text"
+          value={code}
+          onChange={handleCodeChange}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          className="opacity-0 absolute inset-0 w-full h-full cursor-default"
+          maxLength={4}
+          inputMode="numeric"
+          pattern="\d*"
+        />
       </div>
       <StepButtons nextStep={handleNext} prevStep={prevStep} />
     </div>
