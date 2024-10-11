@@ -1,22 +1,16 @@
 import { prisma } from "@/lib/prisma";
-import { NextResponse, NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 export async function PUT(
-  req: NextRequest,
+  request: Request,
   { params }: { params: { id: string } }
 ): Promise<NextResponse> {
-  console.log("MarkOnboardingComplete route called");
-  console.log("Params:", params);
-
-  const id = parseInt(params.id);
-
   try {
+    const id = parseInt(params.id);
     const user = await prisma.user.update({
-      where: { ID: Number(id) },
+      where: { ID: id },
       data: { Onboarding_Complete: true },
     });
-
-    console.log("User updated:", user);
 
     return NextResponse.json(user, { status: 200 });
   } catch (error) {

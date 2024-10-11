@@ -14,22 +14,29 @@ interface CreateUserData {
 }
 
 export const userService = {
-  async markOnboardingComplete(id: number): Promise<User> {
-    console.log("markOnboardingComplete called with id:", id);
-    const response = await fetch(`/api/user/markOnboardingComplete/${id}`, {
+  async onboardUser(id: number): Promise<User> {
+    const response = await fetch(`/api/user/onboard/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
     });
 
-    console.log("Response:", response);
-
     if (!response.ok) {
       throw new Error("Failed to mark onboarding complete");
     }
 
     return await response.json();
+  },
+
+  async getCurrentUser(): Promise<User> {
+    const response = await fetch("/api/user");
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch user");
+    }
+
+    return (await response.json()).user;
   },
 
   async getAllUsers(): Promise<User[]> {

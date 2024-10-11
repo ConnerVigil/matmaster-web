@@ -12,11 +12,9 @@ export default function Step3() {
   const [showPopup, setShowPopup] = useState(false);
   const router = useRouter();
 
-  const handleNext = () => {
-    console.log("Profile step");
-
-    userService.markOnboardingComplete();
-
+  const handleNext = async () => {
+    const user = await userService.getCurrentUser();
+    await userService.onboardUser(user.ID);
     setShowPopup(true);
   };
 
