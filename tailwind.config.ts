@@ -12,6 +12,7 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         primary: "#4A1FB8",
+        primaryLight: "#7F56D9",
         textPrimary: "#101828",
         textSecondary: "#475467",
       },
