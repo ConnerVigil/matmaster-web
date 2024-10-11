@@ -13,7 +13,7 @@ const ProfileStep = () => {
   const router = useRouter();
 
   const handleNext = async () => {
-    const user = await userService.getCurrentUser();
+    const user = await userService.getUserFromDB();
     await userService.onboardUser(user.ID);
     setShowPopup(true);
   };

@@ -118,7 +118,7 @@ export default function HamburgerMenuDropdown() {
             </>
           ) : (
             <div className="p-2 flex justify-between">
-              <a href="/api/auth/login" className="w-[48%]">
+              <a href="/api/auth/signup" className="w-[48%]">
                 <div className="w-full px-4 py-2 bg-primary text-white rounded-md text-sm font-semibold text-center">
                   Sign up
                 </div>

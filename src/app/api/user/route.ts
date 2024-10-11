@@ -1,29 +1,24 @@
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@auth0/nextjs-auth0";
-import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
-  request: NextRequest,
-  response: NextResponse
-): Promise<NextResponse> {
+  request: Request,
+  response: Response
+): Promise<Response> {
   try {
-    const session = await getSession(request, response);
-    console.log("session:", session);
+    const session = await getSession();
 
     if (!session || !session.user) {
-      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+      return Response.json({ error: "Not authenticated" }, { status: 401 });
     }
 
     const user = await prisma.user.findUnique({
       where: { Auth0_ID: session.user.sub },
     });
 
-    return NextResponse.json({ user }, { status: 200 });
+    return Response.json({ user }, { status: 200 });
   } catch (error) {
     console.error("Error fetching user:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return Response.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
