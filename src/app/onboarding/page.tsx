@@ -2,23 +2,23 @@
 
 import React from "react";
 import { OnboardingProvider, useOnboarding } from "./OnboardingProvider";
-import Step1 from "./Step1";
-import Step2 from "./Step2";
-import Step3 from "./Step3";
 import ProgressBar from "./ProgressBar";
+import PhoneNumberStep from "./PhoneNumberStep";
+import PhoneVerificationStep from "./PhoneVerificationStep";
+import ProfileStep from "./ProfileStep";
 
 const OnboardingSteps = () => {
   const { step } = useOnboarding();
 
   switch (step) {
     case 0:
-      return <Step1 />;
+      return <PhoneNumberStep />;
     case 1:
-      return <Step2 />;
+      return <PhoneVerificationStep />;
     case 2:
-      return <Step3 />;
+      return <ProfileStep />;
     default:
-      return <Step1 />;
+      return <PhoneNumberStep />;
   }
 };
 

@@ -3,7 +3,7 @@ import { useOnboarding } from "./OnboardingProvider";
 import { ChevronDown } from "@untitled-ui/icons-react";
 import StepButtons from "./StepButtons";
 
-const Step1 = () => {
+const PhoneNumberStep = () => {
   const { nextStep, prevStep } = useOnboarding();
   const [phoneNumber, setPhoneNumber] = useState("");
 
@@ -50,4 +50,4 @@ const Step1 = () => {
   );
 };
 
-export default Step1;
+export default PhoneNumberStep;

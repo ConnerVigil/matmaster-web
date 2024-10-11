@@ -25,7 +25,7 @@ function DigitDisplay({ value, isFocused }: DigitDisplayProps) {
   );
 }
 
-const Step2 = () => {
+const PhoneVerificationStep = () => {
   const { nextStep, prevStep } = useOnboarding();
   const [code, setCode] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -81,4 +81,4 @@ const Step2 = () => {
   );
 };
 
-export default Step2;
+export default PhoneVerificationStep;

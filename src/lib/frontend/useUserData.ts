@@ -9,15 +9,15 @@ export function useUserData() {
 
   useEffect(() => {
     if (user && !isAuth0Loading) {
-      fetchUserData();
+      fetchUserData(user.sub as string);
     } else if (!isAuth0Loading) {
       setIsLoading(false);
     }
   }, [user, isAuth0Loading]);
 
-  const fetchUserData = async () => {
+  const fetchUserData = async (auth0Id: string) => {
     try {
-      const response = await fetch("/api/user");
+      const response = await fetch(`/api/user?auth0Id=${auth0Id}`);
       if (response.ok) {
         const data = await response.json();
         setUserData(data);

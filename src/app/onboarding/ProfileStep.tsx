@@ -6,7 +6,7 @@ import AccountCreatedPopup from "./AccountCreatedPopup";
 import { useRouter } from "next/navigation";
 import { userService } from "@/lib/frontend/services/userService";
 
-export default function Step3() {
+const ProfileStep = () => {
   const { prevStep } = useOnboarding();
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [showPopup, setShowPopup] = useState(false);
@@ -170,4 +170,6 @@ export default function Step3() {
       {showPopup && <AccountCreatedPopup onClose={handleClosePopup} />}
     </div>
   );
-}
+};
+
+export default ProfileStep;
