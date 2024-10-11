@@ -2,14 +2,27 @@ import React, { useState } from "react";
 import { useOnboarding } from "./OnboardingProvider";
 import StepButtons from "./StepButtons";
 import Image from "next/image";
+import AccountCreatedPopup from "./AccountCreatedPopup";
+import { useRouter } from "next/navigation";
+import { userService } from "@/lib/frontend/services/userService";
 
 export default function Step3() {
-  const { nextStep, prevStep } = useOnboarding();
+  const { prevStep } = useOnboarding();
   const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const router = useRouter();
 
   const handleNext = () => {
     console.log("Profile step");
-    nextStep();
+
+    userService.markOnboardingComplete();
+
+    setShowPopup(true);
+  };
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+    router.push("/");
   };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -155,6 +168,8 @@ export default function Step3() {
       </div>
 
       <StepButtons nextStep={handleNext} prevStep={prevStep} />
+
+      {showPopup && <AccountCreatedPopup onClose={handleClosePopup} />}
     </div>
   );
 }
