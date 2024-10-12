@@ -78,7 +78,7 @@ const ProfileStep = () => {
             <p className="text-sm text-textSecondary mb-2">
               This picture will be public to coaches and wrestlers on MatMaster.
             </p>
-            <label className="bg-primary text-white px-4 py-2 rounded cursor-pointer hover:bg-purple-600 transition">
+            <label className="bg-primaryLight text-white px-4 py-2 rounded cursor-pointer hover:bg-purple-600 transition">
               Upload Image
               <input
                 type="file"

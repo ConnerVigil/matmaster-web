@@ -16,7 +16,7 @@ function DigitDisplay({ value, isFocused }: DigitDisplayProps) {
     >
       <span
         className={`text-5xl font-medium font-['Work Sans'] ${
-          value ? "text-primary" : "text-[#cfd4dc]"
+          value ? "text-primaryLight" : "text-[#cfd4dc]"
         }`}
       >
         {value || "0"}

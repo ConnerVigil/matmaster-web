@@ -13,8 +13,6 @@ export const GET = handleAuth({
     try {
       const response = await handleCallback(req, res);
       const session = await getSession(req, res);
-
-      console.log("session:", session);
       await syncUser(session);
 
       return response;

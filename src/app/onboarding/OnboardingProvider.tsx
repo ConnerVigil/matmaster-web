@@ -18,7 +18,7 @@ export const OnboardingProvider: React.FC<Props> = ({ children }) => {
 
   const nextStep = () =>
     setStep((prevStep) => Math.min(prevStep + 1, totalSteps));
-  const prevStep = () => setStep((prevStep) => Math.max(prevStep - 1, 1));
+  const prevStep = () => setStep((prevStep) => Math.max(prevStep - 1, 0));
 
   const percentageComplete = (step / totalSteps) * 100;
 
