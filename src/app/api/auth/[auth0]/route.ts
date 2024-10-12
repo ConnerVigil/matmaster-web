@@ -24,13 +24,13 @@ export const GET = handleAuth({
     }
   },
   login: handleLogin({
-    returnTo: "/login",
+    returnTo: "/",
   }),
   signup: handleLogin({
     authorizationParams: {
       screen_hint: "signup",
     },
-    returnTo: "/signup",
+    returnTo: "/onboarding",
   }),
   logout: handleLogout({
     returnTo: "/",
