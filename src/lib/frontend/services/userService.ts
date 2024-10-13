@@ -38,4 +38,30 @@ export const userService = {
 
     return (await response.json()).user;
   },
+
+  async sendVerificationCode(phoneNumber: string): Promise<string> {
+    const response = await fetch("/api/phone/sendcode", {
+      method: "POST",
+      body: JSON.stringify({ phoneNumber }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to send verification code");
+    }
+
+    return (await response.json()).code;
+  },
+
+  async verifyCode(phoneNumber: string, code: string): Promise<boolean> {
+    const response = await fetch("/api/phone/verifycode", {
+      method: "POST",
+      body: JSON.stringify({ phoneNumber, code }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to verify code");
+    }
+
+    return true;
+  },
 };

@@ -1,11 +1,26 @@
 import { createContext, useContext, useState } from "react";
 import { ReactNode } from "react";
 
-const OnboardingContext = createContext({
-  step: 1,
+interface OnboardingContextType {
+  step: number;
+  nextStep: () => void;
+  prevStep: () => void;
+  percentageComplete: number;
+  phoneNumber: string;
+  setPhoneNumber: (phoneNumber: string) => void;
+  // verificationCode: string;
+  // setVerificationCode: (code: string) => void;
+}
+
+const OnboardingContext = createContext<OnboardingContextType>({
+  step: 0,
   nextStep: () => {},
   prevStep: () => {},
   percentageComplete: 0,
+  phoneNumber: "",
+  setPhoneNumber: () => {},
+  // verificationCode: "",
+  // setVerificationCode: () => {},
 });
 
 interface Props {
@@ -14,6 +29,8 @@ interface Props {
 
 export const OnboardingProvider: React.FC<Props> = ({ children }) => {
   const [step, setStep] = useState(0);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  // const [verificationCode, setVerificationCode] = useState("");
   const totalSteps = 3;
 
   const nextStep = () =>
@@ -24,7 +41,16 @@ export const OnboardingProvider: React.FC<Props> = ({ children }) => {
 
   return (
     <OnboardingContext.Provider
-      value={{ step, nextStep, prevStep, percentageComplete }}
+      value={{
+        step,
+        nextStep,
+        prevStep,
+        percentageComplete,
+        phoneNumber,
+        setPhoneNumber,
+        // verificationCode,
+        // setVerificationCode,
+      }}
     >
       {children}
     </OnboardingContext.Provider>

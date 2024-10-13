@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useOnboarding } from "./OnboardingProvider";
 import StepButtons from "./StepButtons";
+import { userService } from "@/lib/frontend/services/userService";
 
 interface DigitDisplayProps {
   value: string;
@@ -26,8 +27,9 @@ function DigitDisplay({ value, isFocused }: DigitDisplayProps) {
 }
 
 const PhoneVerificationStep = () => {
-  const { nextStep, prevStep } = useOnboarding();
+  const { nextStep, prevStep, phoneNumber } = useOnboarding();
   const [code, setCode] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -40,11 +42,22 @@ const PhoneVerificationStep = () => {
   const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newCode = e.target.value.replace(/\D/g, "").slice(0, 4);
     setCode(newCode);
+    setError(null);
   };
 
-  const handleNext = () => {
-    console.log("Verification code:", code);
-    nextStep();
+  const handleNext = async () => {
+    try {
+      const isValid = await userService.verifyCode(phoneNumber, code);
+
+      if (isValid) {
+        nextStep();
+      } else {
+        setError("Invalid verification code. Please try again.");
+      }
+    } catch (error) {
+      console.error(error);
+      setError("Failed to verify code. Please try again.");
+    }
   };
 
   return (
@@ -76,6 +89,7 @@ const PhoneVerificationStep = () => {
           pattern="\d*"
         />
       </div>
+      {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
       <StepButtons nextStep={handleNext} prevStep={prevStep} />
     </div>
   );
