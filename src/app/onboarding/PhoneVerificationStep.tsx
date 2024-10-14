@@ -62,8 +62,8 @@ const PhoneVerificationStep = () => {
 
   return (
     <div className="max-w-md mx-auto p-6">
-      <h1 className="text-textPrimary text-xl font-bold mb-2">Verification</h1>
-      <p className="text-textSecondary mb-6">
+      <h1 className="text-gray1 text-xl font-bold mb-2">Verification</h1>
+      <p className="text-gray3 mb-6">
         You have received an SMS message with a verification code.
       </p>
       <div className="relative">

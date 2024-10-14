@@ -18,10 +18,10 @@ const AccountCreatedPopup: React.FC<AccountCreatedPopupProps> = ({
               <CheckCircleBroken className="w-12 h-12 text-green-500" />
             </div>
           </div>
-          <h2 className="text-textPrimary text-2xl font-bold mb-2">
+          <h2 className="text-gray1 text-2xl font-bold mb-2">
             Account Created
           </h2>
-          <p className="text-textSecondary mb-6">
+          <p className="text-gray3 mb-6">
             Welcome to MatMaster! Explore tournaments, analyze your wrestling,
             and more! Explore the app to learn more about the interface.
           </p>

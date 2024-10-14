@@ -17,7 +17,7 @@ export default function NotificationDropdown() {
       <div>
         <MenuButton
           as="div"
-          className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-textPrimary cursor-pointer"
+          className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray1 cursor-pointer"
         >
           <Bell01 width={24} height={24} />
         </MenuButton>

@@ -18,7 +18,7 @@ export default function Notification({
 }: NotificationProps) {
   return (
     <div className="p-4">
-      <div className="flex items-center mb-2 text-textPrimary cursor-default">
+      <div className="flex items-center mb-2 text-gray1 cursor-default">
         <AlertCircle className="mr-1" width={16} height={16} />
         <span className="text-sm font-semibold">{title}</span>
       </div>

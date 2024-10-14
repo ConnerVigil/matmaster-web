@@ -9,7 +9,7 @@ export default function EventRow({ title }: EventRowProps) {
   return (
     <>
       <div className="flex items-center justify-between w-full mt-10">
-        <span className="text-textPrimary text-l font-bold">{title}</span>
+        <span className="text-gray1 text-l font-bold">{title}</span>
         <span className="text-primary text-l font-bold">See more</span>
       </div>
       <div className="overflow-x-auto w-full h-72 px-4">

@@ -42,10 +42,8 @@ const ProfileStep = () => {
 
   return (
     <div className="max-w-md mx-auto p-6">
-      <h1 className="text-textPrimary text-xl font-bold mb-2">
-        Wrestler Profile
-      </h1>
-      <p className="text-textSecondary mb-6">
+      <h1 className="text-gray1 text-xl font-bold mb-2">Wrestler Profile</h1>
+      <p className="text-gray3 mb-6">
         This information will help our system keep coaches organized.
       </p>
       <div className="mb-6">
@@ -75,7 +73,7 @@ const ProfileStep = () => {
             <h2 className="text-black font-bold mb-1">
               Upload a profile image
             </h2>
-            <p className="text-sm text-textSecondary mb-2">
+            <p className="text-sm text-gray3 mb-2">
               This picture will be public to coaches and wrestlers on MatMaster.
             </p>
             <label className="bg-primaryLight text-white px-4 py-2 rounded cursor-pointer hover:bg-purple-600 transition">
@@ -93,10 +91,10 @@ const ProfileStep = () => {
 
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div>
-          <label className="block text-sm font-medium text-textSecondary mb-1">
+          <label className="block text-sm font-medium text-gray3 mb-1">
             Gender
           </label>
-          <select className="w-full p-2 border border-gray-300 text-textSecondary rounded">
+          <select className="w-full p-2 border border-gray-300 text-gray3 rounded">
             <option value="">Gender</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
@@ -104,10 +102,10 @@ const ProfileStep = () => {
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-textSecondary mb-1">
+          <label className="block text-sm font-medium text-gray3 mb-1">
             Grade
           </label>
-          <select className="w-full p-2 border border-gray-300 rounded text-textSecondary">
+          <select className="w-full p-2 border border-gray-300 rounded text-gray3">
             <option value="">Grade</option>
             <option value="9">9th</option>
             <option value="10">10th</option>
@@ -118,11 +116,11 @@ const ProfileStep = () => {
       </div>
 
       <div className="mb-6">
-        <label className="block text-sm font-medium text-textSecondary mb-1">
+        <label className="block text-sm font-medium text-gray3 mb-1">
           Birthday
         </label>
         <div className="grid grid-cols-3 gap-2">
-          <select className="p-2 border border-gray-300 rounded text-textSecondary">
+          <select className="p-2 border border-gray-300 rounded text-gray3">
             <option value="">DD</option>
             {[...Array(31)].map((_, i) => (
               <option key={i + 1} value={i + 1}>
@@ -130,7 +128,7 @@ const ProfileStep = () => {
               </option>
             ))}
           </select>
-          <select className="p-2 border border-gray-300 rounded text-textSecondary">
+          <select className="p-2 border border-gray-300 rounded text-gray3">
             <option value="">MM</option>
             {[
               "Jan",
@@ -151,7 +149,7 @@ const ProfileStep = () => {
               </option>
             ))}
           </select>
-          <select className="p-2 border border-gray-300 rounded text-textSecondary">
+          <select className="p-2 border border-gray-300 rounded text-gray3">
             <option value="">YYYY</option>
             {[...Array(30)].map((_, i) => {
               const year = new Date().getFullYear() - i - 14;

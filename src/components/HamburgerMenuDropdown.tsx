@@ -29,7 +29,7 @@ export default function HamburgerMenuDropdown() {
       <div>
         <MenuButton
           as="div"
-          className="inline-flex w-full justify-center gap-x-1.5 bg-white px-3 py-2 text-sm font-semibold text-textPrimary cursor-pointer"
+          className="inline-flex w-full justify-center gap-x-1.5 bg-white px-3 py-2 text-sm font-semibold text-gray1 cursor-pointer"
         >
           <Menu01 width={24} height={24} />
         </MenuButton>

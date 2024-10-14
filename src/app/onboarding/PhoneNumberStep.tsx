@@ -11,8 +11,8 @@ const phoneNumberSchema = z.object({
     .min(10, {
       message: "Phone number is required and must be at least 10 digits long",
     })
-    .max(10, {
-      message: "Phone number must be at most 10 digits long",
+    .max(12, {
+      message: "Phone number must be at most 12 digits long",
     }),
 });
 
@@ -35,7 +35,7 @@ const PhoneNumberStep = () => {
     setError(null);
 
     try {
-      const code = await userService.sendVerificationCode(phoneNumber);
+      userService.sendVerificationCode(phoneNumber);
       // setVerificationCode(code);
       nextStep();
     } catch (error) {
@@ -46,15 +46,15 @@ const PhoneNumberStep = () => {
 
   return (
     <div className="max-w-md mx-auto p-6">
-      <h1 className="text-textPrimary text-xl font-bold mb-2">Phone Number</h1>
-      <p className="text-textSecondary mb-6">
+      <h1 className="text-gray1 text-xl font-bold mb-2">Phone Number</h1>
+      <p className="text-gray3 mb-6">
         This will not be shared with anyone and is used for account security and
         authorization.
       </p>
       <div className="mb-6">
         <label
           htmlFor="phone"
-          className="block text-sm font-medium text-textPrimary mb-1"
+          className="block text-sm font-medium text-gray1 mb-1"
         >
           Phone Number
         </label>
@@ -62,9 +62,9 @@ const PhoneNumberStep = () => {
           <div className="absolute inset-y-0 left-0 flex items-center">
             <button
               type="button"
-              className="flex items-center px-3 border-r border-gray-300 text-textSecondary sm:text-sm"
+              className="flex items-center px-3 border-r border-gray-300 text-gray3 sm:text-sm"
             >
-              US <ChevronDown className="ml-1" />
+              US +1 <ChevronDown className="ml-1" />
             </button>
           </div>
           <input
@@ -73,7 +73,7 @@ const PhoneNumberStep = () => {
             className={`text-black block w-full pl-24 pr-3 py-2 border ${
               error ? "border-red-500" : "border-gray-300"
             } rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
-            placeholder="1234567890"
+            placeholder="123 456 7890"
             value={phoneNumber}
             onChange={(e) => {
               setPhoneNumber(e.target.value);

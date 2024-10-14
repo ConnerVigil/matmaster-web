@@ -64,23 +64,23 @@ export default function EventCard({
           </span>
         )}
       </div>
-      <div className="p-2 text-textSecondary">
-        <h2 className="text-xl font-bold mb-2 text-textPrimary">{title}</h2>
+      <div className="p-2 text-gray3">
+        <h2 className="text-xl font-bold mb-2 text-gray1">{title}</h2>
         <div className="flex items-center mb-1">
-          <Calendar className="w-3 h-3 mr-2 text-textSecondary" />
+          <Calendar className="w-3 h-3 mr-2 text-gray3" />
           <span className="text-sm">{dateRange}</span>
         </div>
         <div className="flex items-center mb-1">
-          <Users01 className="w-3 h-3 mr-2 text-textSecondary" />
+          <Users01 className="w-3 h-3 mr-2 text-gray3" />
           <span className="text-sm">{attendees} Attendees</span>
         </div>
         <div className="flex items-center mb-1">
-          <InfoCircle className="w-3 h-3 mr-2 text-textSecondary" />
+          <InfoCircle className="w-3 h-3 mr-2 text-gray3" />
           <span className="text-sm">{style}</span>
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <MarkerPin01 className="w-3 h-3 mr-2 text-textSecondary" />
+            <MarkerPin01 className="w-3 h-3 mr-2 text-gray3" />
             <span className="text-sm">{location}</span>
           </div>
           <span className="text-sm">{price}</span>

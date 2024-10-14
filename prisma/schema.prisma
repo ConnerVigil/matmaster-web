@@ -39,6 +39,15 @@ model User {
   Auth Auth[]
 }
 
+model VerificationCodes {
+  ID           Int      @id @default(autoincrement())
+  Phone_Number String
+  Code         String
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
 model Auth {
   ID            Int      @id @default(autoincrement())
   User_ID       Int
@@ -184,7 +193,7 @@ model Event {
   Name                String   @db.VarChar(50)
   Start_Date          DateTime
   End_Date            DateTime
-  Number_Matts        Int
+  Number_Mats         Int
   USA_Wrestling_Event Boolean
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
@@ -239,7 +248,7 @@ model CompetitionType {
   Brackets Brackets[]
 }
 
-model Matts {
+model Mats {
   ID          Int    @id @default(autoincrement())
   Description String @db.VarChar(100)
 
@@ -315,7 +324,7 @@ model Bouts {
   ID          Int      @id @default(autoincrement())
   Bracket_ID  Int
   Event_ID    Int
-  Matt_ID     Int
+  Mat_ID      Int
   Round_ID    Int
   Bout_Number Int
   Bout_Time   DateTime
@@ -323,7 +332,7 @@ model Bouts {
   updatedAt   DateTime @updatedAt
 
   // Relationships
-  Matts         Matts[]
+  Mats          Mats[]
   Rounds        Rounds[]
   WinConditions WinConditions[]
   Brackets      Brackets[]
