@@ -39,7 +39,7 @@ model User {
   Auth Auth[]
 }
 
-model VerificationCodes {
+model VerificationCode {
   ID           Int      @id @default(autoincrement())
   Phone_Number String
   Code         String

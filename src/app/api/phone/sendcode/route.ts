@@ -1,15 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PublishCommand } from "@aws-sdk/client-sns";
-import { SNSClient } from "@aws-sdk/client-sns";
 import { prisma } from "@/lib/prisma";
-
-const snsClient = new SNSClient({
-  region: process.env.AWS_REGION,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
-  },
-});
+import { PublishCommand } from "@aws-sdk/client-sns";
+import snsClient from "@/lib/backend/awsSns";
 
 export function generateVerificationCode(length: number = 6): string {
   return Math.random()
@@ -17,7 +9,10 @@ export function generateVerificationCode(length: number = 6): string {
     .slice(2, 2 + length);
 }
 
-export async function sendVerificationCode(phoneNumber: string, code: string) {
+export async function sendVerificationCode(
+  phoneNumber: string,
+  code: string
+): Promise<boolean> {
   const params = {
     Message: `Your verification code is: ${code}`,
     PhoneNumber: phoneNumber,
@@ -26,7 +21,8 @@ export async function sendVerificationCode(phoneNumber: string, code: string) {
   try {
     const command = new PublishCommand(params);
     const response = await snsClient.send(command);
-    console.log("Verification code sent successfully:", response.MessageId);
+    console.log("response: ", response);
+
     return true;
   } catch (error) {
     console.error("Error sending verification code:", error);
@@ -44,20 +40,25 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const verificationCode = generateVerificationCode();
-  const success = await sendVerificationCode(phoneNumber, verificationCode);
+  const verificationCode = generateVerificationCode(5);
+  console.log("verificationCode generated: ", verificationCode);
+  // const success = await sendVerificationCode(phoneNumber, verificationCode);
+  // console.log("success: ", success);
 
-  console.log("response: ", success);
-
-  if (!success) {
+  if (!true) {
     return NextResponse.json(
       { error: "Failed to send verification code" },
       { status: 500 }
     );
   }
 
-  // TODO: Store the verification code in the database
-  const response = await prisma;
+  await prisma.verificationCode.create({
+    data: {
+      Phone_Number: phoneNumber,
+      Code: verificationCode,
+      expiresAt: new Date(Date.now() + 10 * 60 * 1000),
+    },
+  });
 
   return NextResponse.json({ status: 200 });
 }

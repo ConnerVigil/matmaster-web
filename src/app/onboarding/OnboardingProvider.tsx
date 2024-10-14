@@ -8,8 +8,6 @@ interface OnboardingContextType {
   percentageComplete: number;
   phoneNumber: string;
   setPhoneNumber: (phoneNumber: string) => void;
-  // verificationCode: string;
-  // setVerificationCode: (code: string) => void;
 }
 
 const OnboardingContext = createContext<OnboardingContextType>({
@@ -19,8 +17,6 @@ const OnboardingContext = createContext<OnboardingContextType>({
   percentageComplete: 0,
   phoneNumber: "",
   setPhoneNumber: () => {},
-  // verificationCode: "",
-  // setVerificationCode: () => {},
 });
 
 interface Props {
@@ -30,7 +26,6 @@ interface Props {
 export const OnboardingProvider: React.FC<Props> = ({ children }) => {
   const [step, setStep] = useState(0);
   const [phoneNumber, setPhoneNumber] = useState("");
-  // const [verificationCode, setVerificationCode] = useState("");
   const totalSteps = 3;
 
   const nextStep = () =>
@@ -48,8 +43,6 @@ export const OnboardingProvider: React.FC<Props> = ({ children }) => {
         percentageComplete,
         phoneNumber,
         setPhoneNumber,
-        // verificationCode,
-        // setVerificationCode,
       }}
     >
       {children}

@@ -1,10 +1,8 @@
+import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import TextLink from "textlink-sms";
 
 export async function POST(req: NextRequest) {
   const { phoneNumber, code } = await req.json();
-
-  TextLink.useKey(process.env.TEXT_LINK_API_KEY as string);
 
   if (!phoneNumber || !code) {
     return NextResponse.json(
@@ -13,15 +11,17 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const response = await TextLink.verifyCode(phoneNumber, code);
+  const response = await prisma.verificationCode.findFirst({
+    where: {
+      Phone_Number: phoneNumber,
+      Code: code,
+    },
+  });
 
   console.log(response);
 
-  if (!response.ok) {
-    return NextResponse.json(
-      { error: "Failed to send verification code" },
-      { status: 500 }
-    );
+  if (!response?.Code) {
+    return NextResponse.json({ error: "Code not found" }, { status: 500 });
   }
 
   return NextResponse.json({ status: 200 });

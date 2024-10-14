@@ -11,19 +11,13 @@ const phoneNumberSchema = z.object({
     .min(10, {
       message: "Phone number is required and must be at least 10 digits long",
     })
-    .max(12, {
-      message: "Phone number must be at most 12 digits long",
+    .max(10, {
+      message: "Phone number must be at most 10 digits long",
     }),
 });
 
 const PhoneNumberStep = () => {
-  const {
-    nextStep,
-    prevStep,
-    phoneNumber,
-    setPhoneNumber,
-    // setVerificationCode,
-  } = useOnboarding();
+  const { nextStep, prevStep, phoneNumber, setPhoneNumber } = useOnboarding();
   const [error, setError] = useState<string | null>(null);
 
   const handleNext = async () => {
@@ -35,8 +29,7 @@ const PhoneNumberStep = () => {
     setError(null);
 
     try {
-      userService.sendVerificationCode(phoneNumber);
-      // setVerificationCode(code);
+      userService.sendVerificationCode("+1" + phoneNumber);
       nextStep();
     } catch (error) {
       console.error(error);

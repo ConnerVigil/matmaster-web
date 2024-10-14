@@ -39,7 +39,7 @@ export const userService = {
     return (await response.json()).user;
   },
 
-  async sendVerificationCode(phoneNumber: string): Promise<string> {
+  async sendVerificationCode(phoneNumber: string): Promise<boolean> {
     const response = await fetch("/api/phone/sendcode", {
       method: "POST",
       body: JSON.stringify({ phoneNumber }),
@@ -49,7 +49,7 @@ export const userService = {
       throw new Error("Failed to send verification code");
     }
 
-    return (await response.json()).code;
+    return true;
   },
 
   async verifyCode(phoneNumber: string, code: string): Promise<boolean> {
