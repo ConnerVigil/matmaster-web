@@ -11,18 +11,36 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const response = await prisma.verificationCode.findFirst({
-    where: {
-      Phone_Number: phoneNumber,
-      Code: code,
-    },
-  });
+  try {
+    const response = await prisma.verificationCode.findFirst({
+      where: {
+        Phone_Number: phoneNumber,
+        Code: code,
+      },
+    });
 
-  console.log(response);
+    if (!response) {
+      return NextResponse.json(
+        { error: "Invalid code or phone number" },
+        { status: 400 }
+      );
+    }
 
-  if (!response?.Code) {
-    return NextResponse.json({ error: "Code not found" }, { status: 500 });
+    await prisma.verificationCode.delete({
+      where: {
+        ID: response.ID,
+      },
+    });
+
+    return NextResponse.json(
+      { message: "Code verified successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error verifying code:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
-
-  return NextResponse.json({ status: 200 });
 }

@@ -40,14 +40,14 @@ const PhoneVerificationStep = () => {
   }, []);
 
   const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newCode = e.target.value.replace(/\D/g, "").slice(0, 4);
+    const newCode = e.target.value.replace(/\D/g, "").slice(0, 5);
     setCode(newCode);
     setError(null);
   };
 
   const handleNext = async () => {
     try {
-      const isValid = await userService.verifyCode(phoneNumber, code);
+      const isValid = await userService.verifyCode("+1" + phoneNumber, code);
 
       if (isValid) {
         nextStep();
@@ -68,7 +68,7 @@ const PhoneVerificationStep = () => {
       </p>
       <div className="relative">
         <div className="flex justify-center items-center py-6 gap-1.5">
-          {[0, 1, 2, 3].map((index) => (
+          {[0, 1, 2, 3, 4].map((index) => (
             <DigitDisplay
               key={index}
               value={code[index] || ""}
@@ -84,7 +84,7 @@ const PhoneVerificationStep = () => {
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           className="opacity-0 absolute inset-0 w-full h-full cursor-default"
-          maxLength={4}
+          maxLength={5}
           inputMode="numeric"
           pattern="\d*"
         />
