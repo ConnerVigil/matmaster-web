@@ -7,9 +7,19 @@ export async function PUT(
 ): Promise<NextResponse> {
   try {
     const id = parseInt(params.id);
+    const { firstName, lastName, gender, grade, dateOfBirth } =
+      await request.json();
+
     const user = await prisma.user.update({
       where: { ID: id },
-      data: { Onboarding_Complete: true },
+      data: {
+        First_Name: firstName,
+        Last_Name: lastName,
+        Gender: gender,
+        Grade: grade,
+        DOB: new Date(dateOfBirth),
+        Onboarding_Complete: true,
+      },
     });
 
     return NextResponse.json(user, { status: 200 });

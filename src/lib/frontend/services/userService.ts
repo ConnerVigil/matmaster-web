@@ -1,34 +1,6 @@
 import { User } from "@prisma/client";
 
-// interface CreateUserData {
-//   Username: string;
-//   Email: string;
-//   DOB: Date;
-//   Parental_Consent?: boolean;
-//   Worker_ID?: number;
-//   Participant_ID?: number;
-//   Coach_ID?: number;
-//   Coordinator_ID?: number;
-//   Is_Viewer: boolean;
-//   Is_Active: boolean;
-// }
-
 export const userService = {
-  async onboardUser(id: number): Promise<User> {
-    const response = await fetch(`/api/user/onboard/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to mark onboarding complete");
-    }
-
-    return await response.json();
-  },
-
   async getUserFromDB(): Promise<User> {
     const response = await fetch("/api/user");
 
@@ -39,10 +11,13 @@ export const userService = {
     return (await response.json()).user;
   },
 
-  async sendVerificationCode(phoneNumber: string): Promise<boolean> {
+  async sendVerificationCode(
+    phoneNumber: string,
+    userId: number
+  ): Promise<boolean> {
     const response = await fetch("/api/phone/sendcode", {
       method: "POST",
-      body: JSON.stringify({ phoneNumber }),
+      body: JSON.stringify({ phoneNumber, userId }),
     });
 
     if (!response.ok) {
@@ -92,5 +67,30 @@ export const userService = {
       console.error("Error updating user profile:", error);
       throw error;
     }
+  },
+
+  async onboardUser(
+    userId: number,
+    onboardingData: {
+      firstName: string;
+      lastName: string;
+      gender: string;
+      grade: number;
+      dateOfBirth: string;
+    }
+  ): Promise<User> {
+    const response = await fetch(`/api/user/onboard/${userId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(onboardingData),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to mark onboarding complete");
+    }
+
+    return await response.json();
   },
 };

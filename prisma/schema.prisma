@@ -16,9 +16,10 @@ datasource db {
 model User {
   ID                  Int       @id @default(autoincrement())
   Auth0_ID            String    @unique @db.VarChar(50)
-  Username            String    @unique @db.VarChar(50)
   Email               String    @unique @db.VarChar(50)
   Phone_Number        String?   @unique @db.VarChar(12)
+  First_Name          String?   @db.VarChar(50)
+  Last_Name           String?   @db.VarChar(50)
   DOB                 DateTime?
   Profile_Image       String?
   Gender              String?   @db.VarChar(1)
@@ -35,19 +36,24 @@ model User {
   updatedAt           DateTime  @updatedAt
 
   // Relationships
-  Worker      Workers?      @relation(fields: [Worker_ID], references: [ID])
-  Participant Participants? @relation(fields: [Participant_ID], references: [ID])
-  Coach       Coaches?      @relation(fields: [Coach_ID], references: [ID])
-  Coordinator Coordinators? @relation(fields: [Coordinator_ID], references: [ID])
+  Worker            Workers?           @relation(fields: [Worker_ID], references: [ID])
+  Participant       Participants?      @relation(fields: [Participant_ID], references: [ID])
+  Coach             Coaches?           @relation(fields: [Coach_ID], references: [ID])
+  Coordinator       Coordinators?      @relation(fields: [Coordinator_ID], references: [ID])
+  VerificationCodes VerificationCode[]
 }
 
 model VerificationCode {
   ID           Int      @id @default(autoincrement())
+  User_ID      Int
   Phone_Number String
   Code         String
   expiresAt    DateTime
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+
+  // Relationships
+  User User @relation(fields: [User_ID], references: [ID])
 }
 
 model Participants {

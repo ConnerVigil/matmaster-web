@@ -29,7 +29,13 @@ const PhoneNumberStep = () => {
     setError(null);
 
     try {
-      userService.sendVerificationCode("+1" + phoneNumber);
+      const response = await userService.getUserFromDB();
+
+      if (!response) {
+        setError("Failed to get user from database. Please try again.");
+      }
+
+      userService.sendVerificationCode("+1" + phoneNumber, response.ID);
       nextStep();
     } catch (error) {
       console.error(error);
