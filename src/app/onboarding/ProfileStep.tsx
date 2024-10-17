@@ -30,6 +30,7 @@ const ProfileStep = () => {
   const [grade, setGrade] = useState("");
   const [birthday, setBirthday] = useState<Date | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const handleNext = async () => {
     const newErrors: Record<string, string> = {};
@@ -56,6 +57,16 @@ const ProfileStep = () => {
     try {
       const user = await userService.getUserFromDB();
       const formattedDOB = birthday ? format(birthday, "yyyy-MM-dd") : "";
+
+      if (selectedFile) {
+        // const signedUrl = await userService.getSignedUrl(selectedFile, user.ID);
+        // console.log(signedUrl);
+        // const res = await userService.uploadProfileImageToS3(
+        //   signedUrl,
+        //   selectedFile
+        // );
+      }
+
       await userService.onboardUser(user.ID, {
         firstName,
         lastName,
@@ -95,6 +106,7 @@ const ProfileStep = () => {
     const file = files[0];
 
     if (file) {
+      setSelectedFile(file);
       const reader = new FileReader();
       reader.onload = (e) => {
         if (e.target && e.target.result) {
@@ -102,7 +114,6 @@ const ProfileStep = () => {
         }
       };
       reader.readAsDataURL(file);
-      console.log("File uploaded:", file);
     }
   };
 

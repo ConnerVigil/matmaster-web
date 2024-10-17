@@ -21,7 +21,7 @@ model User {
   First_Name          String?   @db.VarChar(50)
   Last_Name           String?   @db.VarChar(50)
   DOB                 DateTime?
-  Profile_Image       String?
+  Profile_Image_URL   String?
   Gender              String?   @db.VarChar(1)
   Grade               Int?
   Parental_Consent    Boolean?
