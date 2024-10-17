@@ -46,10 +46,16 @@ This project uses Prisma as an ORM.
    npx prisma migrate dev --name <name of migration>
    ```
 
+How to Squash migrations: https://www.basedash.com/blog/how-to-squash-migrations-in-prisma
+
+```
+
 ## Usage
 
 ```
+
 npm run dev
+
 ```
 
 ## Features
@@ -67,3 +73,4 @@ This project is licensed under the [LICENSE NAME] - see the [LICENSE.md](LICENSE
 ## Acknowledgments
 
 - [Any acknowledgments or credits]
+```

@@ -58,12 +58,39 @@ export const userService = {
       body: JSON.stringify({ phoneNumber, code }),
     });
 
-    console.log("response: ", response);
-
     if (!response.ok) {
       throw new Error("Failed to verify code");
     }
 
     return true;
+  },
+
+  async updateUserProfile(
+    userId: string,
+    profileData: {
+      profileImage: string | null;
+      gender: string;
+      grade: string;
+      dateOfBirth: string;
+    }
+  ): Promise<User> {
+    try {
+      const response = await fetch(`/api/users/${userId}/profile`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(profileData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update user profile");
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("Error updating user profile:", error);
+      throw error;
+    }
   },
 };

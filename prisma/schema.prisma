@@ -18,7 +18,11 @@ model User {
   Auth0_ID            String    @unique @db.VarChar(50)
   Username            String    @unique @db.VarChar(50)
   Email               String    @unique @db.VarChar(50)
+  Phone_Number        String?   @unique @db.VarChar(12)
   DOB                 DateTime?
+  Profile_Image       String?
+  Gender              String?   @db.VarChar(1)
+  Grade               Int?
   Parental_Consent    Boolean?
   Worker_ID           Int?
   Participant_ID      Int?
@@ -35,8 +39,6 @@ model User {
   Participant Participants? @relation(fields: [Participant_ID], references: [ID])
   Coach       Coaches?      @relation(fields: [Coach_ID], references: [ID])
   Coordinator Coordinators? @relation(fields: [Coordinator_ID], references: [ID])
-
-  Auth Auth[]
 }
 
 model VerificationCode {
@@ -46,18 +48,6 @@ model VerificationCode {
   expiresAt    DateTime
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-}
-
-model Auth {
-  ID            Int      @id @default(autoincrement())
-  User_ID       Int
-  User_Username String   @db.VarChar(50)
-  User_Password String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  // Relationships
-  User User @relation(fields: [User_ID], references: [ID])
 }
 
 model Participants {

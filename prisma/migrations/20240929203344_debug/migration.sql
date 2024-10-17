@@ -1,5 +1,0 @@
--- DropForeignKey
-ALTER TABLE "User" DROP CONSTRAINT "User_ID_fkey";
-
--- AddForeignKey
-ALTER TABLE "User" ADD CONSTRAINT "User_Worker_ID_fkey" FOREIGN KEY ("Worker_ID") REFERENCES "Workers"("ID") ON DELETE SET NULL ON UPDATE CASCADE;

@@ -32,6 +32,16 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    // Save the phone number to the user
+    // await prisma.user.update({
+    //   where: {
+    //     Phone_Number: phoneNumber,
+    //   },
+    //   data: {
+    //     Phone_Number: phoneNumber,
+    //   },
+    // });
+
     return NextResponse.json(
       { message: "Code verified successfully" },
       { status: 200 }

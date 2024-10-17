@@ -1,52 +1,38 @@
-/*
-  Warnings:
-
-  - The primary key for the `User` table will be changed. If it partially fails, the table could be left without primary key constraint.
-  - You are about to drop the column `dateOfBirth` on the `User` table. All the data in the column will be lost.
-  - You are about to drop the column `email` on the `User` table. All the data in the column will be lost.
-  - You are about to drop the column `id` on the `User` table. All the data in the column will be lost.
-  - You are about to drop the column `name` on the `User` table. All the data in the column will be lost.
-  - A unique constraint covering the columns `[Username]` on the table `User` will be added. If there are existing duplicate values, this will fail.
-  - A unique constraint covering the columns `[Email]` on the table `User` will be added. If there are existing duplicate values, this will fail.
-  - Added the required column `DOB` to the `User` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `Email` to the `User` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `Is_Active` to the `User` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `Is_Viewer` to the `User` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `Username` to the `User` table without a default value. This is not possible if the table is not empty.
-
-*/
--- DropIndex
-DROP INDEX "User_email_key";
-
--- AlterTable
-ALTER TABLE "User" DROP CONSTRAINT "User_pkey",
-DROP COLUMN "dateOfBirth",
-DROP COLUMN "email",
-DROP COLUMN "id",
-DROP COLUMN "name",
-ADD COLUMN     "Coach_ID" INTEGER,
-ADD COLUMN     "Coordinator_ID" INTEGER,
-ADD COLUMN     "DOB" TIMESTAMP(3) NOT NULL,
-ADD COLUMN     "Email" VARCHAR(50) NOT NULL,
-ADD COLUMN     "ID" SERIAL NOT NULL,
-ADD COLUMN     "Is_Active" BOOLEAN NOT NULL,
-ADD COLUMN     "Is_Viewer" BOOLEAN NOT NULL,
-ADD COLUMN     "Parental_Consent" BOOLEAN,
-ADD COLUMN     "Participant_ID" INTEGER,
-ADD COLUMN     "Username" VARCHAR(50) NOT NULL,
-ADD COLUMN     "Worker_ID" INTEGER,
-ADD CONSTRAINT "User_pkey" PRIMARY KEY ("ID");
-
 -- CreateTable
-CREATE TABLE "Auth" (
+CREATE TABLE "User" (
     "ID" SERIAL NOT NULL,
-    "User_ID" INTEGER NOT NULL,
-    "User_Username" VARCHAR(50) NOT NULL,
-    "User_Password" TEXT NOT NULL,
+    "Auth0_ID" VARCHAR(50) NOT NULL,
+    "Username" VARCHAR(50) NOT NULL,
+    "Email" VARCHAR(50) NOT NULL,
+    "Phone_Number" VARCHAR(12),
+    "DOB" TIMESTAMP(3),
+    "Profile_Image" TEXT,
+    "Gender" VARCHAR(1),
+    "Grade" INTEGER,
+    "Parental_Consent" BOOLEAN,
+    "Worker_ID" INTEGER,
+    "Participant_ID" INTEGER,
+    "Coach_ID" INTEGER,
+    "Coordinator_ID" INTEGER,
+    "Is_Viewer" BOOLEAN NOT NULL,
+    "Is_Active" BOOLEAN NOT NULL,
+    "Onboarding_Complete" BOOLEAN NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Auth_pkey" PRIMARY KEY ("ID")
+    CONSTRAINT "User_pkey" PRIMARY KEY ("ID")
+);
+
+-- CreateTable
+CREATE TABLE "VerificationCode" (
+    "ID" SERIAL NOT NULL,
+    "Phone_Number" TEXT NOT NULL,
+    "Code" TEXT NOT NULL,
+    "expiresAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "VerificationCode_pkey" PRIMARY KEY ("ID")
 );
 
 -- CreateTable
@@ -167,7 +153,7 @@ CREATE TABLE "Event" (
     "Name" VARCHAR(50) NOT NULL,
     "Start_Date" TIMESTAMP(3) NOT NULL,
     "End_Date" TIMESTAMP(3) NOT NULL,
-    "Number_Matts" INTEGER NOT NULL,
+    "Number_Mats" INTEGER NOT NULL,
     "USA_Wrestling_Event" BOOLEAN NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -214,11 +200,11 @@ CREATE TABLE "CompetitionType" (
 );
 
 -- CreateTable
-CREATE TABLE "Matts" (
+CREATE TABLE "Mats" (
     "ID" SERIAL NOT NULL,
     "Description" VARCHAR(100) NOT NULL,
 
-    CONSTRAINT "Matts_pkey" PRIMARY KEY ("ID")
+    CONSTRAINT "Mats_pkey" PRIMARY KEY ("ID")
 );
 
 -- CreateTable
@@ -282,7 +268,7 @@ CREATE TABLE "Bouts" (
     "ID" SERIAL NOT NULL,
     "Bracket_ID" INTEGER NOT NULL,
     "Event_ID" INTEGER NOT NULL,
-    "Matt_ID" INTEGER NOT NULL,
+    "Mat_ID" INTEGER NOT NULL,
     "Round_ID" INTEGER NOT NULL,
     "Bout_Number" INTEGER NOT NULL,
     "Bout_Time" TIMESTAMP(3) NOT NULL,
@@ -340,7 +326,7 @@ CREATE TABLE "_EventToEventTypes" (
 );
 
 -- CreateTable
-CREATE TABLE "_BoutsToMatts" (
+CREATE TABLE "_BoutsToMats" (
     "A" INTEGER NOT NULL,
     "B" INTEGER NOT NULL
 );
@@ -364,6 +350,18 @@ CREATE TABLE "_BoutsToBrackets" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "User_Auth0_ID_key" ON "User"("Auth0_ID");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_Username_key" ON "User"("Username");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_Email_key" ON "User"("Email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_Phone_Number_key" ON "User"("Phone_Number");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "_EventToEventCategories_AB_unique" ON "_EventToEventCategories"("A", "B");
 
 -- CreateIndex
@@ -376,10 +374,10 @@ CREATE UNIQUE INDEX "_EventToEventTypes_AB_unique" ON "_EventToEventTypes"("A", 
 CREATE INDEX "_EventToEventTypes_B_index" ON "_EventToEventTypes"("B");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_BoutsToMatts_AB_unique" ON "_BoutsToMatts"("A", "B");
+CREATE UNIQUE INDEX "_BoutsToMats_AB_unique" ON "_BoutsToMats"("A", "B");
 
 -- CreateIndex
-CREATE INDEX "_BoutsToMatts_B_index" ON "_BoutsToMatts"("B");
+CREATE INDEX "_BoutsToMats_B_index" ON "_BoutsToMats"("B");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_BoutsToRounds_AB_unique" ON "_BoutsToRounds"("A", "B");
@@ -399,14 +397,8 @@ CREATE UNIQUE INDEX "_BoutsToBrackets_AB_unique" ON "_BoutsToBrackets"("A", "B")
 -- CreateIndex
 CREATE INDEX "_BoutsToBrackets_B_index" ON "_BoutsToBrackets"("B");
 
--- CreateIndex
-CREATE UNIQUE INDEX "User_Username_key" ON "User"("Username");
-
--- CreateIndex
-CREATE UNIQUE INDEX "User_Email_key" ON "User"("Email");
-
 -- AddForeignKey
-ALTER TABLE "User" ADD CONSTRAINT "User_ID_fkey" FOREIGN KEY ("ID") REFERENCES "Workers"("ID") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "User" ADD CONSTRAINT "User_Worker_ID_fkey" FOREIGN KEY ("Worker_ID") REFERENCES "Workers"("ID") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_Participant_ID_fkey" FOREIGN KEY ("Participant_ID") REFERENCES "Participants"("ID") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -416,9 +408,6 @@ ALTER TABLE "User" ADD CONSTRAINT "User_Coach_ID_fkey" FOREIGN KEY ("Coach_ID") 
 
 -- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_Coordinator_ID_fkey" FOREIGN KEY ("Coordinator_ID") REFERENCES "Coordinators"("ID") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Auth" ADD CONSTRAINT "Auth_User_ID_fkey" FOREIGN KEY ("User_ID") REFERENCES "User"("ID") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Coordinators" ADD CONSTRAINT "Coordinators_Coach_ID_fkey" FOREIGN KEY ("Coach_ID") REFERENCES "Coaches"("ID") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -502,10 +491,10 @@ ALTER TABLE "_EventToEventTypes" ADD CONSTRAINT "_EventToEventTypes_A_fkey" FORE
 ALTER TABLE "_EventToEventTypes" ADD CONSTRAINT "_EventToEventTypes_B_fkey" FOREIGN KEY ("B") REFERENCES "EventTypes"("ID") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_BoutsToMatts" ADD CONSTRAINT "_BoutsToMatts_A_fkey" FOREIGN KEY ("A") REFERENCES "Bouts"("ID") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_BoutsToMats" ADD CONSTRAINT "_BoutsToMats_A_fkey" FOREIGN KEY ("A") REFERENCES "Bouts"("ID") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_BoutsToMatts" ADD CONSTRAINT "_BoutsToMatts_B_fkey" FOREIGN KEY ("B") REFERENCES "Matts"("ID") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_BoutsToMats" ADD CONSTRAINT "_BoutsToMats_B_fkey" FOREIGN KEY ("B") REFERENCES "Mats"("ID") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_BoutsToRounds" ADD CONSTRAINT "_BoutsToRounds_A_fkey" FOREIGN KEY ("A") REFERENCES "Bouts"("ID") ON DELETE CASCADE ON UPDATE CASCADE;
