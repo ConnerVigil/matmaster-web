@@ -4,12 +4,6 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { prisma } from "@/lib/prisma";
 import s3Client from "@/lib/backend/awsS3";
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
 export default async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
@@ -48,7 +42,6 @@ export default async function POST(req: NextRequest) {
 
     return NextResponse.json({
       url: signedUrl,
-      message: "Upload URL generated",
     });
   } catch (error) {
     console.error("Error uploading file:", error);

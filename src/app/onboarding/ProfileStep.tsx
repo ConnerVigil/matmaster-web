@@ -59,12 +59,8 @@ const ProfileStep = () => {
       const formattedDOB = birthday ? format(birthday, "yyyy-MM-dd") : "";
 
       if (selectedFile) {
-        // const signedUrl = await userService.getSignedUrl(selectedFile, user.ID);
-        // console.log(signedUrl);
-        // const res = await userService.uploadProfileImageToS3(
-        //   signedUrl,
-        //   selectedFile
-        // );
+        const res = await userService.uploadProfileImage(selectedFile, user.ID);
+        console.log("res from uploadProfileImage: ", res);
       }
 
       await userService.onboardUser(user.ID, {

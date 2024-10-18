@@ -127,7 +127,7 @@ export const userService = {
   //   return true;
   // },
 
-  async uploadProfileImage(file: File) {
+  async uploadProfileImage(file: File, userId: number) {
     try {
       // Step 1: Get the signed URL from your backend
       const response = await fetch("/api/user/uploadProfileImage", {
@@ -167,7 +167,7 @@ export const userService = {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ fileName: file.name }),
+        body: JSON.stringify({ fileName: file.name, userId: userId }),
       });
 
       if (!finalizeResponse.ok) {
