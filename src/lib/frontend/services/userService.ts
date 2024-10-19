@@ -2,42 +2,57 @@ import { User } from "@prisma/client";
 
 export const userService = {
   async getUserFromDB(): Promise<User> {
-    const response = await fetch("/api/user");
+    try {
+      const response = await fetch("/api/user");
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch user");
+      if (!response.ok) {
+        throw new Error("Failed to fetch user");
+      }
+
+      return (await response.json()).user;
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      throw error;
     }
-
-    return (await response.json()).user;
   },
 
   async sendVerificationCode(
     phoneNumber: string,
     userId: number
   ): Promise<boolean> {
-    const response = await fetch("/api/phone/sendcode", {
-      method: "POST",
-      body: JSON.stringify({ phoneNumber, userId }),
-    });
+    try {
+      const response = await fetch("/api/phone/sendcode", {
+        method: "POST",
+        body: JSON.stringify({ phoneNumber, userId }),
+      });
 
-    if (!response.ok) {
-      throw new Error("Failed to send verification code");
+      if (!response.ok) {
+        throw new Error("Failed to send verification code");
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Error sending verification code:", error);
+      throw error;
     }
-
-    return true;
   },
 
   async verifyCode(phoneNumber: string, code: string): Promise<boolean> {
-    const response = await fetch("/api/phone/verifycode", {
-      method: "POST",
-      body: JSON.stringify({ phoneNumber, code }),
-    });
+    try {
+      const response = await fetch("/api/phone/verifycode", {
+        method: "POST",
+        body: JSON.stringify({ phoneNumber, code }),
+      });
 
-    if (!response.ok) {
-      throw new Error("Failed to verify code");
+      if (!response.ok) {
+        throw new Error("Failed to verify code");
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Error verifying code:", error);
+      throw error;
     }
-
-    return true;
   },
 
   async updateUserProfile(
@@ -79,104 +94,64 @@ export const userService = {
       dateOfBirth: string;
     }
   ): Promise<User> {
-    const response = await fetch(`/api/user/onboard/${userId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(onboardingData),
-    });
+    try {
+      const response = await fetch(`/api/user/onboard/${userId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(onboardingData),
+      });
 
-    if (!response.ok) {
-      throw new Error("Failed to mark onboarding complete");
+      if (!response.ok) {
+        throw new Error("Failed to mark onboarding complete");
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("Error onboarding user:", error);
+      throw error;
     }
-
-    return await response.json();
   },
 
-  // async getSignedUrl(file: File, userId: number): Promise<boolean> {
-  //   const response = await fetch("/api/user/uploadProfileImage", {
-  //     method: "POST",
-  //     body: JSON.stringify({ userId: userId, image: file }),
-  //   });
-
-  //   console.log(response);
-
-  //   if (!response.ok) {
-  //     throw new Error("Failed to upload profile image");
-  //   }
-
-  //   return (await response.json()).signedUrl;
-  // },
-
-  // async uploadProfileImageToS3(
-  //   signedUrl: string,
-  //   file: File
-  // ): Promise<boolean> {
-  //   const response = await fetch(signedUrl, {
-  //     method: "PUT",
-  //     body: file,
-  //   });
-
-  //   console.log("uploadProfileImageToS3 response: ", response);
-
-  //   if (!response.ok) {
-  //     throw new Error("Failed to upload profile image");
-  //   }
-
-  //   return true;
-  // },
-
-  async uploadProfileImage(file: File, userId: number) {
+  async uploadImageToS3(file: File, userId: number) {
     try {
-      // Step 1: Get the signed URL from your backend
-      const response = await fetch("/api/user/uploadProfileImage", {
+      const s3Response = await fetch("/api/user/s3Url", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ fileName: file.name, fileType: file.type }),
+        body: JSON.stringify({ userId: userId }),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to get signed URL");
+      if (!s3Response.ok) {
+        throw new Error("Failed to get presigned URL");
       }
 
-      const { url: signedUrl, fields } = await response.json();
+      const { signedUrl } = await s3Response.json();
 
-      // Step 2: Prepare the form data for the S3 upload
       const formData = new FormData();
-      Object.entries(fields).forEach(([key, value]) => {
+      Object.entries(signedUrl.fields).forEach(([key, value]) => {
         formData.append(key, value as string);
       });
       formData.append("file", file);
 
-      // Step 3: Upload the file directly to S3 using the signed URL
-      const uploadResponse = await fetch(signedUrl, {
-        method: "POST",
+      const uploadResponse = await fetch(signedUrl.url, {
+        method: "PUT",
         body: formData,
+        headers: {
+          "Content-Type": file.type,
+        },
       });
 
       if (!uploadResponse.ok) {
         throw new Error("Failed to upload file to S3");
       }
 
-      // Step 4: Notify your backend that the upload was successful
-      const finalizeResponse = await fetch("/api/user/finalizeProfileImage", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ fileName: file.name, userId: userId }),
-      });
-
-      if (!finalizeResponse.ok) {
-        throw new Error("Failed to finalize profile image update");
-      }
-
-      console.log("Profile image uploaded successfully");
+      return signedUrl.split("?")[0];
     } catch (error) {
-      console.error("Error uploading profile image:", error);
+      console.error("Error uploading image to S3:", error);
+      throw error;
     }
   },
 };

@@ -21,7 +21,7 @@ const nameSchema = z.object({
 
 const ProfileStep = () => {
   const { prevStep } = useOnboarding();
-  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
   const [showPopup, setShowPopup] = useState(false);
   const router = useRouter();
   const [firstName, setFirstName] = useState("");
@@ -30,7 +30,7 @@ const ProfileStep = () => {
   const [grade, setGrade] = useState("");
   const [birthday, setBirthday] = useState<Date | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [file, setFile] = useState<File | null>(null);
 
   const handleNext = async () => {
     const newErrors: Record<string, string> = {};
@@ -54,14 +54,18 @@ const ProfileStep = () => {
       return;
     }
 
-    try {
-      const user = await userService.getUserFromDB();
-      const formattedDOB = birthday ? format(birthday, "yyyy-MM-dd") : "";
+    const user = await userService.getUserFromDB();
 
-      if (selectedFile) {
-        const res = await userService.uploadProfileImage(selectedFile, user.ID);
-        console.log("res from uploadProfileImage: ", res);
+    try {
+      let imageUrl = null;
+      if (file) {
+        imageUrl = await userService.uploadImageToS3(file, user.ID);
+        if (imageUrl) {
+          setProfileImageUrl(imageUrl);
+        }
       }
+
+      const formattedDOB = birthday ? format(birthday, "yyyy-MM-dd") : "";
 
       await userService.onboardUser(user.ID, {
         firstName,
@@ -70,6 +74,7 @@ const ProfileStep = () => {
         grade: parseInt(grade),
         dateOfBirth: formattedDOB,
       });
+
       setShowPopup(true);
     } catch (error) {
       console.error("Error during onboarding:", error);
@@ -96,20 +101,10 @@ const ProfileStep = () => {
     router.push("/");
   };
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (!files) return;
-    const file = files[0];
-
-    if (file) {
-      setSelectedFile(file);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target && e.target.result) {
-          setProfileImage(e.target.result as string);
-        }
-      };
-      reader.readAsDataURL(file);
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setFile(event.target.files[0]);
+      console.log("file: ", event.target.files[0]);
     }
   };
 
@@ -122,9 +117,9 @@ const ProfileStep = () => {
       <div className="mb-6">
         <div className="flex items-center mb-4 gap-4">
           <div className="w-6/12">
-            {profileImage ? (
+            {profileImageUrl ? (
               <Image
-                src={profileImage}
+                src={profileImageUrl}
                 alt="Profile Image"
                 width="100"
                 height="100"
@@ -154,7 +149,7 @@ const ProfileStep = () => {
               <input
                 type="file"
                 className="hidden"
-                onChange={handleImageUpload}
+                onChange={handleFileChange}
                 accept="image/*"
               />
             </label>
