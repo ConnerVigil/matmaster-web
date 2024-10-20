@@ -48,14 +48,12 @@ This project uses Prisma as an ORM.
 
 How to Squash migrations: https://www.basedash.com/blog/how-to-squash-migrations-in-prisma
 
+Official Docs: https://www.prisma.io/docs/orm
+
+### Usage
+
 ```
-
-## Usage
-
-```
-
 npm run dev
-
 ```
 
 ## Features
@@ -65,12 +63,3 @@ npm run dev
 ## Contributing
 
 [Explain how others can contribute to the project]
-
-## License
-
-This project is licensed under the [LICENSE NAME] - see the [LICENSE.md](LICENSE.md) file for details.
-
-## Acknowledgments
-
-- [Any acknowledgments or credits]
-```
