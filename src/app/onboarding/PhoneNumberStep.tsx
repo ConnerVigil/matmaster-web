@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useOnboarding } from "./OnboardingProvider";
 import { ChevronDown } from "@untitled-ui/icons-react";
 import StepButtons from "./StepButtons";
@@ -19,6 +20,27 @@ const phoneNumberSchema = z.object({
 const PhoneNumberStep = () => {
   const { nextStep, prevStep, phoneNumber, setPhoneNumber } = useOnboarding();
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    const checkOnboardingStatus = async () => {
+      try {
+        setIsLoading(true);
+        const user = await userService.getUserFromDB();
+        if (user.Onboarding_Complete) {
+          router.push("/");
+        }
+      } catch (error) {
+        console.error("Error checking onboarding status:", error);
+        setError("Failed to check onboarding status. Please try again.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkOnboardingStatus();
+  }, [router]);
 
   const handleNext = async () => {
     const validationResult = phoneNumberSchema.safeParse({ phoneNumber });
@@ -42,6 +64,14 @@ const PhoneNumberStep = () => {
       setError("Failed to send verification code. Please try again.");
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-md mx-auto p-6">

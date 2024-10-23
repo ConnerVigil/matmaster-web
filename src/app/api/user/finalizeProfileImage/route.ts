@@ -3,20 +3,16 @@ import { prisma } from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
   try {
-    const { fileName, userId } = await req.json();
-    console.log("fileName: ", fileName);
-    console.log("userId: ", userId);
+    const { imageUrl, userId } = await req.json();
 
     await prisma.user.update({
       where: { ID: userId },
       data: {
-        Profile_Image_URL: fileName,
+        Profile_Image_URL: imageUrl,
       },
     });
 
-    return NextResponse.json({
-      message: "Profile image updated",
-    });
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error uploading file:", error);
     return NextResponse.json(

@@ -9,11 +9,9 @@ export async function syncUser(session: Session | null | undefined) {
     where: { Auth0_ID: user.sub },
     update: {
       Email: user.email,
-      Username: user.name,
     },
     create: {
       Auth0_ID: user.sub,
-      Username: user.name,
       Email: user.email,
       Is_Viewer: false,
       Is_Active: false,

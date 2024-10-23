@@ -1,7 +1,7 @@
 "use client";
 
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MiniAvatar from "./MiniAvatar";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Link from "next/link";
@@ -17,12 +17,26 @@ import {
   UserPlus01,
   Users01,
 } from "@untitled-ui/icons-react";
+import { userService } from "@/lib/frontend/services/userService";
+import { User } from "@prisma/client";
 
 const MenuItemStyle =
   "block px-4 py-2 text-sm text-gray-600 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 flex items-center";
 
 export default function HamburgerMenuDropdown() {
   const { user } = useUser();
+  const [userFromDB, setUserFromDB] = useState<User | null>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (user) {
+        const userFromDB = await userService.getUserFromDB();
+        setUserFromDB(userFromDB);
+      }
+    };
+
+    fetchUser();
+  }, [user]);
 
   return (
     <Menu as="div" className="relative inline-block text-left">
@@ -94,7 +108,9 @@ export default function HamburgerMenuDropdown() {
               <MenuItem>
                 <a href="#" className={MenuItemStyle}>
                   <div className="flex items-center">
-                    <MiniAvatar src={"/defaultuser.png"} />
+                    <MiniAvatar
+                      src={userFromDB?.Profile_Image_URL || "/defaultuser.png"}
+                    />
                     {user.name}
                   </div>
                 </a>

@@ -20,7 +20,7 @@ export default function Footer() {
               </div>
               <span className="text-lg font-semibold">MatMaster</span>
             </div>
-            <span className="text-sm text-gray-500 sm:w-full w-3/4">
+            <span className="text-sm text-gray3 sm:w-full w-3/4">
               From setup to completion, MatMaster handles the details so you can
               focus on wrestling.
             </span>

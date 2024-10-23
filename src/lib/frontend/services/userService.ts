@@ -135,22 +135,40 @@ export const userService = {
         formData.append(key, value as string);
       });
       formData.append("file", file);
+      formData.append("Content-Type", file.type);
 
       const uploadResponse = await fetch(signedUrl.url, {
-        method: "PUT",
+        method: "POST",
         body: formData,
-        headers: {
-          "Content-Type": file.type,
-        },
       });
 
       if (!uploadResponse.ok) {
-        throw new Error("Failed to upload file to S3");
+        const errorText = await uploadResponse.text();
+        throw new Error(`Failed to upload file to S3: ${errorText}`);
       }
 
-      return signedUrl.split("?")[0];
+      return `${signedUrl.url}${signedUrl.fields.key}`;
     } catch (error) {
       console.error("Error uploading image to S3:", error);
+      throw error;
+    }
+  },
+
+  async updateUserProfileImage(userId: number, imageUrl: string) {
+    try {
+      const response = await fetch(`/api/user/finalizeProfileImage`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ imageUrl: imageUrl, userId: userId }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update user profile image");
+      }
+    } catch (error) {
+      console.error("Error updating user profile image:", error);
       throw error;
     }
   },

@@ -62,6 +62,7 @@ const ProfileStep = () => {
         imageUrl = await userService.uploadImageToS3(file, user.ID);
         if (imageUrl) {
           setProfileImageUrl(imageUrl);
+          await userService.updateUserProfileImage(user.ID, imageUrl);
         }
       }
 
@@ -104,7 +105,13 @@ const ProfileStep = () => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setFile(event.target.files[0]);
-      console.log("file: ", event.target.files[0]);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target && typeof e.target.result === "string") {
+          setProfileImageUrl(e.target.result);
+        }
+      };
+      reader.readAsDataURL(event.target.files[0]);
     }
   };
 
@@ -117,25 +124,14 @@ const ProfileStep = () => {
       <div className="mb-6">
         <div className="flex items-center mb-4 gap-4">
           <div className="w-6/12">
-            {profileImageUrl ? (
-              <Image
-                src={profileImageUrl}
-                alt="Profile Image"
-                width="100"
-                height="100"
-                priority
-                className="object-cover object-center w-full h-full rounded-full"
-              />
-            ) : (
-              <Image
-                src={"/defaultuser.png"}
-                alt="Default Avatar"
-                width="100"
-                height="100"
-                priority
-                className="object-cover object-center w-full h-full rounded-full"
-              />
-            )}
+            <Image
+              src={profileImageUrl || "/defaultuser.png"}
+              alt={profileImageUrl ? "Profile Image" : "Default Avatar"}
+              width="100"
+              height="100"
+              priority
+              className="object-cover object-center w-full h-full rounded-full shadow border-4 border-white"
+            />
           </div>
           <div className="flex flex-col p-2 w-6/12">
             <h2 className="text-black font-bold mb-1">
