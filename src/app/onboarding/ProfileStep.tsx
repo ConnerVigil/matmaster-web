@@ -21,9 +21,9 @@ const nameSchema = z.object({
 
 const ProfileStep = () => {
   const { prevStep } = useOnboarding();
+  const router = useRouter();
   const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
   const [showPopup, setShowPopup] = useState(false);
-  const router = useRouter();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [gender, setGender] = useState("");
@@ -123,24 +123,23 @@ const ProfileStep = () => {
       </p>
       <div className="mb-6">
         <div className="flex items-center mb-4 gap-4">
-          <div className="w-6/12">
+          <div className="w-32 h-32 relative rounded-full overflow-hidden">
             <Image
               src={profileImageUrl || "/defaultuser.png"}
               alt={profileImageUrl ? "Profile Image" : "Default Avatar"}
-              width="100"
-              height="100"
+              fill
               priority
-              className="object-cover object-center w-full h-full rounded-full shadow border-4 border-white"
+              className="object-cover"
             />
           </div>
-          <div className="flex flex-col p-2 w-6/12">
+          <div className="flex flex-col p-2 flex-1">
             <h2 className="text-black font-bold mb-1">
               Upload a profile image
             </h2>
             <p className="text-sm text-gray3 mb-2">
               This picture will be public to coaches and wrestlers on MatMaster.
             </p>
-            <label className="bg-primaryLight text-white px-4 py-2 rounded cursor-pointer hover:bg-purple-600 transition">
+            <label className="bg-primaryLight text-white px-4 py-2 rounded cursor-pointer hover:bg-purple-600 transition text-center">
               Upload Image
               <input
                 type="file"

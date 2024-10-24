@@ -5,6 +5,7 @@ import { ChevronDown } from "@untitled-ui/icons-react";
 import StepButtons from "./StepButtons";
 import { z } from "zod";
 import { userService } from "@/lib/frontend/services/userService";
+import { User } from "@prisma/client";
 
 const phoneNumberSchema = z.object({
   phoneNumber: z
@@ -22,12 +23,14 @@ const PhoneNumberStep = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+  const [userFromDB, setUserFromDB] = useState<User | null>(null);
 
   useEffect(() => {
     const checkOnboardingStatus = async () => {
       try {
         setIsLoading(true);
         const user = await userService.getUserFromDB();
+        setUserFromDB(user);
         if (user.Onboarding_Complete) {
           router.push("/");
         }
@@ -51,14 +54,10 @@ const PhoneNumberStep = () => {
     setError(null);
 
     try {
-      const response = await userService.getUserFromDB();
-
-      if (!response) {
-        setError("Failed to get user from database. Please try again.");
+      if (userFromDB) {
+        userService.sendVerificationCode("+1" + phoneNumber, userFromDB.ID);
+        nextStep();
       }
-
-      userService.sendVerificationCode("+1" + phoneNumber, response.ID);
-      nextStep();
     } catch (error) {
       console.error(error);
       setError("Failed to send verification code. Please try again.");
