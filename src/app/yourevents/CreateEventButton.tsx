@@ -10,7 +10,7 @@ export default function CreateEventButton() {
 
   return (
     <button
-      className="flex items-center bg-primary text-white px-4 py-2 rounded-md"
+      className="flex items-center bg-primaryLight text-white px-4 py-2 rounded-md"
       onClick={handleCreateNewEvent}
     >
       <Plus className="mr-2" />

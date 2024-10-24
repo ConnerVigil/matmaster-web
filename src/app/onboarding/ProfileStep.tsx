@@ -8,6 +8,8 @@ import { userService } from "@/lib/frontend/services/userService";
 import { z } from "zod";
 import { format } from "date-fns";
 
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
 const nameSchema = z.object({
   firstName: z
     .string()
@@ -104,14 +106,24 @@ const ProfileStep = () => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-      setFile(event.target.files[0]);
+      const selectedFile = event.target.files[0];
+
+      if (selectedFile.size > MAX_FILE_SIZE) {
+        setErrors((prev) => ({
+          ...prev,
+          file: "File size should not exceed 5MB",
+        }));
+        return;
+      }
+
+      setFile(selectedFile);
       const reader = new FileReader();
       reader.onload = (e) => {
         if (e.target && typeof e.target.result === "string") {
           setProfileImageUrl(e.target.result);
         }
       };
-      reader.readAsDataURL(event.target.files[0]);
+      reader.readAsDataURL(selectedFile);
     }
   };
 
@@ -128,6 +140,7 @@ const ProfileStep = () => {
               src={profileImageUrl || "/defaultuser.png"}
               alt={profileImageUrl ? "Profile Image" : "Default Avatar"}
               fill
+              sizes="100vw"
               priority
               className="object-cover"
             />
@@ -148,6 +161,9 @@ const ProfileStep = () => {
                 accept="image/*"
               />
             </label>
+            {errors.file && (
+              <p className="text-red-600 text-xs mt-1">{errors.file}</p>
+            )}
           </div>
         </div>
       </div>

@@ -7,16 +7,6 @@ import {
   Users01,
 } from "@untitled-ui/icons-react";
 
-interface EventCardProps {
-  title: string;
-  dateRange: string;
-  attendees: number;
-  style: string;
-  location: string;
-  price: string;
-  status?: string;
-}
-
 function getStatusColor(status: string): string {
   switch (status.toLowerCase()) {
     case "early bird":
@@ -36,6 +26,17 @@ function getStatusColor(status: string): string {
   }
 }
 
+interface EventCardProps {
+  title: string;
+  dateRange: string;
+  attendees: number;
+  style: string;
+  location: string;
+  price: string;
+  status?: string;
+  imageSource: string;
+}
+
 export default function EventCard({
   title,
   dateRange,
@@ -44,16 +45,19 @@ export default function EventCard({
   location,
   price,
   status,
+  imageSource,
 }: EventCardProps) {
   return (
     <div className="w-64 bg-white rounded-lg shadow-md overflow-hidden">
-      <div className="h-24 bg-gray-200 relative">
-        <Image
-          src="/rockwellRumble.webp"
-          alt="Company Logo"
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        />
+      <div className={`h-24 ${imageSource ? "relative" : "bg-gray-200"}`}>
+        {imageSource && (
+          <Image
+            src={imageSource}
+            alt="Event Image"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        )}
         {status && (
           <span
             className={`absolute bottom-2 right-2 text-xs px-2.5 py-0.5 rounded-full ${getStatusColor(

@@ -30,8 +30,8 @@ export default function HamburgerMenuDropdown() {
   useEffect(() => {
     const fetchUser = async () => {
       if (user) {
-        const userFromDB = await userService.getUserFromDB();
-        setUserFromDB(userFromDB);
+        const res = await userService.getUserFromDB();
+        setUserFromDB(res);
       }
     };
 

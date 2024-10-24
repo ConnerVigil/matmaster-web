@@ -9,22 +9,14 @@ const EventPage = () => {
     location: "Herriman, UT",
     price: "$60/team",
     status: "Registration Open",
+    imageSource: "/rockwellRumble.webp",
   });
 
   return (
     <div className="mx-auto">
       <div className="flex flex-wrap justify-center gap-4">
         {events.map((event, index) => (
-          <EventCard
-            key={index}
-            title={event.title}
-            dateRange={event.dateRange}
-            attendees={event.attendees}
-            style={event.style}
-            location={event.location}
-            price={event.price}
-            status={event.status}
-          />
+          <EventCard key={index} {...event} />
         ))}
       </div>
     </div>
