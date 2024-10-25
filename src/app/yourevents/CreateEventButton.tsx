@@ -2,10 +2,13 @@
 
 import { Plus } from "@untitled-ui/icons-react";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 export default function CreateEventButton() {
+  const router = useRouter();
+
   const handleCreateNewEvent = () => {
-    console.log("Create new event");
+    router.push("/createEvent");
   };
 
   return (
