@@ -7,7 +7,7 @@ const EventPage = () => {
     attendees: 64,
     style: "Folkstyle",
     location: "Herriman, UT",
-    price: "$60/team",
+    price: "60/team",
     status: "Registration Open",
     imageSource: "/rockwellRumble.webp",
   });

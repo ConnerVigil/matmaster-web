@@ -18,6 +18,7 @@ export default function MainBannerSearch() {
             alt="Company Logo"
             width={60}
             height={60}
+            priority
           />
         </div>
         <h1 className="text-5xl font-bold text-white">MatMaster</h1>

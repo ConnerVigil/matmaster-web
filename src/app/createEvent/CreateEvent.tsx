@@ -1,10 +1,12 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { TextField, Button } from "@mui/material";
-import { ChevronLeft } from "@untitled-ui/icons-react";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
+import { ChevronLeft, Image01 } from "@untitled-ui/icons-react";
 
 const eventSchema = z.object({
   eventImage: z.string().min(1, "Event image is required"),
@@ -44,6 +46,7 @@ const CreateEvent: React.FC = () => {
     resolver: zodResolver(eventSchema),
   });
   const router = useRouter();
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const onSubmit = (data: FormData) => {
     console.log(data);
@@ -54,16 +57,71 @@ const CreateEvent: React.FC = () => {
     router.push("/yourevents");
   };
 
+  const renderPriceInput = (name: keyof FormData, placeholder: string) => (
+    <div className="relative">
+      <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+        $
+      </div>
+      <Controller
+        name={name}
+        control={control}
+        defaultValue=""
+        render={({ field }) => (
+          <input
+            {...field}
+            type="text"
+            className={`w-full p-2 pl-8 border ${
+              errors[name] ? "border-red-500" : "border-gray-300"
+            } text-gray3 rounded`}
+            placeholder={placeholder}
+          />
+        )}
+      />
+      {errors[name] && (
+        <p className="text-red-500 text-xs mt-1">{errors[name]?.message}</p>
+      )}
+    </div>
+  );
+
+  const renderCollectionDates = (name: keyof FormData, label: string) => (
+    <div>
+      <label className="block text-sm font-medium text-gray3 mb-1">
+        {label}
+      </label>
+      <Controller
+        name={name}
+        control={control}
+        defaultValue=""
+        render={({ field }) => (
+          <input
+            {...field}
+            type="text"
+            className={`w-full p-2 border ${
+              errors[name] ? "border-red-500" : "border-gray-300"
+            } text-gray3 rounded`}
+            placeholder="Date"
+          />
+        )}
+      />
+      {errors[name] && (
+        <p className="text-red-500 text-xs mt-1">{errors[name]?.message}</p>
+      )}
+    </div>
+  );
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="bg-white space-y-6 mx-4">
-      <div className="-mx-4 relative">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="mx-auto px-6 bg-white space-y-6"
+    >
+      <div className="relative mb-6 -mx-6">
         <Controller
           name="eventImage"
           control={control}
           defaultValue=""
           render={({ field }) => (
             <div
-              className="w-full h-40 bg-gray-200 flex items-center justify-center cursor-pointer mb-6"
+              className="w-full h-60 bg-gray-200 flex items-center justify-center cursor-pointer relative overflow-hidden"
               onClick={() => {
                 const input = document.createElement("input");
                 input.type = "file";
@@ -71,194 +129,323 @@ const CreateEvent: React.FC = () => {
                 input.onchange = (e) => {
                   const file = (e.target as HTMLInputElement).files?.[0];
                   if (file) {
-                    // Here you would typically upload the file to your server
-                    // and get back a URL to set as the field value
-                    field.onChange(file.name); // For now, just set the file name
+                    field.onChange(file.name);
+                    setImagePreview(URL.createObjectURL(file));
                   }
                 };
                 input.click();
               }}
             >
-              <div className="text-gray-500">
-                {field.value ? field.value : "Add Image"}
-              </div>
+              {imagePreview ? (
+                <Image
+                  src={imagePreview}
+                  alt="Event preview"
+                  fill
+                  sizes="100vw"
+                  priority
+                  className="object-cover"
+                />
+              ) : (
+                <div className="text-gray-500 font-semibold flex items-center gap-2">
+                  <Image01 />
+                  {field.value ? field.value : "Add Image"}
+                </div>
+              )}
             </div>
           )}
         />
-        <div className="absolute top-2 left-2">
-          <button
-            className="px-2 py-1 bg-[#f9f5ff] rounded-lg shadow border flex items-center gap-1 text-primaryLight text-sm font-semibold"
-            onClick={handleBack}
-          >
-            <ChevronLeft />
-            Back
-          </button>
-        </div>
+        <button
+          className="absolute top-2 left-2 px-2 py-1 bg-[#f9f5ff] rounded-lg shadow border flex items-center gap-1 text-primaryLight text-sm font-semibold"
+          onClick={handleBack}
+        >
+          <ChevronLeft />
+          Back
+        </button>
       </div>
 
-      <div className="flex flex-col">
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray3 mb-1">
+          Event Name
+        </label>
         <Controller
           name="eventName"
           control={control}
           defaultValue=""
           render={({ field }) => (
-            <TextField
+            <input
               {...field}
-              label="Event name"
-              fullWidth
-              error={!!errors.eventName}
-              helperText={errors.eventName?.message}
+              type="text"
+              className={`w-full p-2 border ${
+                errors.eventName ? "border-red-500" : "border-gray-300"
+              } text-gray3 rounded`}
+              placeholder="Event name"
             />
           )}
         />
-      </div>
-
-      <div className="flex space-x-4">
-        <Controller
-          name="tournamentDates"
-          control={control}
-          defaultValue=""
-          render={({ field }) => (
-            <TextField {...field} label="Tournament dates" fullWidth />
-          )}
-        />
-        <Controller
-          name="location"
-          control={control}
-          defaultValue=""
-          render={({ field }) => (
-            <TextField {...field} label="Location" fullWidth />
-          )}
-        />
-      </div>
-
-      <Controller
-        name="style"
-        control={control}
-        defaultValue=""
-        render={({ field }) => <TextField {...field} label="Style" fullWidth />}
-      />
-
-      <Controller
-        name="moreInfo"
-        control={control}
-        defaultValue=""
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="More info"
-            multiline
-            rows={4}
-            fullWidth
-          />
+        {errors.eventName && (
+          <p className="text-red-500 text-xs mt-1">
+            {errors.eventName.message}
+          </p>
         )}
-      />
+      </div>
 
-      <h2 className="text-black text-xl font-semibold mt-8 mb-4">Pricing</h2>
-
-      {/* Pricing fields */}
-      {["earlyBird", "regular", "lastMinute", "atTheDoor"].map((type) => (
-        <div key={type} className="flex space-x-4">
+      <div className="grid grid-cols-2 gap-4 mb-6">
+        <div>
+          <label className="block text-sm font-medium text-gray3 mb-1">
+            Tournament Dates
+          </label>
           <Controller
-            name={`${type}Price` as keyof FormData}
+            name="tournamentDates"
             control={control}
             defaultValue=""
             render={({ field }) => (
-              <TextField
+              <input
                 {...field}
-                label={`${type.charAt(0).toUpperCase() + type.slice(1)} price`}
-                fullWidth
+                type="text"
+                className={`w-full p-2 border ${
+                  errors.tournamentDates ? "border-red-500" : "border-gray-300"
+                } text-gray3 rounded`}
+                placeholder="Date"
               />
             )}
           />
+          {errors.tournamentDates && (
+            <p className="text-red-500 text-xs mt-1">
+              {errors.tournamentDates.message}
+            </p>
+          )}
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray3 mb-1">
+            Location
+          </label>
           <Controller
-            name={`${type}CollectionDates` as keyof FormData}
+            name="location"
             control={control}
             defaultValue=""
             render={({ field }) => (
-              <TextField {...field} label="Collection dates" fullWidth />
+              <input
+                {...field}
+                type="text"
+                className={`w-full p-2 border ${
+                  errors.location ? "border-red-500" : "border-gray-300"
+                } text-gray3 rounded`}
+                placeholder="Location"
+              />
             )}
           />
+          {errors.location && (
+            <p className="text-red-500 text-xs mt-1">
+              {errors.location.message}
+            </p>
+          )}
         </div>
-      ))}
+      </div>
 
-      <div className="flex space-x-4">
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray3 mb-1">
+          Style
+        </label>
         <Controller
-          name="spectatorPrice"
+          name="style"
           control={control}
           defaultValue=""
           render={({ field }) => (
-            <TextField {...field} label="Spectator price" />
+            <input
+              {...field}
+              type="text"
+              className={`w-full p-2 border ${
+                errors.style ? "border-red-500" : "border-gray-300"
+              } text-gray3 rounded`}
+              placeholder="Folkstyle"
+            />
           )}
         />
+        {errors.style && (
+          <p className="text-red-500 text-xs mt-1">{errors.style.message}</p>
+        )}
+      </div>
+
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray3 mb-1">
+          More Info
+        </label>
+        <Controller
+          name="moreInfo"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <textarea
+              {...field}
+              className={`w-full p-2 border ${
+                errors.moreInfo ? "border-red-500" : "border-gray-300"
+              } text-gray3 rounded`}
+              rows={4}
+              placeholder="Description, pricing, etc."
+            />
+          )}
+        />
+        {errors.moreInfo && (
+          <p className="text-red-500 text-xs mt-1">{errors.moreInfo.message}</p>
+        )}
+      </div>
+
+      <h2 className="text-black text-xl font-semibold mt-8 mb-4">Pricing</h2>
+
+      <div className="grid grid-cols-2 gap-4 mb-6">
+        <div>
+          <label className="block text-sm font-medium text-gray3 mb-1">
+            Early Bird (optional)
+          </label>
+          {renderPriceInput("earlyBirdPrice", "00.00")}
+        </div>
+        {renderCollectionDates("earlyBirdCollectionDates", "Collection dates")}
+      </div>
+
+      <div className="grid grid-cols-2 gap-4 mb-6">
+        <div>
+          <label className="block text-sm font-medium text-gray3 mb-1">
+            Regular
+          </label>
+          {renderPriceInput("regularPrice", "00.00")}
+        </div>
+        {renderCollectionDates("regularCollectionDates", "Collection dates")}
+      </div>
+
+      <div className="grid grid-cols-2 gap-4 mb-6">
+        <div>
+          <label className="block text-sm font-medium text-gray3 mb-1">
+            Last Minute (optional)
+          </label>
+          {renderPriceInput("lastMinutePrice", "00.00")}
+        </div>
+        {renderCollectionDates("lastMinuteCollectionDates", "Collection dates")}
+      </div>
+
+      <div className="grid grid-cols-2 gap-4 mb-6">
+        <div>
+          <label className="block text-sm font-medium text-gray3 mb-1">
+            At The Door (optional)
+          </label>
+          {renderPriceInput("atTheDoorPrice", "00.00")}
+        </div>
+        {renderCollectionDates("atTheDoorCollectionDates", "Collection dates")}
+      </div>
+
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray3 mb-1">
+          Spectator
+        </label>
+        {renderPriceInput("spectatorPrice", "00.00")}
       </div>
 
       <h2 className="text-black text-xl font-semibold mt-8 mb-4">
         Contact Information
       </h2>
 
-      <Controller
-        name="emailAddress"
-        control={control}
-        defaultValue=""
-        render={({ field }) => (
-          <TextField {...field} label="Email address" fullWidth />
-        )}
-      />
-
-      <Controller
-        name="phoneNumber"
-        control={control}
-        defaultValue=""
-        render={({ field }) => (
-          <TextField {...field} label="Phone number" fullWidth />
-        )}
-      />
-
-      <h2 className="text-black text-xl font-semibold mt-8 mb-4">
-        Social media (optional)
-      </h2>
-
-      {["twitter", "instagram", "facebook"].map((platform) => (
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray3 mb-1">
+          Email Address
+        </label>
         <Controller
-          key={platform}
-          name={`${platform}Handle` as keyof FormData}
+          name="emailAddress"
           control={control}
           defaultValue=""
           render={({ field }) => (
-            <TextField
+            <input
               {...field}
-              label={`${
-                platform.charAt(0).toUpperCase() + platform.slice(1)
-              } handle`}
-              fullWidth
+              type="email"
+              className={`w-full p-2 border ${
+                errors.emailAddress ? "border-red-500" : "border-gray-300"
+              } text-gray3 rounded`}
+              placeholder="Enter email address"
             />
           )}
         />
+        {errors.emailAddress && (
+          <p className="text-red-500 text-xs mt-1">
+            {errors.emailAddress.message}
+          </p>
+        )}
+      </div>
+
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray3 mb-1">
+          Phone Number
+        </label>
+        <Controller
+          name="phoneNumber"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <input
+              {...field}
+              type="tel"
+              className={`w-full p-2 border ${
+                errors.phoneNumber ? "border-red-500" : "border-gray-300"
+              } text-gray3 rounded`}
+              placeholder="Enter phone number"
+            />
+          )}
+        />
+        {errors.phoneNumber && (
+          <p className="text-red-500 text-xs mt-1">
+            {errors.phoneNumber.message}
+          </p>
+        )}
+      </div>
+
+      <h2 className="text-black text-xl font-semibold mt-8 mb-4">
+        Social Media (optional)
+      </h2>
+
+      {["twitter", "instagram", "facebook"].map((platform) => (
+        <div key={platform} className="mb-6">
+          <label className="block text-sm font-medium text-gray3 mb-1">
+            {platform.charAt(0).toUpperCase() + platform.slice(1)} Handle
+          </label>
+          <Controller
+            name={`${platform}Handle` as keyof FormData}
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <input
+                {...field}
+                type="text"
+                className="w-full p-2 border border-gray-300 text-gray3 rounded"
+                placeholder={`Enter ${platform} handle`}
+              />
+            )}
+          />
+        </div>
       ))}
 
       <h2 className="text-black text-xl font-semibold mt-8 mb-4">
-        Terms & conditions (optional)
+        Terms & Conditions (optional)
       </h2>
 
-      <Controller
-        name="termsAndConditions"
-        control={control}
-        defaultValue=""
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="Copy and paste your terms & conditions"
-            multiline
-            rows={4}
-            fullWidth
-          />
-        )}
-      />
+      <div className="mb-6">
+        <Controller
+          name="termsAndConditions"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <textarea
+              {...field}
+              className="w-full p-2 border border-gray-300 text-gray3 rounded"
+              rows={4}
+              placeholder="Copy and paste your terms & conditions"
+            />
+          )}
+        />
+      </div>
 
-      <Button type="submit" variant="contained" color="primary" fullWidth>
+      <button
+        type="submit"
+        className="w-full bg-primaryLight text-white px-4 py-2 rounded cursor-pointer hover:bg-purple-600 transition"
+      >
         Create Event
-      </Button>
+      </button>
     </form>
   );
 };

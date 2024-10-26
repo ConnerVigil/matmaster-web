@@ -1,9 +1,16 @@
 import React from "react";
 import CreateEventButton from "./CreateEventButton";
-import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import EventPage from "./EventPage";
+import { getSession } from "@auth0/nextjs-auth0";
+import { redirect } from "next/navigation";
 
-const Page = () => {
+const Page = async () => {
+  const session = await getSession();
+
+  if (!session) {
+    redirect("/api/auth/login");
+  }
+
   return (
     <div className="bg-white min-h-screen flex flex-col items-center">
       <div className="w-full px-6 mt-6">
@@ -17,4 +24,4 @@ const Page = () => {
   );
 };
 
-export default withPageAuthRequired(async () => <Page />);
+export default Page;

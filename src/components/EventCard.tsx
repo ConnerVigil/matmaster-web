@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import {
   Calendar,
+  CurrencyDollar,
   InfoCircle,
   MarkerPin01,
   Users01,
@@ -68,15 +69,15 @@ export default function EventCard({
           </span>
         )}
       </div>
-      <div className="p-2 text-gray3">
+      <div className="px-2 py-3 text-gray3">
         <h2 className="text-xl font-bold mb-2 text-gray1">{title}</h2>
         <div className="flex items-center mb-1">
           <Calendar className="w-3 h-3 mr-2 text-gray3" />
           <span className="text-sm">{dateRange}</span>
         </div>
         <div className="flex items-center mb-1">
-          <Users01 className="w-3 h-3 mr-2 text-gray3" />
-          <span className="text-sm">{attendees} Attendees</span>
+          <CurrencyDollar className="w-3 h-3 mr-2 text-gray3" />
+          <span className="text-sm">{price}</span>
         </div>
         <div className="flex items-center mb-1">
           <InfoCircle className="w-3 h-3 mr-2 text-gray3" />
@@ -87,7 +88,10 @@ export default function EventCard({
             <MarkerPin01 className="w-3 h-3 mr-2 text-gray3" />
             <span className="text-sm">{location}</span>
           </div>
-          <span className="text-sm">{price}</span>
+          <div className="flex items-center">
+            <Users01 className="w-3 h-3 mr-2 text-gray3" />
+            <span className="text-sm">{attendees}</span>
+          </div>
         </div>
       </div>
     </div>
