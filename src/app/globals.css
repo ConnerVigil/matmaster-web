@@ -25,3 +25,14 @@ body {
     text-wrap: balance;
   }
 }
+
+/* Ant Design RangePicker: So that it stacks vertically on mobile */
+@media (max-width: 640px) {
+  .ant-picker-panels {
+    flex-direction: column !important;
+  }
+
+  .ant-picker-panel {
+    min-width: auto !important;
+  }
+}
