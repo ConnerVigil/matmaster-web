@@ -1,12 +1,14 @@
+"use client";
+
 import React from "react";
 import CreateEvent from "./CreateEvent";
-import { getSession } from "@auth0/nextjs-auth0";
 import { redirect } from "next/navigation";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
-const CreateEventPage = async () => {
-  const session = await getSession();
+const CreateEventPage = () => {
+  const { user } = useUser();
 
-  if (!session) {
+  if (!user) {
     redirect("/api/auth/login");
   }
 
