@@ -1,7 +1,8 @@
+import { CreateEventDraftRequest } from "@/types/requests";
 import { Event } from "@prisma/client";
 
 export const eventService = {
-  async createEventAsDraft(event: Event): Promise<boolean> {
+  async createEventAsDraft(event: CreateEventDraftRequest): Promise<Event> {
     try {
       const response = await fetch("/api/event", {
         method: "POST",
@@ -12,14 +13,14 @@ export const eventService = {
         throw new Error("Failed to create event as draft");
       }
 
-      return true;
+      return (await response.json()).event;
     } catch (error) {
       console.error("Error creating event as draft:", error);
       throw error;
     }
   },
 
-  async publishEvent(eventId: number): Promise<boolean> {
+  async publishEvent(eventId: number): Promise<Event> {
     try {
       const response = await fetch(`/api/event/${eventId}/publish`, {
         method: "PUT",
@@ -29,7 +30,7 @@ export const eventService = {
         throw new Error("Failed to publish event");
       }
 
-      return true;
+      return (await response.json()).event;
     } catch (error) {
       console.error("Error publishing event:", error);
       throw error;

@@ -13,6 +13,7 @@ import PricingTier from "./PricingTier";
 import ContactInformation from "./ContactInformation";
 
 import { DatePicker } from "antd";
+import { eventService } from "@/lib/frontend/services/eventService";
 const { RangePicker } = DatePicker;
 
 const { TextArea } = Input;
@@ -92,9 +93,12 @@ const CreateEvent: React.FC = () => {
   const router = useRouter();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: FormData) => {
     console.log(data);
-    // Handle form submission here
+    const createdEvent = await eventService.createEventAsDraft(data);
+    if (createdEvent) {
+      router.push(`/event/${createdEvent.ID}`);
+    }
   };
 
   const handleBack = () => {

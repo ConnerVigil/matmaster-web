@@ -183,37 +183,43 @@ model ParticipantWeightHistory {
   EventTeamRoster EventTeamRoster @relation(fields: [Roster_ID], references: [ID])
 }
 
+enum EventStatus {
+  DRAFT
+  PUBLISHED
+}
+
 model Event {
-  ID                   Int       @id @default(autoincrement())
+  ID                   Int         @id @default(autoincrement())
+  Status               EventStatus @default(DRAFT)
   Type_ID              Int
   Category_ID          Int
-  Name                 String    @db.VarChar(50)
+  Name                 String      @db.VarChar(50)
   Start_Date           DateTime
   End_Date             DateTime
   Number_Mats          Int
   USA_Wrestling_Event  Boolean
-  Style                String?   @db.VarChar(100)
-  Description          String?   @db.VarChar(300)
-  Location             String?   @db.VarChar(100)
+  Style                String?     @db.VarChar(100)
+  Description          String?     @db.VarChar(300)
+  Location             String?     @db.VarChar(100)
   Image_URL            String?
-  Pricing_Early_Bird   Decimal?  @db.Decimal(10, 2)
-  Pricing_Regular      Decimal   @db.Decimal(10, 2)
-  Pricing_Last_Minute  Decimal?  @db.Decimal(10, 2)
-  Pricing_At_Door      Decimal?  @db.Decimal(10, 2)
-  Spectator_Pricing    Decimal?  @db.Decimal(10, 2)
+  Pricing_Early_Bird   Decimal?    @db.Decimal(10, 2)
+  Pricing_Regular      Decimal     @db.Decimal(10, 2)
+  Pricing_Last_Minute  Decimal?    @db.Decimal(10, 2)
+  Pricing_At_Door      Decimal?    @db.Decimal(10, 2)
+  Spectator_Pricing    Decimal?    @db.Decimal(10, 2)
   Early_Bird_Deadline  DateTime?
   Regular_Deadline     DateTime?
   Last_Minute_Deadline DateTime?
   At_Door_Deadline     DateTime?
-  Contact_Email        String    @db.VarChar(100)
-  Contact_Phone        String    @db.VarChar(12)
-  X_Link               String?   @db.VarChar(100)
-  Instagram_Link       String?   @db.VarChar(100)
-  Facebook_Link        String?   @db.VarChar(100)
+  Contact_Email        String      @db.VarChar(100)
+  Contact_Phone        String      @db.VarChar(12)
+  X_Link               String?     @db.VarChar(100)
+  Instagram_Link       String?     @db.VarChar(100)
+  Facebook_Link        String?     @db.VarChar(100)
   Terms_And_Conditions String?
   Created_By_ID        Int
-  createdAt            DateTime  @default(now())
-  updatedAt            DateTime  @updatedAt
+  createdAt            DateTime    @default(now())
+  updatedAt            DateTime    @updatedAt
 
   // Relationships
   User            User              @relation(fields: [Created_By_ID], references: [ID])
@@ -221,6 +227,8 @@ model Event {
   Brackets        Brackets[]
   EventCategories EventCategories[]
   EventTypes      EventTypes[]
+
+  @@index([Status])
 }
 
 model EventTeamRoster {
