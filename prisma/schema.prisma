@@ -188,38 +188,51 @@ enum EventStatus {
   PUBLISHED
 }
 
+enum EntryType {
+  TEAM
+  WRESTLER
+}
+
 model Event {
-  ID                   Int         @id @default(autoincrement())
-  Status               EventStatus @default(DRAFT)
-  Type_ID              Int
-  Category_ID          Int
-  Name                 String      @db.VarChar(50)
-  Start_Date           DateTime
-  End_Date             DateTime
-  Number_Mats          Int
-  USA_Wrestling_Event  Boolean
-  Style                String?     @db.VarChar(100)
-  Description          String?     @db.VarChar(300)
-  Location             String?     @db.VarChar(100)
-  Image_URL            String?
-  Pricing_Early_Bird   Decimal?    @db.Decimal(10, 2)
-  Pricing_Regular      Decimal     @db.Decimal(10, 2)
-  Pricing_Last_Minute  Decimal?    @db.Decimal(10, 2)
-  Pricing_At_Door      Decimal?    @db.Decimal(10, 2)
-  Spectator_Pricing    Decimal?    @db.Decimal(10, 2)
-  Early_Bird_Deadline  DateTime?
-  Regular_Deadline     DateTime?
-  Last_Minute_Deadline DateTime?
-  At_Door_Deadline     DateTime?
-  Contact_Email        String      @db.VarChar(100)
-  Contact_Phone        String      @db.VarChar(12)
-  X_Link               String?     @db.VarChar(100)
-  Instagram_Link       String?     @db.VarChar(100)
-  Facebook_Link        String?     @db.VarChar(100)
-  Terms_And_Conditions String?
-  Created_By_ID        Int
-  createdAt            DateTime    @default(now())
-  updatedAt            DateTime    @updatedAt
+  ID                     Int         @id @default(autoincrement())
+  Status                 EventStatus @default(DRAFT)
+  // Type_ID              Int
+  // Category_ID          Int
+  Name                   String      @db.VarChar(50)
+  Start_Date             DateTime
+  End_Date               DateTime
+  Number_Mats            Int
+  USA_Wrestling_Event    Boolean
+  Style                  String?     @db.VarChar(100)
+  Description            String?     @db.VarChar(300)
+  Location               String?     @db.VarChar(100)
+  Image_URL              String?
+  Early_Bird_Pricing     Decimal?    @db.Decimal(10, 2)
+  Early_Bird_Start_Date  DateTime?
+  Early_Bird_End_Date    DateTime?
+  Early_Bird_Entry_Type  EntryType?
+  Regular_Pricing        Decimal     @db.Decimal(10, 2)
+  Regular_Start_Date     DateTime?
+  Regular_End_Date       DateTime?
+  Regular_Entry_Type     EntryType?
+  Last_Minute_Pricing    Decimal?    @db.Decimal(10, 2)
+  Last_Minute_Start_Date DateTime?
+  Last_Minute_End_Date   DateTime?
+  Last_Minute_Entry_Type EntryType?
+  At_Door_Pricing        Decimal?    @db.Decimal(10, 2)
+  At_Door_Start_Date     DateTime?
+  At_Door_End_Date       DateTime?
+  At_Door_Entry_Type     EntryType?
+  Spectator_Pricing      Decimal?    @db.Decimal(10, 2)
+  Contact_Email          String      @db.VarChar(100)
+  Contact_Phone          String      @db.VarChar(12)
+  X_Link                 String?     @db.VarChar(100)
+  Instagram_Link         String?     @db.VarChar(100)
+  Facebook_Link          String?     @db.VarChar(100)
+  Terms_And_Conditions   String?
+  Created_By_ID          Int
+  createdAt              DateTime    @default(now())
+  updatedAt              DateTime    @updatedAt
 
   // Relationships
   User            User              @relation(fields: [Created_By_ID], references: [ID])

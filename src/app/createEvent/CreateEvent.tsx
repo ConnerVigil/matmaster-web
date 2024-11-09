@@ -7,15 +7,15 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { ChevronLeft, Image01 } from "@untitled-ui/icons-react";
-import { Input, Button, Form } from "antd";
+import { Input, Button, Form, Select } from "antd";
 import dayjs from "dayjs";
 import PricingTier from "./PricingTier";
 import ContactInformation from "./ContactInformation";
-
+import { EntryType } from "@prisma/client";
 import { DatePicker } from "antd";
 import { eventService } from "@/lib/frontend/services/eventService";
-const { RangePicker } = DatePicker;
 
+const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
 const eventSchema = z.object({
@@ -32,11 +32,12 @@ const eventSchema = z.object({
   style: z.string().min(1, "Style is required"),
   moreInfo: z.string().optional(),
   earlyBirdPrice: z.string().optional(),
-  earlyBirdType: z.string().optional(),
+  earlyBirdEntryType: z.nativeEnum(EntryType).optional(),
   earlyBirdCollectionDates: z
     .object({
       start: z
         .date()
+        .min(new Date(), "Start date must be in the future")
         .optional()
         .transform((date) => (date ? dayjs(date) : undefined)),
       end: z
@@ -46,7 +47,7 @@ const eventSchema = z.object({
     })
     .optional(),
   regularPrice: z.string().min(1, "Regular price is required"),
-  regularType: z.string(),
+  regularEntryType: z.nativeEnum(EntryType).optional(),
   regularCollectionDates: z.object({
     start: z
       .date()
@@ -55,22 +56,42 @@ const eventSchema = z.object({
     end: z.date().transform((date) => dayjs(date)),
   }),
   lastMinutePrice: z.string().optional(),
-  lastMinuteType: z.string().optional(),
+  lastMinuteEntryType: z.nativeEnum(EntryType).optional(),
   lastMinuteCollectionDates: z
     .object({
-      start: z.date().optional(),
-      end: z.date().optional(),
+      start: z
+        .date()
+        .min(new Date(), "Start date must be in the future")
+        .optional()
+        .transform((date) => dayjs(date)),
+      end: z
+        .date()
+        .optional()
+        .transform((date) => dayjs(date)),
     })
     .optional(),
   atTheDoorPrice: z.string().optional(),
-  atTheDoorType: z.string().optional(),
+  atTheDoorEntryType: z.nativeEnum(EntryType).optional(),
   atTheDoorCollectionDates: z
     .object({
-      start: z.date().optional(),
-      end: z.date().optional(),
+      start: z
+        .date()
+        .min(new Date(), "Start date must be in the future")
+        .optional()
+        .transform((date) => dayjs(date)),
+      end: z
+        .date()
+        .optional()
+        .transform((date) => dayjs(date)),
     })
     .optional(),
-  spectatorPrice: z.string().optional(),
+  spectatorPrice: z
+    .string()
+    .regex(
+      /^\d+(\.\d{1,2})?$/,
+      "Invalid price format. Use numbers with up to two decimal places."
+    )
+    .optional(),
   spectatorDuration: z.string().optional(),
   emailAddress: z.string().email("Invalid email address"),
   phoneNumber: z.string().min(1, "Phone number is required"),
@@ -299,7 +320,7 @@ const CreateEvent: React.FC = () => {
         tier="Early Bird"
         optional
         PriceControllerName="earlyBirdPrice"
-        TypeControllerName="earlyBirdType"
+        TypeControllerName="earlyBirdEntryType"
         CollectionDatesControllerName="earlyBirdCollectionDates"
         getNestedErrorMessage={getNestedErrorMessage}
       />
@@ -308,7 +329,7 @@ const CreateEvent: React.FC = () => {
         errors={errors}
         tier="Regular"
         PriceControllerName="regularPrice"
-        TypeControllerName="regularType"
+        TypeControllerName="regularEntryType"
         CollectionDatesControllerName="regularCollectionDates"
         getNestedErrorMessage={getNestedErrorMessage}
       />
@@ -318,7 +339,7 @@ const CreateEvent: React.FC = () => {
         tier="Last Minute"
         optional
         PriceControllerName="lastMinutePrice"
-        TypeControllerName="lastMinuteType"
+        TypeControllerName="lastMinuteEntryType"
         CollectionDatesControllerName="lastMinuteCollectionDates"
         getNestedErrorMessage={getNestedErrorMessage}
       />
@@ -328,10 +349,66 @@ const CreateEvent: React.FC = () => {
         tier="At The Door"
         optional
         PriceControllerName="atTheDoorPrice"
-        TypeControllerName="atTheDoorType"
+        TypeControllerName="atTheDoorEntryType"
         CollectionDatesControllerName="atTheDoorCollectionDates"
         getNestedErrorMessage={getNestedErrorMessage}
       />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div>
+          <label className="block text-sm font-medium text-gray3 mb-1">
+            Spectator
+          </label>
+          <div className="relative">
+            <div className="flex gap-2">
+              <div className="relative max-w-[200px]">
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                  $
+                </div>
+                <Controller
+                  name={"spectatorPrice"}
+                  control={control}
+                  defaultValue=""
+                  render={({ field: { value, ...fieldProps } }) => (
+                    <Input
+                      {...fieldProps}
+                      value={typeof value === "string" ? value : ""}
+                      prefix="$"
+                      placeholder="00.00"
+                      status={errors.spectatorPrice ? "error" : ""}
+                    />
+                  )}
+                />
+                {errors.spectatorPrice && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.spectatorPrice.message}
+                  </p>
+                )}
+              </div>
+              <Controller
+                name={"spectatorDuration"}
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    className="w-[120px]"
+                    placeholder="Select duration"
+                    options={[
+                      { label: "1 day", value: "1" },
+                      { label: "2 days", value: "2" },
+                      { label: "3 days", value: "3" },
+                      { label: "4 days", value: "4" },
+                      { label: "5 days", value: "5" },
+                      { label: "6 days", value: "6" },
+                      { label: "7 days", value: "7" },
+                    ]}
+                  />
+                )}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
 
       <ContactInformation control={control} errors={errors} />
 

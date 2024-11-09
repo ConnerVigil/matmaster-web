@@ -1,45 +1,40 @@
-import { EventStatus } from "@prisma/client";
+import { EntryType, EventStatus } from "@prisma/client";
 import { Dayjs } from "dayjs";
 
 export interface CreateEventDraftRequest {
   status: EventStatus;
   eventImage: string;
   eventName: string;
-  tournamentDates: {
-    start: Dayjs;
-    end: Dayjs;
-  };
+  tournamentStartDate: Dayjs;
+  tournamentEndDate: Dayjs;
   location: string;
   style: string;
   moreInfo?: string;
+
   earlyBirdPrice?: string;
-  earlyBirdType?: string;
-  earlyBirdCollectionDates?: {
-    start: Dayjs;
-    end: Dayjs;
-  };
+  earlyBirdEntryType?: EntryType;
+  earlyBirdCollectionDatesStart?: Dayjs;
+  earlyBirdCollectionDatesEnd?: Dayjs;
+
   regularPrice: string;
-  regularType: string;
-  regularCollectionDates: {
-    start: Dayjs;
-    end: Dayjs;
-  };
+  regularEntryType?: EntryType;
+  regularCollectionDatesStart?: Dayjs;
+  regularCollectionDatesEnd?: Dayjs;
+
   lastMinutePrice?: string;
-  lastMinuteType?: string;
-  lastMinuteCollectionDates?: {
-    start: Dayjs;
-    end: Dayjs;
-  };
+  lastMinuteEntryType?: EntryType;
+  lastMinuteCollectionDatesStart?: Dayjs;
+  lastMinuteCollectionDatesEnd?: Dayjs;
+
   atTheDoorPrice?: string;
-  atTheDoorType?: string;
-  atTheDoorCollectionDates?: {
-    start: Dayjs;
-    end: Dayjs;
-  };
+  atTheDoorEntryType?: EntryType;
+  atTheDoorCollectionDatesStart?: Dayjs;
+  atTheDoorCollectionDatesEnd?: Dayjs;
+
   spectatorPrice?: string;
   spectatorDuration?: string;
-  emailAddress: string;
-  phoneNumber: string;
+  contactEmail: string;
+  contactPhone: string;
   twitterHandle?: string;
   instagramHandle?: string;
   facebookHandle?: string;

@@ -4,6 +4,7 @@ import { DatePicker, Input, Select } from "antd";
 import dayjs from "dayjs";
 const { RangePicker } = DatePicker;
 import { FormData } from "./CreateEvent";
+import { EntryType } from "@prisma/client";
 
 interface PricingTierProps {
   control: Control<FormData>;
@@ -56,16 +57,16 @@ const PricingTier = ({
             <Controller
               name={TypeControllerName}
               control={control}
-              defaultValue="team"
               render={({ field }) => (
                 <Select
                   {...field}
                   className="w-[120px]"
-                  options={[
-                    { value: "team", label: "Team" },
-                    { value: "wrestler", label: "Wrestler" },
-                  ]}
+                  placeholder="Select entry type"
                   status={errors[TypeControllerName] ? "error" : ""}
+                  options={Object.entries(EntryType).map(([key, value]) => ({
+                    label: key.replace(/_/g, " ").toLowerCase(),
+                    value: value,
+                  }))}
                 />
               )}
             />
