@@ -1,35 +1,36 @@
 import { EntryType, EventStatus } from "@prisma/client";
-import { Dayjs } from "dayjs";
 
 export interface CreateEventDraftRequest {
   status: EventStatus;
   eventImage: string;
   eventName: string;
-  tournamentStartDate: Dayjs;
-  tournamentEndDate: Dayjs;
+  tournamentStartDate: string;
+  tournamentEndDate: string;
+  numberMats: number;
+  usaWrestlingEvent: boolean;
   location: string;
   style: string;
   moreInfo?: string;
 
   earlyBirdPrice?: string;
   earlyBirdEntryType?: EntryType;
-  earlyBirdCollectionDatesStart?: Dayjs;
-  earlyBirdCollectionDatesEnd?: Dayjs;
+  earlyBirdCollectionDatesStart?: string;
+  earlyBirdCollectionDatesEnd?: string;
 
   regularPrice: string;
   regularEntryType?: EntryType;
-  regularCollectionDatesStart?: Dayjs;
-  regularCollectionDatesEnd?: Dayjs;
+  regularCollectionDatesStart?: string;
+  regularCollectionDatesEnd?: string;
 
   lastMinutePrice?: string;
   lastMinuteEntryType?: EntryType;
-  lastMinuteCollectionDatesStart?: Dayjs;
-  lastMinuteCollectionDatesEnd?: Dayjs;
+  lastMinuteCollectionDatesStart?: string;
+  lastMinuteCollectionDatesEnd?: string;
 
   atTheDoorPrice?: string;
   atTheDoorEntryType?: EntryType;
-  atTheDoorCollectionDatesStart?: Dayjs;
-  atTheDoorCollectionDatesEnd?: Dayjs;
+  atTheDoorCollectionDatesStart?: string;
+  atTheDoorCollectionDatesEnd?: string;
 
   spectatorPrice?: string;
   spectatorDuration?: string;

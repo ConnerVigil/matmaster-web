@@ -115,10 +115,14 @@ const CreateEvent: React.FC = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const onSubmit = async (data: FormData) => {
-    console.log(data);
-    const createdEvent = await eventService.createEventAsDraft(data);
-    if (createdEvent) {
-      router.push(`/event/${createdEvent.ID}`);
+    try {
+      const createdEvent = await eventService.createEventAsDraft(data);
+
+      if (createdEvent) {
+        router.push(`/eventPreview/${createdEvent.ID}`);
+      }
+    } catch (error) {
+      console.error("Error creating event:", error);
     }
   };
 
