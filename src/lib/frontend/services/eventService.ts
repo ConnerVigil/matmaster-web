@@ -1,4 +1,4 @@
-import { FormData } from "@/app/createEvent/CreateEvent";
+import { FormData } from "@/app/createTournaments/CreateEvent";
 import { CreateEventDraftRequest } from "@/types/requests";
 import { Event, EventStatus } from "@prisma/client";
 

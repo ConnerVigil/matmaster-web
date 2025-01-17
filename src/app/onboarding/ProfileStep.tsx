@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { useOnboarding } from "./OnboardingProvider";
-import StepButtons from "./StepButtons";
-import Image from "next/image";
-import AccountCreatedPopup from "./AccountCreatedPopup";
 import { useRouter } from "next/navigation";
 import { userService } from "@/lib/frontend/services/userService";
+import { Form, Input, Select, DatePicker, Upload, Button, message } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 import { z } from "zod";
-import { format } from "date-fns";
+import type { UploadFile } from "antd/es/upload/interface";
+import type { RcFile } from "antd/es/upload";
+import type { Dayjs } from "dayjs";
+
+const { Option } = Select;
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
@@ -21,330 +24,189 @@ const nameSchema = z.object({
     .max(50, "Last name must be 50 characters or less"),
 });
 
-const ProfileStep = () => {
+interface FormValues {
+  firstName: string;
+  lastName: string;
+  gender: "M" | "F";
+  grade: string;
+  dateOfBirth: Dayjs;
+}
+
+const ProfileStep: React.FC = () => {
   const { prevStep } = useOnboarding();
   const router = useRouter();
-  const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
-  const [showPopup, setShowPopup] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [gender, setGender] = useState("");
-  const [grade, setGrade] = useState("");
-  const [birthday, setBirthday] = useState<Date | null>(null);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [file, setFile] = useState<File | null>(null);
+  const [form] = Form.useForm();
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleNext = async () => {
-    const newErrors: Record<string, string> = {};
-
-    try {
-      nameSchema.parse({ firstName, lastName });
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        error.errors.forEach((err) => {
-          newErrors[err.path[0]] = err.message;
-        });
-      }
+  const beforeUpload = (file: RcFile) => {
+    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
+    if (!isJpgOrPng) {
+      message.error("You can only upload JPG/PNG files!");
+      return false;
     }
 
-    if (!gender) newErrors.gender = "Gender is required";
-    if (!grade) newErrors.grade = "Grade is required";
-    if (!birthday) newErrors.birthday = "Birthday is required";
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
+    if (file.size > MAX_FILE_SIZE) {
+      message.error("File size should not exceed 5MB!");
+      return false;
     }
 
-    const user = await userService.getUserFromDB();
+    setFileList([file]);
+    return false; // Prevent automatic upload
+  };
 
+  const handleSubmit = async (values: FormValues) => {
     try {
+      setLoading(true);
+      const user = await userService.getUserFromDB();
+
+      // Handle image upload if exists
       let imageUrl = null;
-      if (file) {
-        imageUrl = await userService.uploadImageToS3(file, user.ID);
+      if (fileList[0]) {
+        imageUrl = await userService.uploadImageToS3(
+          fileList[0] as RcFile,
+          user.ID
+        );
         if (imageUrl) {
-          setProfileImageUrl(imageUrl);
           await userService.updateUserProfileImage(user.ID, imageUrl);
         }
       }
 
-      const formattedDOB = birthday ? format(birthday, "yyyy-MM-dd") : "";
+      nameSchema.parse({
+        firstName: values.firstName,
+        lastName: values.lastName,
+      });
 
       await userService.onboardUser(user.ID, {
-        firstName,
-        lastName,
-        gender,
-        grade: parseInt(grade),
-        dateOfBirth: formattedDOB,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        gender: values.gender,
+        grade: parseInt(values.grade),
+        dateOfBirth: values.dateOfBirth.format("YYYY-MM-DD"),
       });
 
-      setShowPopup(true);
+      message.success("Profile created successfully!");
+      router.push("/");
     } catch (error) {
-      console.error("Error during onboarding:", error);
-      setErrors({
-        submit: "An error occurred during onboarding. Please try again.",
-      });
-    }
-  };
-
-  const handleBirthdayChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setBirthday((prev) => {
-      const newDate = prev ? new Date(prev) : new Date();
-      if (name === "day") newDate.setDate(parseInt(value));
-      if (name === "month") newDate.setMonth(parseInt(value) - 1);
-      if (name === "year") newDate.setFullYear(parseInt(value));
-      return newDate;
-    });
-    setErrors((prev) => ({ ...prev, birthday: "" }));
-  };
-
-  const handleClosePopup = () => {
-    setShowPopup(false);
-    router.push("/");
-  };
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      const selectedFile = event.target.files[0];
-
-      if (selectedFile.size > MAX_FILE_SIZE) {
-        setErrors((prev) => ({
-          ...prev,
-          file: "File size should not exceed 5MB",
-        }));
-        return;
+      if (error instanceof z.ZodError) {
+        error.errors.forEach((err) => {
+          form.setFields([
+            {
+              name: err.path[0],
+              errors: [err.message],
+            },
+          ]);
+        });
+      } else {
+        message.error("An error occurred during onboarding. Please try again.");
       }
-
-      setFile(selectedFile);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target && typeof e.target.result === "string") {
-          setProfileImageUrl(e.target.result);
-        }
-      };
-      reader.readAsDataURL(selectedFile);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="max-w-md mx-auto p-6">
-      <h1 className="text-gray1 text-xl font-bold mb-2">Wrestler Profile</h1>
-      <p className="text-gray3 mb-6">
+      <h1 className="text-xl font-bold mb-2">Wrestler Profile</h1>
+      <p className="text-gray-500 mb-6">
         This information will help our system keep coaches organized.
       </p>
-      <div className="mb-6">
-        <div className="flex items-center mb-4 gap-4">
-          <div className="w-32 h-32 relative rounded-full overflow-hidden">
-            <Image
-              src={profileImageUrl || "/defaultuser.png"}
-              alt={profileImageUrl ? "Profile Image" : "Default Avatar"}
-              fill
-              sizes="100vw"
-              priority
-              className="object-cover"
-            />
-          </div>
-          <div className="flex flex-col p-2 flex-1">
-            <h2 className="text-black font-bold mb-1">
-              Upload a profile image
-            </h2>
-            <p className="text-sm text-gray3 mb-2">
-              This picture will be public to coaches and wrestlers on MatMaster.
-            </p>
-            <label className="bg-primaryLight text-white px-4 py-2 rounded cursor-pointer hover:bg-purple-600 transition text-center">
-              Upload Image
-              <input
-                type="file"
-                className="hidden"
-                onChange={handleFileChange}
-                accept="image/*"
-              />
-            </label>
-            {errors.file && (
-              <p className="text-red-600 text-xs mt-1">{errors.file}</p>
-            )}
-          </div>
-        </div>
-      </div>
 
-      <div className="mb-6">
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={handleSubmit}
+        requiredMark={false}
+      >
+        <Form.Item
+          label="Profile Image"
+          tooltip="This picture will be public to coaches and wrestlers on MatMaster"
+        >
+          <Upload
+            listType="picture-card"
+            fileList={fileList}
+            beforeUpload={beforeUpload}
+            onRemove={() => setFileList([])}
+            maxCount={1}
+          >
+            {fileList.length === 0 && (
+              <div>
+                <UploadOutlined />
+                <div className="mt-2">Upload</div>
+              </div>
+            )}
+          </Upload>
+        </Form.Item>
+
         <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray3 mb-1">
-              First Name
-            </label>
-            <input
-              type="text"
-              className={`w-full p-2 border ${
-                errors.firstName ? "border-red-500" : "border-gray-300"
-              } text-gray3 rounded`}
-              placeholder="Enter first name"
-              value={firstName}
-              onChange={(e) => {
-                setFirstName(e.target.value);
-                setErrors((prev) => ({ ...prev, firstName: "" }));
-              }}
-            />
-            {errors.firstName && (
-              <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>
-            )}
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray3 mb-1">
-              Last Name
-            </label>
-            <input
-              type="text"
-              className={`w-full p-2 border ${
-                errors.lastName ? "border-red-500" : "border-gray-300"
-              } text-gray3 rounded`}
-              placeholder="Enter last name"
-              value={lastName}
-              onChange={(e) => {
-                setLastName(e.target.value);
-                setErrors((prev) => ({ ...prev, lastName: "" }));
-              }}
-            />
-            {errors.lastName && (
-              <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>
-            )}
-          </div>
-        </div>
-      </div>
-      <div className="grid grid-cols-2 gap-4 mb-6">
-        <div>
-          <label className="block text-sm font-medium text-gray3 mb-1">
-            Gender
-          </label>
-          <select
-            className={`w-full p-2 border ${
-              errors.gender ? "border-red-500" : "border-gray-300"
-            } text-gray3 rounded`}
-            value={gender}
-            onChange={(e) => {
-              setGender(e.target.value);
-              setErrors((prev) => ({ ...prev, gender: "" }));
-            }}
+          <Form.Item
+            label="First Name"
+            name="firstName"
+            rules={[{ required: true, message: "First name is required" }]}
           >
-            <option value="" disabled>
-              Select gender
-            </option>
-            <option value="M">Male</option>
-            <option value="F">Female</option>
-          </select>
-          {errors.gender && (
-            <p className="text-red-500 text-xs mt-1">{errors.gender}</p>
-          )}
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray3 mb-1">
-            Grade
-          </label>
-          <select
-            className={`w-full p-2 border ${
-              errors.grade ? "border-red-500" : "border-gray-300"
-            } rounded text-gray3`}
-            value={grade}
-            onChange={(e) => {
-              setGrade(e.target.value);
-              setErrors((prev) => ({ ...prev, grade: "" }));
-            }}
-          >
-            <option value="" disabled>
-              Select grade
-            </option>
-            <option value="9">9th</option>
-            <option value="10">10th</option>
-            <option value="11">11th</option>
-            <option value="12">12th</option>
-          </select>
-          {errors.grade && (
-            <p className="text-red-500 text-xs mt-1">{errors.grade}</p>
-          )}
-        </div>
-      </div>
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-gray3 mb-1">
-          Birthday
-        </label>
-        <div className="grid grid-cols-3 gap-2">
-          <select
-            name="day"
-            className={`p-2 border ${
-              errors.birthday ? "border-red-500" : "border-gray-300"
-            } rounded text-gray3`}
-            value={birthday ? birthday.getDate() : ""}
-            onChange={handleBirthdayChange}
-          >
-            <option value="" disabled>
-              Day
-            </option>
-            {[...Array(31)].map((_, i) => (
-              <option key={i + 1} value={i + 1}>
-                {i + 1}
-              </option>
-            ))}
-          </select>
-          <select
-            name="month"
-            className={`p-2 border ${
-              errors.birthday ? "border-red-500" : "border-gray-300"
-            } rounded text-gray3`}
-            value={birthday ? birthday.getMonth() + 1 : ""}
-            onChange={handleBirthdayChange}
-          >
-            <option value="" disabled>
-              Month
-            </option>
-            {[
-              "Jan",
-              "Feb",
-              "Mar",
-              "Apr",
-              "May",
-              "Jun",
-              "Jul",
-              "Aug",
-              "Sep",
-              "Oct",
-              "Nov",
-              "Dec",
-            ].map((month, i) => (
-              <option key={i} value={i + 1}>
-                {month}
-              </option>
-            ))}
-          </select>
-          <select
-            name="year"
-            className={`p-2 border ${
-              errors.birthday ? "border-red-500" : "border-gray-300"
-            } rounded text-gray3`}
-            value={birthday ? birthday.getFullYear() : ""}
-            onChange={handleBirthdayChange}
-          >
-            <option value="" disabled>
-              Year
-            </option>
-            {[...Array(30)].map((_, i) => {
-              const year = new Date().getFullYear() - i - 14;
-              return (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-        {errors.birthday && (
-          <p className="text-red-500 text-xs mt-1">{errors.birthday}</p>
-        )}
-      </div>
+            <Input placeholder="Enter first name" />
+          </Form.Item>
 
-      <StepButtons nextStep={handleNext} prevStep={prevStep} />
+          <Form.Item
+            label="Last Name"
+            name="lastName"
+            rules={[{ required: true, message: "Last name is required" }]}
+          >
+            <Input placeholder="Enter last name" />
+          </Form.Item>
+        </div>
 
-      {showPopup && <AccountCreatedPopup onClose={handleClosePopup} />}
+        <div className="grid grid-cols-2 gap-4">
+          <Form.Item
+            label="Gender"
+            name="gender"
+            rules={[{ required: true, message: "Gender is required" }]}
+          >
+            <Select placeholder="Select gender">
+              <Option value="M">Male</Option>
+              <Option value="F">Female</Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item
+            label="Grade"
+            name="grade"
+            rules={[{ required: true, message: "Grade is required" }]}
+          >
+            <Select placeholder="Select grade">
+              {[9, 10, 11, 12].map((grade) => (
+                <Option key={grade} value={grade.toString()}>
+                  {grade}th
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </div>
+
+        <Form.Item
+          label="Date of Birth"
+          name="dateOfBirth"
+          rules={[{ required: true, message: "Date of birth is required" }]}
+        >
+          <DatePicker
+            className="w-full"
+            format="YYYY-MM-DD"
+            disabledDate={(current) => {
+              // Disable dates less than 14 years ago
+              const fourteenYearsAgo = new Date();
+              fourteenYearsAgo.setFullYear(fourteenYearsAgo.getFullYear() - 14);
+              return current && current.valueOf() > fourteenYearsAgo.valueOf();
+            }}
+          />
+        </Form.Item>
+
+        <div className="flex justify-between mt-6">
+          <Button onClick={prevStep}>Previous</Button>
+          <Button type="primary" htmlType="submit" loading={loading}>
+            Next
+          </Button>
+        </div>
+      </Form>
     </div>
   );
 };
