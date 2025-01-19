@@ -11,7 +11,8 @@ import { Input, Button, Form, Select } from "antd";
 import dayjs from "dayjs";
 import PricingTier from "./PricingTier";
 import ContactInformation from "./ContactInformation";
-import { EntryType } from "@prisma/client";
+import { EntryTypeENUM } from "@prisma/client";
+import { StyleENUM } from "@prisma/client";
 import { DatePicker } from "antd";
 import { eventService } from "@/lib/frontend/services/eventService";
 
@@ -29,10 +30,10 @@ const eventSchema = z.object({
     end: z.date().transform((date) => dayjs(date)),
   }),
   location: z.string().min(1, "Location is required"),
-  style: z.string().min(1, "Style is required"),
+  style: z.nativeEnum(StyleENUM),
   moreInfo: z.string().optional(),
   earlyBirdPrice: z.string().optional(),
-  earlyBirdEntryType: z.nativeEnum(EntryType).optional(),
+  earlyBirdEntryType: z.nativeEnum(EntryTypeENUM).optional(),
   earlyBirdCollectionDates: z
     .object({
       start: z
@@ -47,7 +48,7 @@ const eventSchema = z.object({
     })
     .optional(),
   regularPrice: z.string().min(1, "Regular price is required"),
-  regularEntryType: z.nativeEnum(EntryType).optional(),
+  regularEntryType: z.nativeEnum(EntryTypeENUM).optional(),
   regularCollectionDates: z.object({
     start: z
       .date()
@@ -56,7 +57,7 @@ const eventSchema = z.object({
     end: z.date().transform((date) => dayjs(date)),
   }),
   lastMinutePrice: z.string().optional(),
-  lastMinuteEntryType: z.nativeEnum(EntryType).optional(),
+  lastMinuteEntryType: z.nativeEnum(EntryTypeENUM).optional(),
   lastMinuteCollectionDates: z
     .object({
       start: z
@@ -71,7 +72,7 @@ const eventSchema = z.object({
     })
     .optional(),
   atTheDoorPrice: z.string().optional(),
-  atTheDoorEntryType: z.nativeEnum(EntryType).optional(),
+  atTheDoorEntryType: z.nativeEnum(EntryTypeENUM).optional(),
   atTheDoorCollectionDates: z
     .object({
       start: z
@@ -281,12 +282,16 @@ const CreateEvent: React.FC = () => {
         <Controller
           name="style"
           control={control}
-          defaultValue=""
           render={({ field }) => (
-            <Input
+            <Select
               {...field}
+              className="w-[120px]"
+              placeholder="Select style"
               status={errors.style ? "error" : ""}
-              placeholder="Folkstyle"
+              options={Object.entries(StyleENUM).map(([key, value]) => ({
+                label: key,
+                value: value,
+              }))}
             />
           )}
         />

@@ -4,7 +4,7 @@ import { DatePicker, Input, Select } from "antd";
 import dayjs from "dayjs";
 const { RangePicker } = DatePicker;
 import { FormData } from "./CreateEvent";
-import { EntryType } from "@prisma/client";
+import { EntryTypeENUM } from "@prisma/client";
 
 interface PricingTierProps {
   control: Control<FormData>;
@@ -63,10 +63,12 @@ const PricingTier = ({
                   className="w-[120px]"
                   placeholder="Select entry type"
                   status={errors[TypeControllerName] ? "error" : ""}
-                  options={Object.entries(EntryType).map(([key, value]) => ({
-                    label: key.replace(/_/g, " ").toLowerCase(),
-                    value: value,
-                  }))}
+                  options={Object.entries(EntryTypeENUM).map(
+                    ([key, value]) => ({
+                      label: key.replace(/_/g, " ").toLowerCase(),
+                      value: value,
+                    })
+                  )}
                 />
               )}
             />

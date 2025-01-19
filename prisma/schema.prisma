@@ -188,9 +188,15 @@ enum EventStatus {
   PUBLISHED
 }
 
-enum EntryType {
+enum EntryTypeENUM {
   TEAM
   WRESTLER
+}
+
+enum StyleENUM {
+  Folkstyle
+  Freestyle
+  GrecoRoman
 }
 
 model Event {
@@ -203,26 +209,26 @@ model Event {
   End_Date               DateTime
   Number_Mats            Int
   USA_Wrestling_Event    Boolean
-  Style                  String?     @db.VarChar(100)
+  Style                  StyleENUM
   Description            String?     @db.VarChar(300)
   Location               String?     @db.VarChar(100)
   Image_URL              String?
   Early_Bird_Pricing     Decimal?    @db.Decimal(10, 2)
   Early_Bird_Start_Date  DateTime?
   Early_Bird_End_Date    DateTime?
-  Early_Bird_Entry_Type  EntryType?
+  Early_Bird_Entry_Type  EntryTypeENUM?
   Regular_Pricing        Decimal     @db.Decimal(10, 2)
   Regular_Start_Date     DateTime?
   Regular_End_Date       DateTime?
-  Regular_Entry_Type     EntryType?
+  Regular_Entry_Type     EntryTypeENUM?
   Last_Minute_Pricing    Decimal?    @db.Decimal(10, 2)
   Last_Minute_Start_Date DateTime?
   Last_Minute_End_Date   DateTime?
-  Last_Minute_Entry_Type EntryType?
+  Last_Minute_Entry_Type EntryTypeENUM?
   At_Door_Pricing        Decimal?    @db.Decimal(10, 2)
   At_Door_Start_Date     DateTime?
   At_Door_End_Date       DateTime?
-  At_Door_Entry_Type     EntryType?
+  At_Door_Entry_Type     EntryTypeENUM?
   Spectator_Pricing      Decimal?    @db.Decimal(10, 2)
   Contact_Email          String      @db.VarChar(100)
   Contact_Phone          String      @db.VarChar(12)
