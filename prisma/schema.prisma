@@ -189,8 +189,8 @@ enum EventStatus {
 }
 
 enum EntryTypeENUM {
-  TEAM
-  WRESTLER
+  team
+  wrestler
 }
 
 enum StyleENUM {
@@ -200,45 +200,40 @@ enum StyleENUM {
 }
 
 model Event {
-  ID                     Int         @id @default(autoincrement())
-  Status                 EventStatus @default(DRAFT)
-  // Type_ID              Int
-  // Category_ID          Int
-  Name                   String      @db.VarChar(50)
+  ID                     Int           @id @default(autoincrement())
+  Status                 EventStatus   @default(DRAFT)
+  Name                   String        @db.VarChar(50)
   Start_Date             DateTime
   End_Date               DateTime
   Number_Mats            Int
   USA_Wrestling_Event    Boolean
   Style                  StyleENUM
-  Description            String?     @db.VarChar(300)
-  Location               String?     @db.VarChar(100)
+  Description            String?       @db.VarChar(300)
+  Location               String?       @db.VarChar(100)
   Image_URL              String?
-  Early_Bird_Pricing     Decimal?    @db.Decimal(10, 2)
+  Entry_Type             EntryTypeENUM
+  Early_Bird_Pricing     Decimal?      @db.Decimal(10, 2)
   Early_Bird_Start_Date  DateTime?
   Early_Bird_End_Date    DateTime?
-  Early_Bird_Entry_Type  EntryTypeENUM?
-  Regular_Pricing        Decimal     @db.Decimal(10, 2)
+  Regular_Pricing        Decimal       @db.Decimal(10, 2)
   Regular_Start_Date     DateTime?
   Regular_End_Date       DateTime?
-  Regular_Entry_Type     EntryTypeENUM?
-  Last_Minute_Pricing    Decimal?    @db.Decimal(10, 2)
+  Last_Minute_Pricing    Decimal?      @db.Decimal(10, 2)
   Last_Minute_Start_Date DateTime?
   Last_Minute_End_Date   DateTime?
-  Last_Minute_Entry_Type EntryTypeENUM?
-  At_Door_Pricing        Decimal?    @db.Decimal(10, 2)
+  At_Door_Pricing        Decimal?      @db.Decimal(10, 2)
   At_Door_Start_Date     DateTime?
   At_Door_End_Date       DateTime?
-  At_Door_Entry_Type     EntryTypeENUM?
-  Spectator_Pricing      Decimal?    @db.Decimal(10, 2)
-  Contact_Email          String      @db.VarChar(100)
-  Contact_Phone          String      @db.VarChar(12)
-  X_Link                 String?     @db.VarChar(100)
-  Instagram_Link         String?     @db.VarChar(100)
-  Facebook_Link          String?     @db.VarChar(100)
+  Spectator_Pricing      Decimal?      @db.Decimal(10, 2)
+  Contact_Email          String        @db.VarChar(100)
+  Contact_Phone          String        @db.VarChar(12)
+  X_Link                 String?       @db.VarChar(100)
+  Instagram_Link         String?       @db.VarChar(100)
+  Facebook_Link          String?       @db.VarChar(100)
   Terms_And_Conditions   String?
   Created_By_ID          Int
-  createdAt              DateTime    @default(now())
-  updatedAt              DateTime    @updatedAt
+  createdAt              DateTime      @default(now())
+  updatedAt              DateTime      @updatedAt
 
   // Relationships
   User            User              @relation(fields: [Created_By_ID], references: [ID])

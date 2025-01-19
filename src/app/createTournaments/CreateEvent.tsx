@@ -6,8 +6,13 @@ import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { ChevronLeft, Image01 } from "@untitled-ui/icons-react";
-import { Input, Button, Form, Select } from "antd";
+import {
+  ChevronLeft,
+  Image01,
+  User01,
+  Users01,
+} from "@untitled-ui/icons-react";
+import { Input, Button, Form, Select, Segmented } from "antd";
 import dayjs from "dayjs";
 import PricingTier from "./PricingTier";
 import ContactInformation from "./ContactInformation";
@@ -32,8 +37,14 @@ const eventSchema = z.object({
   location: z.string().min(1, "Location is required"),
   style: z.nativeEnum(StyleENUM),
   moreInfo: z.string().optional(),
-  earlyBirdPrice: z.string().optional(),
-  earlyBirdEntryType: z.nativeEnum(EntryTypeENUM).optional(),
+  eventEntryType: z.nativeEnum(EntryTypeENUM),
+  earlyBirdPrice: z
+    .string()
+    .regex(
+      /^\d+(\.\d{1,2})?$/,
+      "Invalid price format. Use numbers with up to two decimal places."
+    )
+    .optional(),
   earlyBirdCollectionDates: z
     .object({
       start: z
@@ -47,8 +58,13 @@ const eventSchema = z.object({
         .transform((date) => (date ? dayjs(date) : undefined)),
     })
     .optional(),
-  regularPrice: z.string().min(1, "Regular price is required"),
-  regularEntryType: z.nativeEnum(EntryTypeENUM).optional(),
+  regularPrice: z
+    .string()
+    .regex(
+      /^\d+(\.\d{1,2})?$/,
+      "Invalid price format. Use numbers with up to two decimal places."
+    )
+    .optional(),
   regularCollectionDates: z.object({
     start: z
       .date()
@@ -56,8 +72,13 @@ const eventSchema = z.object({
       .transform((date) => dayjs(date)),
     end: z.date().transform((date) => dayjs(date)),
   }),
-  lastMinutePrice: z.string().optional(),
-  lastMinuteEntryType: z.nativeEnum(EntryTypeENUM).optional(),
+  lastMinutePrice: z
+    .string()
+    .regex(
+      /^\d+(\.\d{1,2})?$/,
+      "Invalid price format. Use numbers with up to two decimal places."
+    )
+    .optional(),
   lastMinuteCollectionDates: z
     .object({
       start: z
@@ -71,8 +92,13 @@ const eventSchema = z.object({
         .transform((date) => dayjs(date)),
     })
     .optional(),
-  atTheDoorPrice: z.string().optional(),
-  atTheDoorEntryType: z.nativeEnum(EntryTypeENUM).optional(),
+  atTheDoorPrice: z
+    .string()
+    .regex(
+      /^\d+(\.\d{1,2})?$/,
+      "Invalid price format. Use numbers with up to two decimal places."
+    )
+    .optional(),
   atTheDoorCollectionDates: z
     .object({
       start: z
@@ -323,13 +349,54 @@ const CreateEvent: React.FC = () => {
       </div>
 
       <h2 className="text-black text-xl font-semibold mt-8 mb-4">Pricing</h2>
+
+      <Controller
+        name="eventEntryType"
+        control={control}
+        render={({ field }) => (
+          <Segmented
+            {...field}
+            options={[
+              {
+                label: (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
+                    }}
+                  >
+                    <User01 width={16} height={16} />
+                    <span>wrestler</span>
+                  </div>
+                ),
+                value: "wrestler",
+              },
+              {
+                label: (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
+                    }}
+                  >
+                    <Users01 width={16} height={16} />
+                    <span>team</span>
+                  </div>
+                ),
+                value: "team",
+              },
+            ]}
+          />
+        )}
+      />
+
       <PricingTier
         control={control}
         errors={errors}
         tier="Early Bird"
-        optional
         PriceControllerName="earlyBirdPrice"
-        TypeControllerName="earlyBirdEntryType"
         CollectionDatesControllerName="earlyBirdCollectionDates"
         getNestedErrorMessage={getNestedErrorMessage}
       />
@@ -337,8 +404,8 @@ const CreateEvent: React.FC = () => {
         control={control}
         errors={errors}
         tier="Regular"
+        required
         PriceControllerName="regularPrice"
-        TypeControllerName="regularEntryType"
         CollectionDatesControllerName="regularCollectionDates"
         getNestedErrorMessage={getNestedErrorMessage}
       />
@@ -346,9 +413,7 @@ const CreateEvent: React.FC = () => {
         control={control}
         errors={errors}
         tier="Last Minute"
-        optional
         PriceControllerName="lastMinutePrice"
-        TypeControllerName="lastMinuteEntryType"
         CollectionDatesControllerName="lastMinuteCollectionDates"
         getNestedErrorMessage={getNestedErrorMessage}
       />
@@ -356,9 +421,7 @@ const CreateEvent: React.FC = () => {
         control={control}
         errors={errors}
         tier="At The Door"
-        optional
         PriceControllerName="atTheDoorPrice"
-        TypeControllerName="atTheDoorEntryType"
         CollectionDatesControllerName="atTheDoorCollectionDates"
         getNestedErrorMessage={getNestedErrorMessage}
       />
@@ -394,26 +457,6 @@ const CreateEvent: React.FC = () => {
                   </p>
                 )}
               </div>
-              <Controller
-                name={"spectatorDuration"}
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    className="w-[120px]"
-                    placeholder="Select duration"
-                    options={[
-                      { label: "1 day", value: "1" },
-                      { label: "2 days", value: "2" },
-                      { label: "3 days", value: "3" },
-                      { label: "4 days", value: "4" },
-                      { label: "5 days", value: "5" },
-                      { label: "6 days", value: "6" },
-                      { label: "7 days", value: "7" },
-                    ]}
-                  />
-                )}
-              />
             </div>
           </div>
         </div>
