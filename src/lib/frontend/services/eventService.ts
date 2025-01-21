@@ -16,24 +16,20 @@ export const eventService = {
       style: event.style,
       moreInfo: event.moreInfo,
       earlyBirdPrice: event.earlyBirdPrice,
-      earlyBirdEntryType: event.earlyBirdEntryType,
       earlyBirdCollectionDatesStart:
         event.earlyBirdCollectionDates?.start?.toISOString(),
       earlyBirdCollectionDatesEnd:
         event.earlyBirdCollectionDates?.end?.toISOString(),
       regularPrice: event.regularPrice,
-      regularEntryType: event.regularEntryType,
       regularCollectionDatesStart:
         event.regularCollectionDates.start.toISOString(),
       regularCollectionDatesEnd: event.regularCollectionDates.end.toISOString(),
       lastMinutePrice: event.lastMinutePrice,
-      lastMinuteEntryType: event.lastMinuteEntryType,
       lastMinuteCollectionDatesStart:
         event.lastMinuteCollectionDates?.start?.toISOString(),
       lastMinuteCollectionDatesEnd:
         event.lastMinuteCollectionDates?.end?.toISOString(),
       atTheDoorPrice: event.atTheDoorPrice,
-      atTheDoorEntryType: event.atTheDoorEntryType,
       atTheDoorCollectionDatesStart:
         event.atTheDoorCollectionDates?.start?.toISOString(),
       atTheDoorCollectionDatesEnd:

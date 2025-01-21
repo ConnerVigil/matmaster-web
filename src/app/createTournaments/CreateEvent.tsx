@@ -6,20 +6,16 @@ import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import {
-  ChevronLeft,
-  Image01,
-  User01,
-  Users01,
-} from "@untitled-ui/icons-react";
-import { Input, Button, Form, Select, Segmented } from "antd";
+import { ChevronLeft, Image01 } from "@untitled-ui/icons-react";
+import { Input, Button, Form, Select } from "antd";
 import dayjs from "dayjs";
-import PricingTier from "./PricingTier";
 import ContactInformation from "./ContactInformation";
 import { EntryTypeENUM } from "@prisma/client";
 import { StyleENUM } from "@prisma/client";
 import { DatePicker } from "antd";
 import { eventService } from "@/lib/frontend/services/eventService";
+import TermsAndConditions from "./TermsAndConditions";
+import Pricing from "./Pricing";
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
@@ -126,6 +122,14 @@ const eventSchema = z.object({
   instagramHandle: z.string().optional(),
   facebookHandle: z.string().optional(),
   termsAndConditions: z.string().optional(),
+  termsAndConditionsPDF: z
+    .custom<File>()
+    .optional()
+    .refine(
+      (file) =>
+        !file || (file instanceof File && file.type === "application/pdf"),
+      "Only PDF files are allowed"
+    ),
 });
 
 export type FormData = z.infer<typeof eventSchema>;
@@ -143,6 +147,8 @@ const CreateEvent: React.FC = () => {
 
   const onSubmit = async (data: FormData) => {
     try {
+      // Attempt to upload event image and t&c's here?
+
       const createdEvent = await eventService.createEventAsDraft(data);
 
       if (createdEvent) {
@@ -348,140 +354,13 @@ const CreateEvent: React.FC = () => {
         )}
       </div>
 
-      <h2 className="text-black text-xl font-semibold mt-8 mb-4">Pricing</h2>
-
-      <Controller
-        name="eventEntryType"
-        control={control}
-        render={({ field }) => (
-          <Segmented
-            {...field}
-            options={[
-              {
-                label: (
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "4px",
-                    }}
-                  >
-                    <User01 width={16} height={16} />
-                    <span>wrestler</span>
-                  </div>
-                ),
-                value: "wrestler",
-              },
-              {
-                label: (
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "4px",
-                    }}
-                  >
-                    <Users01 width={16} height={16} />
-                    <span>team</span>
-                  </div>
-                ),
-                value: "team",
-              },
-            ]}
-          />
-        )}
-      />
-
-      <PricingTier
+      <Pricing
         control={control}
         errors={errors}
-        tier="Early Bird"
-        PriceControllerName="earlyBirdPrice"
-        CollectionDatesControllerName="earlyBirdCollectionDates"
         getNestedErrorMessage={getNestedErrorMessage}
       />
-      <PricingTier
-        control={control}
-        errors={errors}
-        tier="Regular"
-        required
-        PriceControllerName="regularPrice"
-        CollectionDatesControllerName="regularCollectionDates"
-        getNestedErrorMessage={getNestedErrorMessage}
-      />
-      <PricingTier
-        control={control}
-        errors={errors}
-        tier="Last Minute"
-        PriceControllerName="lastMinutePrice"
-        CollectionDatesControllerName="lastMinuteCollectionDates"
-        getNestedErrorMessage={getNestedErrorMessage}
-      />
-      <PricingTier
-        control={control}
-        errors={errors}
-        tier="At The Door"
-        PriceControllerName="atTheDoorPrice"
-        CollectionDatesControllerName="atTheDoorCollectionDates"
-        getNestedErrorMessage={getNestedErrorMessage}
-      />
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div>
-          <label className="block text-sm font-medium text-gray3 mb-1">
-            Spectator
-          </label>
-          <div className="relative">
-            <div className="flex gap-2">
-              <div className="relative max-w-[200px]">
-                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                  $
-                </div>
-                <Controller
-                  name={"spectatorPrice"}
-                  control={control}
-                  defaultValue=""
-                  render={({ field: { value, ...fieldProps } }) => (
-                    <Input
-                      {...fieldProps}
-                      value={typeof value === "string" ? value : ""}
-                      prefix="$"
-                      placeholder="00.00"
-                      status={errors.spectatorPrice ? "error" : ""}
-                    />
-                  )}
-                />
-                {errors.spectatorPrice && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {errors.spectatorPrice.message}
-                  </p>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <ContactInformation control={control} errors={errors} />
-
-      <h2 className="text-black text-xl font-semibold mt-8 mb-4">
-        Terms & Conditions (optional)
-      </h2>
-
-      <div className="mb-6">
-        <Controller
-          name="termsAndConditions"
-          control={control}
-          defaultValue=""
-          render={({ field }) => (
-            <TextArea
-              {...field}
-              rows={4}
-              placeholder="Copy and paste your terms & conditions"
-            />
-          )}
-        />
-      </div>
+      <TermsAndConditions control={control} />
 
       <div className="flex justify-end">
         <Button

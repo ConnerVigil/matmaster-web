@@ -69,7 +69,7 @@ const ContactInformation: React.FC<ContactInformationProps> = ({
       </div>
 
       <h2 className="text-black text-xl font-semibold mt-8 mb-4">
-        Social Media (optional)
+        Social Media <span className="font-light text-gray3">(optional)</span>
       </h2>
       <div className="mb-6">
         <label className="block text-sm font-medium text-gray3 mb-1">
