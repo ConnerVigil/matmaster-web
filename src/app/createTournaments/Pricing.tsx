@@ -2,12 +2,12 @@ import { User01, Users01 } from "@untitled-ui/icons-react";
 import { Segmented, Input } from "antd";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import PricingTier from "./PricingTier";
-import { FormData } from "./CreateEvent";
+import { EventFormData } from "./zodSchemas";
 
 interface Props {
-  control: Control<FormData>;
-  errors: FieldErrors<FormData>;
-  getNestedErrorMessage: (fieldName: keyof FormData) => string | undefined;
+  control: Control<EventFormData>;
+  errors: FieldErrors<EventFormData>;
+  getNestedErrorMessage: (fieldName: keyof EventFormData) => string | undefined;
 }
 
 const Pricing = ({ control, errors, getNestedErrorMessage }: Props) => {

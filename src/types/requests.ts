@@ -1,8 +1,8 @@
-import { EntryType, EventStatus } from "@prisma/client";
+import { EventStatus } from "@prisma/client";
 
 export interface CreateEventDraftRequest {
   status: EventStatus;
-  eventImage: string;
+  eventImageUrl?: string;
   eventName: string;
   tournamentStartDate: string;
   tournamentEndDate: string;
@@ -13,22 +13,18 @@ export interface CreateEventDraftRequest {
   moreInfo?: string;
 
   earlyBirdPrice?: string;
-  earlyBirdEntryType?: EntryType;
   earlyBirdCollectionDatesStart?: string;
   earlyBirdCollectionDatesEnd?: string;
 
   regularPrice: string;
-  regularEntryType?: EntryType;
   regularCollectionDatesStart?: string;
   regularCollectionDatesEnd?: string;
 
   lastMinutePrice?: string;
-  lastMinuteEntryType?: EntryType;
   lastMinuteCollectionDatesStart?: string;
   lastMinuteCollectionDatesEnd?: string;
 
   atTheDoorPrice?: string;
-  atTheDoorEntryType?: EntryType;
   atTheDoorCollectionDatesStart?: string;
   atTheDoorCollectionDatesEnd?: string;
 

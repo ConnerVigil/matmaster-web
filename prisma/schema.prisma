@@ -208,7 +208,7 @@ model Event {
   Number_Mats            Int
   USA_Wrestling_Event    Boolean
   Style                  StyleENUM
-  Description            String?       @db.VarChar(300)
+  MoreInfo               String?       @db.VarChar(300)
   Location               String?       @db.VarChar(100)
   Image_URL              String?
   Entry_Type             EntryTypeENUM

@@ -2,17 +2,18 @@ import React from "react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import { DatePicker, Input } from "antd";
 import dayjs from "dayjs";
+import { EventFormData } from "./zodSchemas";
+
 const { RangePicker } = DatePicker;
-import { FormData } from "./CreateEvent";
 
 interface PricingTierProps {
-  control: Control<FormData>;
-  errors: FieldErrors<FormData>;
+  control: Control<EventFormData>;
+  errors: FieldErrors<EventFormData>;
   tier: string;
   required?: boolean;
-  PriceControllerName: keyof FormData;
-  CollectionDatesControllerName: keyof FormData;
-  getNestedErrorMessage: (fieldName: keyof FormData) => string | undefined;
+  PriceControllerName: keyof EventFormData;
+  CollectionDatesControllerName: keyof EventFormData;
+  getNestedErrorMessage: (fieldName: keyof EventFormData) => string | undefined;
 }
 
 const PricingTier = ({
@@ -70,10 +71,14 @@ const PricingTier = ({
             <RangePicker
               className="w-full"
               value={[
-                field.value && typeof field.value === "object"
+                field.value &&
+                typeof field.value === "object" &&
+                "start" in field.value
                   ? dayjs(field.value.start)
                   : null,
-                field.value && typeof field.value === "object"
+                field.value &&
+                typeof field.value === "object" &&
+                "end" in field.value
                   ? dayjs(field.value.end)
                   : null,
               ]}

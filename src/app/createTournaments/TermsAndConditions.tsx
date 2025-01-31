@@ -1,11 +1,11 @@
 import { Upload, Button, UploadProps, Input, message } from "antd";
 import React from "react";
 import { Control, Controller } from "react-hook-form";
-import { FormData } from "./CreateEvent";
 import { Upload01 } from "@untitled-ui/icons-react";
+import { EventFormData } from "./zodSchemas";
 
 interface Props {
-  control: Control<FormData>;
+  control: Control<EventFormData>;
 }
 
 const { TextArea } = Input;

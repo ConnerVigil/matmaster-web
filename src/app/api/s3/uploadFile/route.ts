@@ -1,35 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
 import s3Client from "@/lib/backend/awsS3";
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
-import { v4 as uuidv4 } from "uuid";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId } = await req.json();
+    const { fileId, bucketName } = await req.json();
 
-    if (!userId) {
+    if (!fileId) {
       return NextResponse.json(
-        { message: "UserId is required" },
+        { message: "File Id is required" },
         { status: 400 }
       );
     }
 
-    const user = await prisma.user.findUnique({
-      where: { ID: userId },
-    });
-
-    if (!user) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
-    }
-
-    const randomId = uuidv4();
-
     const signedUrl = await createPresignedPost(s3Client, {
-      Bucket: process.env.AWS_S3_BUCKET_PROFILE_IMAGES!,
-      Key: `${user.ID}/${randomId}`,
+      Bucket: bucketName,
+      Key: fileId,
       Expires: 60,
       Conditions: [["content-length-range", 0, MAX_FILE_SIZE]],
     });

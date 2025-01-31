@@ -3,153 +3,57 @@
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { ChevronLeft, Image01 } from "@untitled-ui/icons-react";
 import { Input, Button, Form, Select } from "antd";
 import dayjs from "dayjs";
 import ContactInformation from "./ContactInformation";
-import { EntryTypeENUM } from "@prisma/client";
 import { StyleENUM } from "@prisma/client";
 import { DatePicker } from "antd";
 import { eventService } from "@/lib/frontend/services/eventService";
 import TermsAndConditions from "./TermsAndConditions";
 import Pricing from "./Pricing";
+import { EventDatabase, EventFormData, eventFormSchema } from "./zodSchemas";
+import { s3Service } from "@/lib/frontend/services/s3Service";
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
-
-const eventSchema = z.object({
-  eventImage: z.string().min(1, "Event image is required"),
-  eventName: z.string().min(1, "Event name is required"),
-  tournamentDates: z.object({
-    start: z
-      .date()
-      .min(new Date(), "Start date must be in the future")
-      .transform((date) => dayjs(date)),
-    end: z.date().transform((date) => dayjs(date)),
-  }),
-  location: z.string().min(1, "Location is required"),
-  style: z.nativeEnum(StyleENUM),
-  moreInfo: z.string().optional(),
-  eventEntryType: z.nativeEnum(EntryTypeENUM),
-  earlyBirdPrice: z
-    .string()
-    .regex(
-      /^\d+(\.\d{1,2})?$/,
-      "Invalid price format. Use numbers with up to two decimal places."
-    )
-    .optional(),
-  earlyBirdCollectionDates: z
-    .object({
-      start: z
-        .date()
-        .min(new Date(), "Start date must be in the future")
-        .optional()
-        .transform((date) => (date ? dayjs(date) : undefined)),
-      end: z
-        .date()
-        .optional()
-        .transform((date) => (date ? dayjs(date) : undefined)),
-    })
-    .optional(),
-  regularPrice: z
-    .string()
-    .regex(
-      /^\d+(\.\d{1,2})?$/,
-      "Invalid price format. Use numbers with up to two decimal places."
-    )
-    .optional(),
-  regularCollectionDates: z.object({
-    start: z
-      .date()
-      .min(new Date(), "Start date must be in the future")
-      .transform((date) => dayjs(date)),
-    end: z.date().transform((date) => dayjs(date)),
-  }),
-  lastMinutePrice: z
-    .string()
-    .regex(
-      /^\d+(\.\d{1,2})?$/,
-      "Invalid price format. Use numbers with up to two decimal places."
-    )
-    .optional(),
-  lastMinuteCollectionDates: z
-    .object({
-      start: z
-        .date()
-        .min(new Date(), "Start date must be in the future")
-        .optional()
-        .transform((date) => dayjs(date)),
-      end: z
-        .date()
-        .optional()
-        .transform((date) => dayjs(date)),
-    })
-    .optional(),
-  atTheDoorPrice: z
-    .string()
-    .regex(
-      /^\d+(\.\d{1,2})?$/,
-      "Invalid price format. Use numbers with up to two decimal places."
-    )
-    .optional(),
-  atTheDoorCollectionDates: z
-    .object({
-      start: z
-        .date()
-        .min(new Date(), "Start date must be in the future")
-        .optional()
-        .transform((date) => dayjs(date)),
-      end: z
-        .date()
-        .optional()
-        .transform((date) => dayjs(date)),
-    })
-    .optional(),
-  spectatorPrice: z
-    .string()
-    .regex(
-      /^\d+(\.\d{1,2})?$/,
-      "Invalid price format. Use numbers with up to two decimal places."
-    )
-    .optional(),
-  spectatorDuration: z.string().optional(),
-  emailAddress: z.string().email("Invalid email address"),
-  phoneNumber: z.string().min(1, "Phone number is required"),
-  twitterHandle: z.string().optional(),
-  instagramHandle: z.string().optional(),
-  facebookHandle: z.string().optional(),
-  termsAndConditions: z.string().optional(),
-  termsAndConditionsPDF: z
-    .custom<File>()
-    .optional()
-    .refine(
-      (file) =>
-        !file || (file instanceof File && file.type === "application/pdf"),
-      "Only PDF files are allowed"
-    ),
-});
-
-export type FormData = z.infer<typeof eventSchema>;
 
 const CreateEvent: React.FC = () => {
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(eventSchema),
+  } = useForm<EventFormData>({
+    resolver: zodResolver(eventFormSchema),
   });
   const router = useRouter();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: EventFormData) => {
     try {
-      // Attempt to upload event image and t&c's here?
+      const imageUrl = data.eventImage
+        ? await s3Service.uploadFileToS3(
+            data.eventImage,
+            process.env.AWS_S3_BUCKET_EVENT_IMAGES!
+          )
+        : undefined;
 
-      const createdEvent = await eventService.createEventAsDraft(data);
+      const documentUrl = data.eventDocument
+        ? await s3Service.uploadFileToS3(
+            data.eventDocument,
+            process.env.AWS_S3_BUCKET_TERMSANDCONDITIONS_FILES!
+          )
+        : undefined;
+
+      const databaseData: EventDatabase = {
+        ...data,
+        imageUrl,
+        documentUrl,
+      };
+
+      const createdEvent = await eventService.createEventAsDraft(databaseData);
 
       if (createdEvent) {
         router.push(`/eventPreview/${createdEvent.ID}`);
@@ -163,7 +67,7 @@ const CreateEvent: React.FC = () => {
     router.push("/yourevents");
   };
 
-  const getNestedErrorMessage = (fieldName: keyof FormData) => {
+  const getNestedErrorMessage = (fieldName: keyof EventFormData) => {
     const error = errors[fieldName];
     if (error && typeof error === "object" && "start" in error) {
       return (error.start as { message?: string })?.message;
@@ -180,7 +84,7 @@ const CreateEvent: React.FC = () => {
         <Controller
           name="eventImage"
           control={control}
-          defaultValue=""
+          defaultValue={undefined}
           render={({ field }) => (
             <div
               className="w-full h-60 bg-gray-200 flex items-center justify-center cursor-pointer relative overflow-hidden"
@@ -210,7 +114,7 @@ const CreateEvent: React.FC = () => {
               ) : (
                 <div className="text-gray-500 font-semibold flex items-center gap-2">
                   <Image01 />
-                  {field.value ? field.value : "Add Image"}
+                  {field.name ? field.name : "Add Image"}
                 </div>
               )}
             </div>
