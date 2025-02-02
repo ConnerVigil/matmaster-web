@@ -22,6 +22,7 @@ const Pricing = ({ control, errors, getNestedErrorMessage }: Props) => {
           render={({ field }) => (
             <Segmented
               {...field}
+              defaultValue="wrestler"
               options={[
                 {
                   label: (

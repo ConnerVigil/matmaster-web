@@ -29,9 +29,9 @@ export async function POST(request: Request): Promise<NextResponse> {
         Number_Mats: event.numberMats,
         USA_Wrestling_Event: event.usaWrestlingEvent,
         Style: event.style,
-        Description: event.moreInfo,
+        MoreInfo: event.moreInfo,
         Location: event.location,
-        Image_URL: event.eventImage,
+        Image_URL: event.eventImageUrl,
         Early_Bird_Pricing: event.earlyBirdPrice,
         Early_Bird_Start_Date: event.earlyBirdCollectionDatesStart
           ? new Date(event.earlyBirdCollectionDatesStart)
@@ -39,7 +39,6 @@ export async function POST(request: Request): Promise<NextResponse> {
         Early_Bird_End_Date: event.earlyBirdCollectionDatesEnd
           ? new Date(event.earlyBirdCollectionDatesEnd)
           : null,
-        Early_Bird_Entry_Type: event.earlyBirdEntryType,
         Regular_Pricing: event.regularPrice,
         Regular_Start_Date: event.regularCollectionDatesStart
           ? new Date(event.regularCollectionDatesStart)
@@ -47,7 +46,6 @@ export async function POST(request: Request): Promise<NextResponse> {
         Regular_End_Date: event.regularCollectionDatesEnd
           ? new Date(event.regularCollectionDatesEnd)
           : null,
-        Regular_Entry_Type: event.regularEntryType,
         Last_Minute_Pricing: event.lastMinutePrice,
         Last_Minute_Start_Date: event.lastMinuteCollectionDatesStart
           ? new Date(event.lastMinuteCollectionDatesStart)
@@ -55,7 +53,6 @@ export async function POST(request: Request): Promise<NextResponse> {
         Last_Minute_End_Date: event.lastMinuteCollectionDatesEnd
           ? new Date(event.lastMinuteCollectionDatesEnd)
           : null,
-        Last_Minute_Entry_Type: event.lastMinuteEntryType,
         At_Door_Pricing: event.atTheDoorPrice,
         At_Door_Start_Date: event.atTheDoorCollectionDatesStart
           ? new Date(event.atTheDoorCollectionDatesStart)
@@ -63,7 +60,6 @@ export async function POST(request: Request): Promise<NextResponse> {
         At_Door_End_Date: event.atTheDoorCollectionDatesEnd
           ? new Date(event.atTheDoorCollectionDatesEnd)
           : null,
-        At_Door_Entry_Type: event.atTheDoorEntryType,
         Spectator_Pricing: event.spectatorPrice,
         Contact_Email: event.contactEmail,
         Contact_Phone: event.contactPhone,

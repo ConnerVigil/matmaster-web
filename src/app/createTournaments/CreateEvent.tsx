@@ -34,18 +34,16 @@ const CreateEvent: React.FC = () => {
   const onSubmit = async (data: EventFormData) => {
     try {
       const imageUrl = data.eventImage
-        ? await s3Service.uploadFileToS3(
-            data.eventImage,
-            process.env.AWS_S3_BUCKET_EVENT_IMAGES!
-          )
+        ? await s3Service.uploadEventImageToS3(data.eventImage)
         : undefined;
 
-      const documentUrl = data.eventDocument
-        ? await s3Service.uploadFileToS3(
-            data.eventDocument,
-            process.env.AWS_S3_BUCKET_TERMSANDCONDITIONS_FILES!
-          )
+      console.log(imageUrl);
+
+      const documentUrl = data.termsAndConditionsPDF
+        ? await s3Service.uploadTandCsToS3(data.termsAndConditionsPDF)
         : undefined;
+
+      console.log(documentUrl);
 
       const databaseData: EventDatabase = {
         ...data,
@@ -95,7 +93,7 @@ const CreateEvent: React.FC = () => {
                 input.onchange = (e) => {
                   const file = (e.target as HTMLInputElement).files?.[0];
                   if (file) {
-                    field.onChange(file.name);
+                    field.onChange(file);
                     setImagePreview(URL.createObjectURL(file));
                   }
                 };
@@ -128,6 +126,12 @@ const CreateEvent: React.FC = () => {
           Back
         </button>
       </div>
+
+      {errors.eventImage && (
+        <p className="text-red-500 text-xs mt-1">
+          {errors?.eventImage?.message?.toString()}
+        </p>
+      )}
 
       <div className="mb-6">
         <label className="block text-sm font-medium text-gray3 mb-1">
@@ -264,7 +268,7 @@ const CreateEvent: React.FC = () => {
         getNestedErrorMessage={getNestedErrorMessage}
       />
       <ContactInformation control={control} errors={errors} />
-      <TermsAndConditions control={control} />
+      <TermsAndConditions control={control} errors={errors} />
 
       <div className="flex justify-end">
         <Button

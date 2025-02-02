@@ -1,4 +1,4 @@
-import { EventStatus } from "@prisma/client";
+import { EntryTypeENUM, EventStatus, StyleENUM } from "@prisma/client";
 
 export interface CreateEventDraftRequest {
   status: EventStatus;
@@ -9,8 +9,9 @@ export interface CreateEventDraftRequest {
   numberMats: number;
   usaWrestlingEvent: boolean;
   location: string;
-  style: string;
+  style: StyleENUM;
   moreInfo?: string;
+  entryType: EntryTypeENUM;
 
   earlyBirdPrice?: string;
   earlyBirdCollectionDatesStart?: string;

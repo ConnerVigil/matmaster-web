@@ -1,40 +1,25 @@
-import { Upload, Button, UploadProps, Input, message } from "antd";
-import React from "react";
-import { Control, Controller } from "react-hook-form";
+import { Button, Input, message } from "antd";
+import React, { useState } from "react";
+import { Control, Controller, FieldErrors } from "react-hook-form";
 import { Upload01 } from "@untitled-ui/icons-react";
 import { EventFormData } from "./zodSchemas";
 
 interface Props {
   control: Control<EventFormData>;
+  errors: FieldErrors<EventFormData>;
 }
 
 const { TextArea } = Input;
 
-const TermsAndConditions = ({ control }: Props) => {
-  const props: UploadProps = {
-    name: "file",
-    action: "https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload",
-    headers: {
-      authorization: "authorization-text",
-    },
-    onChange(info) {
-      if (info.file.status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
-      if (info.file.status === "done") {
-        message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-    progress: {
-      strokeColor: {
-        "0%": "#53389E",
-        "100%": "#53389E",
-      },
-      size: 3,
-      format: (percent) => percent && `${parseFloat(percent.toFixed(2))}%`,
-    },
+const TermsAndConditions = ({ control, errors }: Props) => {
+  const [messageApi, contextHolder] = message.useMessage();
+  const [fileName, setfileName] = useState("");
+
+  const success = () => {
+    messageApi.open({
+      type: "success",
+      content: "File uploaded",
+    });
   };
 
   return (
@@ -44,11 +29,44 @@ const TermsAndConditions = ({ control }: Props) => {
         <span className="font-light text-gray3">(optional)</span>
       </h2>
 
-      <Upload maxCount={1} {...props}>
-        <Button className="mb-4 text-primary" icon={<Upload01 />}>
-          Upload
-        </Button>
-      </Upload>
+      {contextHolder}
+
+      <Controller
+        name="termsAndConditionsPDF"
+        control={control}
+        defaultValue={undefined}
+        render={({ field }) => (
+          <Button
+            icon={<Upload01 />}
+            className="text-white !bg-primaryLight hover:!bg-purple-600 hover:!text-white"
+            onClick={() => {
+              const input = document.createElement("input");
+              input.type = "file";
+              input.accept = "application/pdf";
+              input.onchange = (e) => {
+                const file = (e.target as HTMLInputElement).files?.[0];
+                console.log(file);
+                if (file) {
+                  field.onChange(file);
+                  setfileName(file.name);
+                  success();
+                }
+              };
+              input.click();
+            }}
+          >
+            Upload
+          </Button>
+        )}
+      />
+
+      {fileName && <p>{fileName}</p>}
+
+      {errors.termsAndConditionsPDF && (
+        <p className="text-red-500 text-xs mt-1">
+          {errors?.termsAndConditionsPDF?.message?.toString()}
+        </p>
+      )}
 
       <div className="mb-4">or</div>
 

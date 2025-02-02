@@ -1,13 +1,13 @@
 import React from "react";
 import { Controller, Control, FieldErrors } from "react-hook-form";
 import { Input } from "antd";
-import { FormData } from "./CreateEvent";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import { EventFormData } from "./zodSchemas";
 
 interface ContactInformationProps {
-  control: Control<FormData>;
-  errors: FieldErrors<FormData>;
+  control: Control<EventFormData>;
+  errors: FieldErrors<EventFormData>;
 }
 
 const ContactInformation: React.FC<ContactInformationProps> = ({

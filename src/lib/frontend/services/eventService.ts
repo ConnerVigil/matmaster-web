@@ -15,6 +15,7 @@ export const eventService = {
       location: event.location,
       style: event.style,
       moreInfo: event.moreInfo,
+      entryType: event.eventEntryType,
       earlyBirdPrice: event.earlyBirdPrice,
       earlyBirdCollectionDatesStart:
         event.earlyBirdCollectionDates?.start?.toISOString(),
