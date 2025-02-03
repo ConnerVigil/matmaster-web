@@ -45,7 +45,6 @@ const TermsAndConditions = ({ control, errors }: Props) => {
               input.accept = "application/pdf";
               input.onchange = (e) => {
                 const file = (e.target as HTMLInputElement).files?.[0];
-                console.log(file);
                 if (file) {
                   field.onChange(file);
                   setfileName(file.name);

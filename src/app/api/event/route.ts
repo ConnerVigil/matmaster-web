@@ -6,6 +6,7 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request): Promise<NextResponse> {
   try {
     const event: CreateEventDraftRequest = await request.json();
+    console.log("event", event);
     const session = await getSession();
 
     if (!session || !session.user) {
@@ -22,51 +23,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     const createdEvent = await prisma.event.create({
       data: {
-        Status: event.status,
-        Name: event.eventName,
-        Start_Date: new Date(event.tournamentStartDate),
-        End_Date: new Date(event.tournamentEndDate),
-        Number_Mats: event.numberMats,
-        USA_Wrestling_Event: event.usaWrestlingEvent,
-        Style: event.style,
-        MoreInfo: event.moreInfo,
-        Location: event.location,
-        Image_URL: event.eventImageUrl,
-        Early_Bird_Pricing: event.earlyBirdPrice,
-        Early_Bird_Start_Date: event.earlyBirdCollectionDatesStart
-          ? new Date(event.earlyBirdCollectionDatesStart)
-          : null,
-        Early_Bird_End_Date: event.earlyBirdCollectionDatesEnd
-          ? new Date(event.earlyBirdCollectionDatesEnd)
-          : null,
-        Regular_Pricing: event.regularPrice,
-        Regular_Start_Date: event.regularCollectionDatesStart
-          ? new Date(event.regularCollectionDatesStart)
-          : null,
-        Regular_End_Date: event.regularCollectionDatesEnd
-          ? new Date(event.regularCollectionDatesEnd)
-          : null,
-        Last_Minute_Pricing: event.lastMinutePrice,
-        Last_Minute_Start_Date: event.lastMinuteCollectionDatesStart
-          ? new Date(event.lastMinuteCollectionDatesStart)
-          : null,
-        Last_Minute_End_Date: event.lastMinuteCollectionDatesEnd
-          ? new Date(event.lastMinuteCollectionDatesEnd)
-          : null,
-        At_Door_Pricing: event.atTheDoorPrice,
-        At_Door_Start_Date: event.atTheDoorCollectionDatesStart
-          ? new Date(event.atTheDoorCollectionDatesStart)
-          : null,
-        At_Door_End_Date: event.atTheDoorCollectionDatesEnd
-          ? new Date(event.atTheDoorCollectionDatesEnd)
-          : null,
-        Spectator_Pricing: event.spectatorPrice,
-        Contact_Email: event.contactEmail,
-        Contact_Phone: event.contactPhone,
-        X_Link: event.twitterHandle,
-        Instagram_Link: event.instagramHandle,
-        Facebook_Link: event.facebookHandle,
-        Terms_And_Conditions: event.termsAndConditions,
+        ...event,
         Created_By_ID: user.ID,
       },
     });

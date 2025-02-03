@@ -5,44 +5,35 @@ import { Event, EventStatus } from "@prisma/client";
 export const eventService = {
   async createEventAsDraft(event: EventDatabase): Promise<Event> {
     const requestBody: CreateEventDraftRequest = {
-      status: EventStatus.DRAFT,
-      eventImageUrl: event.imageUrl,
-      eventName: event.eventName,
-      tournamentStartDate: event.tournamentDates.start.toISOString(),
-      tournamentEndDate: event.tournamentDates.end.toISOString(),
-      numberMats: 123,
-      usaWrestlingEvent: false,
-      location: event.location,
-      style: event.style,
-      moreInfo: event.moreInfo,
-      entryType: event.eventEntryType,
-      earlyBirdPrice: event.earlyBirdPrice,
-      earlyBirdCollectionDatesStart:
-        event.earlyBirdCollectionDates?.start?.toISOString(),
-      earlyBirdCollectionDatesEnd:
-        event.earlyBirdCollectionDates?.end?.toISOString(),
-      regularPrice: event.regularPrice,
-      regularCollectionDatesStart:
-        event.regularCollectionDates.start.toISOString(),
-      regularCollectionDatesEnd: event.regularCollectionDates.end.toISOString(),
-      lastMinutePrice: event.lastMinutePrice,
-      lastMinuteCollectionDatesStart:
-        event.lastMinuteCollectionDates?.start?.toISOString(),
-      lastMinuteCollectionDatesEnd:
-        event.lastMinuteCollectionDates?.end?.toISOString(),
-      atTheDoorPrice: event.atTheDoorPrice,
-      atTheDoorCollectionDatesStart:
-        event.atTheDoorCollectionDates?.start?.toISOString(),
-      atTheDoorCollectionDatesEnd:
-        event.atTheDoorCollectionDates?.end?.toISOString(),
-      spectatorPrice: event.spectatorPrice,
-      spectatorDuration: event.spectatorDuration,
-      contactEmail: event.emailAddress,
-      contactPhone: event.phoneNumber,
-      twitterHandle: event.twitterHandle,
-      instagramHandle: event.instagramHandle,
-      facebookHandle: event.facebookHandle,
-      termsAndConditions: event.termsAndConditions,
+      Status: EventStatus.DRAFT,
+      Name: event.eventName,
+      Start_Date: event.tournamentDates.start,
+      End_Date: event.tournamentDates.end,
+      Style: event.style,
+      More_Info: event.moreInfo,
+      Location: event.location,
+      Image_URL: event.imageUrl,
+      Entry_Type: event.eventEntryType,
+      Early_Bird_Pricing: event.earlyBirdPrice,
+      Early_Bird_Start_Date: event.earlyBirdCollectionDates?.start,
+      Early_Bird_End_Date: event.earlyBirdCollectionDates?.end,
+      Regular_Pricing: event.regularPrice,
+      Regular_Start_Date: event.regularCollectionDates.start,
+      Regular_End_Date: event.regularCollectionDates.end,
+      Last_Minute_Pricing: event.lastMinutePrice,
+      Last_Minute_Start_Date: event.lastMinuteCollectionDates?.start,
+      Last_Minute_End_Date: event.lastMinuteCollectionDates?.end,
+      At_Door_Pricing: event.atTheDoorPrice,
+      At_Door_Start_Date: event.atTheDoorCollectionDates?.start,
+      At_Door_End_Date: event.atTheDoorCollectionDates?.end,
+      Spectator_Pricing: event.spectatorPrice,
+      Contact_Email: event.emailAddress,
+      Contact_Phone: event.phoneNumber,
+      X_Link: event.xHandle,
+      Instagram_Link: event.instagramHandle,
+      Facebook_Link: event.facebookHandle,
+      Terms_And_Conditions: event.termsAndConditions,
+      Terms_And_Conditions_PDF_URL: event.documentUrl,
     };
 
     try {

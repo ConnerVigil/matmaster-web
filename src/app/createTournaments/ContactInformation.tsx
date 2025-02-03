@@ -76,7 +76,7 @@ const ContactInformation: React.FC<ContactInformationProps> = ({
           X (Twitter)
         </label>
         <Controller
-          name="twitterHandle"
+          name="xHandle"
           control={control}
           defaultValue=""
           render={({ field }) => (
