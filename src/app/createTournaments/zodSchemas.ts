@@ -118,32 +118,26 @@ export const tournamentFormSchema = tournamentBaseSchema
       .optional(),
   })
   .refine(
-    // TODO: Fix this, it's not working
     (data) => {
-      const checkDates = (endDate: Date | undefined, periodName: string) => {
-        console.log(`Checking ${periodName}:`, {
-          endDate: endDate?.toISOString(),
-          tournamentStart: data.tournamentDates.start.toISOString(),
-        });
-        return !endDate || endDate < data.tournamentDates.start;
+      const startDate = data.tournamentDates.start;
+
+      const validDates = (collectionEndDate: Date | undefined) => {
+        if (!collectionEndDate) return true;
+        return collectionEndDate <= startDate;
       };
 
       return (
-        checkDates(data.earlyBirdCollectionDates?.end, "earlyBird") &&
-        checkDates(data.regularCollectionDates.end, "regular") &&
-        checkDates(data.lastMinuteCollectionDates?.end, "lastMinute") &&
-        checkDates(data.atTheDoorCollectionDates?.end, "atTheDoor")
+        validDates(data.earlyBirdCollectionDates?.end) &&
+        validDates(data.regularCollectionDates.end) &&
+        validDates(data.lastMinuteCollectionDates?.end) &&
+        validDates(data.atTheDoorCollectionDates?.end)
       );
     },
     {
       message: "All collection periods must end before the tournament starts",
       path: ["tournamentDates"],
     }
-  )
-  .refine((data) => data.tournamentDates.end >= data.tournamentDates.start, {
-    message: "End date must be after start date",
-    path: ["tournamentDates"],
-  });
+  );
 
 // Schema for database (includes URLs instead of Files)
 export const tournamentDatabaseSchema = tournamentBaseSchema.extend({
