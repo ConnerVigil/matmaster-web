@@ -228,6 +228,7 @@ model Event {
   X_Link                       String?       @db.VarChar(100)
   Instagram_Link               String?       @db.VarChar(100)
   Facebook_Link                String?       @db.VarChar(100)
+  Website_Link                 String?       @db.VarChar(100)
   Terms_And_Conditions         String?
   Terms_And_Conditions_PDF_URL String?
   Created_By_ID                Int

@@ -1,13 +1,14 @@
 import React from "react";
 import { Controller, Control, FieldErrors } from "react-hook-form";
 import { Input } from "antd";
-import { FaFacebook, FaInstagram } from "react-icons/fa";
+import { FaFacebook, FaGlobeAfrica, FaInstagram } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import { EventFormData } from "./zodSchemas";
+import { TournamentFormData } from "./zodSchemas";
+import { Globe01 } from "@untitled-ui/icons-react";
 
 interface ContactInformationProps {
-  control: Control<EventFormData>;
-  errors: FieldErrors<EventFormData>;
+  control: Control<TournamentFormData>;
+  errors: FieldErrors<TournamentFormData>;
 }
 
 const ContactInformation: React.FC<ContactInformationProps> = ({
@@ -76,7 +77,7 @@ const ContactInformation: React.FC<ContactInformationProps> = ({
           X (Twitter)
         </label>
         <Controller
-          name="xHandle"
+          name="xLink"
           control={control}
           defaultValue=""
           render={({ field }) => (
@@ -93,7 +94,7 @@ const ContactInformation: React.FC<ContactInformationProps> = ({
           Instagram
         </label>
         <Controller
-          name="instagramHandle"
+          name="instagramLink"
           control={control}
           defaultValue=""
           render={({ field }) => (
@@ -115,7 +116,7 @@ const ContactInformation: React.FC<ContactInformationProps> = ({
           Facebook
         </label>
         <Controller
-          name="facebookHandle"
+          name="facebookLink"
           control={control}
           defaultValue=""
           render={({ field }) => (
@@ -128,6 +129,24 @@ const ContactInformation: React.FC<ContactInformationProps> = ({
                   className="text-[#1877F2] -translate-x-1"
                 />
               }
+            />
+          )}
+        />
+      </div>
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray3 mb-1">
+          Website
+        </label>
+        <Controller
+          name="websiteLink"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <Input
+              {...field}
+              placeholder="https://www.website.com"
+              className="-translate-x-1"
+              prefix={<Globe01 />}
             />
           )}
         />

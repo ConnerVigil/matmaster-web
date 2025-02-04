@@ -14,8 +14,12 @@ import { DatePicker } from "antd";
 import { eventService } from "@/lib/frontend/services/eventService";
 import TermsAndConditions from "./TermsAndConditions";
 import Pricing from "./Pricing";
-import { EventDatabase, EventFormData, eventFormSchema } from "./zodSchemas";
 import { s3Service } from "@/lib/frontend/services/s3Service";
+import {
+  TournamentDatabaseData,
+  TournamentFormData,
+  tournamentFormSchema,
+} from "./zodSchemas";
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
@@ -25,27 +29,23 @@ const CreateEvent: React.FC = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<EventFormData>({
-    resolver: zodResolver(eventFormSchema),
+  } = useForm<TournamentFormData>({
+    resolver: zodResolver(tournamentFormSchema),
   });
   const router = useRouter();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  const onSubmit = async (data: EventFormData) => {
+  const onSubmit = async (data: TournamentFormData) => {
     try {
       const imageUrl = data.eventImage
         ? await s3Service.uploadEventImageToS3(data.eventImage)
         : undefined;
 
-      console.log(imageUrl);
-
       const documentUrl = data.termsAndConditionsPDF
         ? await s3Service.uploadTandCsToS3(data.termsAndConditionsPDF)
         : undefined;
 
-      console.log(documentUrl);
-
-      const databaseData: EventDatabase = {
+      const databaseData: TournamentDatabaseData = {
         ...data,
         imageUrl,
         documentUrl,
@@ -63,14 +63,6 @@ const CreateEvent: React.FC = () => {
 
   const handleBack = () => {
     router.push("/yourevents");
-  };
-
-  const getNestedErrorMessage = (fieldName: keyof EventFormData) => {
-    const error = errors[fieldName];
-    if (error && typeof error === "object" && "start" in error) {
-      return (error.start as { message?: string })?.message;
-    }
-    return error?.message?.toString();
   };
 
   return (
@@ -187,7 +179,7 @@ const CreateEvent: React.FC = () => {
           />
           {errors.tournamentDates && (
             <p className="text-red-500 text-xs mt-1">
-              {getNestedErrorMessage("tournamentDates")}
+              {errors?.tournamentDates?.message?.toString()}
             </p>
           )}
         </div>
@@ -262,11 +254,7 @@ const CreateEvent: React.FC = () => {
         )}
       </div>
 
-      <Pricing
-        control={control}
-        errors={errors}
-        getNestedErrorMessage={getNestedErrorMessage}
-      />
+      <Pricing control={control} errors={errors} />
       <ContactInformation control={control} errors={errors} />
       <TermsAndConditions control={control} errors={errors} />
 

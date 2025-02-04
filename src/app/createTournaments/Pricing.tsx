@@ -2,15 +2,14 @@ import { User01, Users01 } from "@untitled-ui/icons-react";
 import { Segmented, Input } from "antd";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import PricingTier from "./PricingTier";
-import { EventFormData } from "./zodSchemas";
+import { TournamentFormData } from "./zodSchemas";
 
 interface Props {
-  control: Control<EventFormData>;
-  errors: FieldErrors<EventFormData>;
-  getNestedErrorMessage: (fieldName: keyof EventFormData) => string | undefined;
+  control: Control<TournamentFormData>;
+  errors: FieldErrors<TournamentFormData>;
 }
 
-const Pricing = ({ control, errors, getNestedErrorMessage }: Props) => {
+const Pricing = ({ control, errors }: Props) => {
   return (
     <div>
       <h2 className="text-black text-xl font-semibold mt-8 mb-4">Pricing</h2>
@@ -19,10 +18,11 @@ const Pricing = ({ control, errors, getNestedErrorMessage }: Props) => {
         <Controller
           name="eventEntryType"
           control={control}
+          defaultValue="wrestler"
           render={({ field }) => (
             <Segmented
-              {...field}
               defaultValue="wrestler"
+              {...field}
               options={[
                 {
                   label: (
@@ -66,7 +66,6 @@ const Pricing = ({ control, errors, getNestedErrorMessage }: Props) => {
         tier="Early Bird"
         PriceControllerName="earlyBirdPrice"
         CollectionDatesControllerName="earlyBirdCollectionDates"
-        getNestedErrorMessage={getNestedErrorMessage}
       />
       <PricingTier
         control={control}
@@ -75,7 +74,6 @@ const Pricing = ({ control, errors, getNestedErrorMessage }: Props) => {
         required
         PriceControllerName="regularPrice"
         CollectionDatesControllerName="regularCollectionDates"
-        getNestedErrorMessage={getNestedErrorMessage}
       />
       <PricingTier
         control={control}
@@ -83,7 +81,6 @@ const Pricing = ({ control, errors, getNestedErrorMessage }: Props) => {
         tier="Last Minute"
         PriceControllerName="lastMinutePrice"
         CollectionDatesControllerName="lastMinuteCollectionDates"
-        getNestedErrorMessage={getNestedErrorMessage}
       />
       <PricingTier
         control={control}
@@ -91,7 +88,6 @@ const Pricing = ({ control, errors, getNestedErrorMessage }: Props) => {
         tier="At The Door"
         PriceControllerName="atTheDoorPrice"
         CollectionDatesControllerName="atTheDoorCollectionDates"
-        getNestedErrorMessage={getNestedErrorMessage}
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -106,11 +102,11 @@ const Pricing = ({ control, errors, getNestedErrorMessage }: Props) => {
             <Controller
               name={"spectatorPrice"}
               control={control}
-              defaultValue=""
+              defaultValue={undefined}
               render={({ field: { value, ...fieldProps } }) => (
                 <Input
                   {...fieldProps}
-                  value={typeof value === "string" ? value : ""}
+                  value={typeof value === "number" ? value : undefined}
                   prefix="$"
                   placeholder="00.00"
                   status={errors.spectatorPrice ? "error" : ""}

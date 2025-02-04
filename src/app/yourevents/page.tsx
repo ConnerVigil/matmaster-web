@@ -1,16 +1,28 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import CreateEventButton from "./CreateEventButton";
 import EventPage from "./EventPage";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import LoadingSpinner from "@/lib/frontend/LoadingSpinner";
 
 const Page = () => {
-  const { user } = useUser();
+  const { user, isLoading } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.push("/api/auth/login");
+    }
+  }, [user, isLoading, router]);
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   if (!user) {
-    redirect("/api/auth/login");
+    return null;
   }
 
   return (

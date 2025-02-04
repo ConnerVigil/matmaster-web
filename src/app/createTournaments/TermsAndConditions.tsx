@@ -2,11 +2,11 @@ import { Button, Input, message } from "antd";
 import React, { useState } from "react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import { Upload01 } from "@untitled-ui/icons-react";
-import { EventFormData } from "./zodSchemas";
+import { TournamentFormData } from "./zodSchemas";
 
 interface Props {
-  control: Control<EventFormData>;
-  errors: FieldErrors<EventFormData>;
+  control: Control<TournamentFormData>;
+  errors: FieldErrors<TournamentFormData>;
 }
 
 const { TextArea } = Input;

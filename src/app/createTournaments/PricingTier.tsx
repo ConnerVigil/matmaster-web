@@ -1,19 +1,18 @@
 import React from "react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
-import { DatePicker, Input } from "antd";
+import { DatePicker, InputNumber } from "antd";
 import dayjs from "dayjs";
-import { EventFormData } from "./zodSchemas";
+import { TournamentFormData } from "./zodSchemas";
 
 const { RangePicker } = DatePicker;
 
 interface PricingTierProps {
-  control: Control<EventFormData>;
-  errors: FieldErrors<EventFormData>;
+  control: Control<TournamentFormData>;
+  errors: FieldErrors<TournamentFormData>;
   tier: string;
   required?: boolean;
-  PriceControllerName: keyof EventFormData;
-  CollectionDatesControllerName: keyof EventFormData;
-  getNestedErrorMessage: (fieldName: keyof EventFormData) => string | undefined;
+  PriceControllerName: keyof TournamentFormData;
+  CollectionDatesControllerName: keyof TournamentFormData;
 }
 
 const PricingTier = ({
@@ -23,7 +22,6 @@ const PricingTier = ({
   required,
   PriceControllerName,
   CollectionDatesControllerName,
-  getNestedErrorMessage,
 }: PricingTierProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -40,11 +38,11 @@ const PricingTier = ({
               <Controller
                 name={PriceControllerName}
                 control={control}
-                defaultValue=""
+                defaultValue={undefined}
                 render={({ field: { value, ...fieldProps } }) => (
-                  <Input
+                  <InputNumber
                     {...fieldProps}
-                    value={typeof value === "string" ? value : ""}
+                    value={value === undefined ? undefined : Number(value)}
                     prefix="$"
                     status={errors[PriceControllerName] ? "error" : ""}
                     placeholder="00.00"
@@ -94,7 +92,7 @@ const PricingTier = ({
         />
         {errors[CollectionDatesControllerName] && (
           <p className="text-red-500 text-xs mt-1">
-            {getNestedErrorMessage(CollectionDatesControllerName)}
+            {errors[CollectionDatesControllerName]?.message?.toString()}
           </p>
         )}
       </div>

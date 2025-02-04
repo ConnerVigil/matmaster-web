@@ -6,7 +6,6 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request): Promise<NextResponse> {
   try {
     const event: CreateEventDraftRequest = await request.json();
-    console.log("event", event);
     const session = await getSession();
 
     if (!session || !session.user) {
