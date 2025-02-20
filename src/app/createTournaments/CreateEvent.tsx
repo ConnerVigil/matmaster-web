@@ -9,7 +9,7 @@ import { ChevronLeft, Image01 } from "@untitled-ui/icons-react";
 import { Input, Button, Form, Select } from "antd";
 import dayjs from "dayjs";
 import ContactInformation from "./ContactInformation";
-import { StyleENUM } from "@prisma/client";
+import { EntryTypeENUM, EventTypeENUM, StyleENUM } from "@prisma/client";
 import { DatePicker } from "antd";
 import { eventService } from "@/lib/frontend/services/eventService";
 import TermsAndConditions from "./TermsAndConditions";
@@ -51,7 +51,10 @@ const CreateEvent: React.FC = () => {
         documentUrl,
       };
 
-      const createdEvent = await eventService.createEventAsDraft(databaseData);
+      const createdEvent = await eventService.createEventAsDraft(
+        databaseData,
+        EventTypeENUM.Tournament
+      );
 
       if (createdEvent) {
         router.push(`/eventPreview/${createdEvent.ID}`);

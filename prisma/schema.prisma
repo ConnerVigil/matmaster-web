@@ -199,10 +199,16 @@ enum StyleENUM {
   GrecoRoman
 }
 
+enum EventTypeENUM {
+  Tournament
+  Dualmeet
+}
+
 model Event {
   ID                           Int           @id @default(autoincrement())
   Status                       EventStatus   @default(DRAFT)
   Name                         String        @db.VarChar(50)
+  Event_Type                   EventTypeENUM
   Start_Date                   DateTime
   End_Date                     DateTime
   Style                        StyleENUM
