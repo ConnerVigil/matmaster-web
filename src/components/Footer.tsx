@@ -10,7 +10,7 @@ export default function Footer() {
             <div className="flex items-center space-x-2 mb-2">
               <div className="w-8 h-8 relative">
                 <Image
-                  src="/MatMaster-60x60.svg"
+                  src="/images/MatMaster-60x60.svg"
                   alt="MatMaster Logo"
                   width={60}
                   height={60}

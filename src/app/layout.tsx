@@ -23,7 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" type="image/svg+xml" href="/MatMaster-60x60.svg" />
+        <link
+          rel="icon"
+          type="image/svg+xml"
+          href="/images/MatMaster-60x60.svg"
+        />
       </head>
       <Auth0UserProvider>
         <body className={workSans.className}>

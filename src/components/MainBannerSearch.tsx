@@ -14,7 +14,7 @@ export default function MainBannerSearch() {
       <div className="flex items-center mb-4">
         <div className="w-14 h-14 relative mr-4">
           <Image
-            src="/MatMaster-60x60.svg"
+            src="/images/MatMaster-60x60.svg"
             alt="Company Logo"
             width={60}
             height={60}

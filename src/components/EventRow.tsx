@@ -9,7 +9,7 @@ const events = Array(15).fill({
   location: "Herriman, UT",
   price: "60/team",
   status: "Registration Open",
-  imageSource: "/rockwellRumble.webp",
+  imageSource: "/images/rockwellRumble.webp",
 });
 
 interface EventRowProps {

@@ -9,7 +9,7 @@ const EventPage = () => {
     location: "Herriman, UT",
     price: "60/team",
     status: "Registration Open",
-    imageSource: "/rockwellRumble.webp",
+    imageSource: "/images/rockwellRumble.webp",
   });
 
   return (

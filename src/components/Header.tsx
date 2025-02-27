@@ -16,7 +16,7 @@ export default function Header() {
           <div className="w-8 h-8 relative">
             <Link href="/">
               <Image
-                src="/MatMaster-60x60.svg"
+                src="/images/MatMaster-60x60.svg"
                 alt="Company Logo"
                 width={60}
                 height={60}

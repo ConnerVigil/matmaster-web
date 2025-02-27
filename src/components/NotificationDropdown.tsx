@@ -43,17 +43,18 @@ export default function NotificationDropdown() {
           </MenuItem>
           <MenuItem>
             <a href="#" className={MenuItemStyle}>
-              <MiniAvatar src={"/defaultuser.png"} /> Followed Wrestler
+              <MiniAvatar src={"/images/defaultuser.png"} /> Followed Wrestler
             </a>
           </MenuItem>
           <MenuItem>
             <a href="#" className={MenuItemStyle}>
-              <MiniAvatar src={"/rockwellRumble.webp"} /> Followed Team
+              <MiniAvatar src={"/images/rockwellRumble.webp"} /> Followed Team
             </a>
           </MenuItem>
           <MenuItem>
             <a href="#" className={MenuItemStyle}>
-              <MiniAvatar src={"/defaultuser.png"} /> Tourney Announcement
+              <MiniAvatar src={"/images/defaultuser.png"} /> Tourney
+              Announcement
             </a>
           </MenuItem>
           <MenuItem>

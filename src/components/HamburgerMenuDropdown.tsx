@@ -109,7 +109,10 @@ export default function HamburgerMenuDropdown() {
                 <a href="#" className={MenuItemStyle}>
                   <div className="flex items-center">
                     <MiniAvatar
-                      src={userFromDB?.Profile_Image_URL || "/defaultuser.png"}
+                      src={
+                        userFromDB?.Profile_Image_URL ||
+                        "/images/defaultuser.png"
+                      }
                     />
                     {user.name}
                   </div>
