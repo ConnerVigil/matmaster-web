@@ -1,50 +1,54 @@
 import { getSession } from "@auth0/nextjs-auth0/edge";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { prisma } from "./lib/prisma";
+import { getUserMetadata } from "./lib/auth0";
 
 export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
-
-  // Allow static assets to pass through without authentication checks
-  if (path.startsWith("/images/")) {
-    return NextResponse.next();
-  }
-
-  const session = await getSession(req, new NextResponse());
   const publicPaths = ["/", "/api", "/login"];
 
   console.log("path", path);
 
-  // Get user from your database to check onboarding status
+  if (path.startsWith("/images/")) {
+    return NextResponse.next();
+  }
+
+  // Skip middleware for Auth0 routes
+  if (path.startsWith("/api/auth/")) {
+    return NextResponse.next();
+  }
+
+  const session = await getSession(req, new NextResponse());
+  console.log("session", session);
   let hasCompletedOnboarding = false;
 
   if (session?.sub) {
-    // Fetch user data from your database
-    const user = await prisma.user.findUnique({
-      where: { Auth0_ID: session.sub },
-    });
-
-    hasCompletedOnboarding = user?.Onboarding_Complete ?? false;
+    const user = await getUserMetadata(session.sub);
+    hasCompletedOnboarding = user.user_metadata.Has_Completed_Onboarding;
   }
 
-  // Check if the user is on a public route
+  // if (session?.sub) {
+  //   hasCompletedOnboarding =
+  //     session.user?.user_metadata?.Has_Completed_Onboarding ?? false;
+  // }
+
+  console.log("hasCompletedOnboarding", hasCompletedOnboarding);
+
   const isPublicRoute = publicPaths.includes(path);
 
-  // Redirect logic
   if (!session && !isPublicRoute) {
-    // Not logged in and trying to access protected route - redirect to home
+    console.log("redirecting to /");
     return NextResponse.redirect(new URL("/", req.url));
   }
 
   if (session && path !== "/onboarding" && !hasCompletedOnboarding) {
-    // Logged in but hasn't completed onboarding - redirect to onboarding
+    console.log("redirecting to /onboarding");
     return NextResponse.redirect(new URL("/onboarding", req.url));
   }
 
   if (session && path === "/onboarding" && hasCompletedOnboarding) {
-    // Completed onboarding but trying to access onboarding page - redirect to dashboard
-    return NextResponse.redirect(new URL("/dashboard", req.url));
+    console.log("redirecting to /");
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
   return NextResponse.next();

@@ -8,6 +8,7 @@ import { z } from "zod";
 import type { UploadFile } from "antd/es/upload/interface";
 import type { RcFile } from "antd/es/upload";
 import type { Dayjs } from "dayjs";
+import { updateUserMetadata } from "@/lib/auth0";
 
 const { Option } = Select;
 
@@ -77,12 +78,8 @@ const ProfileStep: React.FC = () => {
         lastName: values.lastName,
       });
 
-      await userService.onboardUser(user.ID, {
-        firstName: values.firstName,
-        lastName: values.lastName,
-        gender: values.gender,
-        grade: parseInt(values.grade),
-        dateOfBirth: values.dateOfBirth.format("YYYY-MM-DD"),
+      await updateUserMetadata(user.Auth0_ID, {
+        Has_Completed_Onboarding: true,
       });
 
       message.success("Profile created successfully!");
@@ -99,6 +96,7 @@ const ProfileStep: React.FC = () => {
         });
       } else {
         message.error("An error occurred during onboarding. Please try again.");
+        console.log(error);
       }
     } finally {
       setLoading(false);
@@ -107,7 +105,7 @@ const ProfileStep: React.FC = () => {
 
   return (
     <div className="max-w-md mx-auto p-6">
-      <h1 className="text-xl font-bold mb-2">Wrestler Profile</h1>
+      <h1 className="text-xl text-black font-bold mb-2">Wrestler Profile</h1>
       <p className="text-gray-500 mb-6">
         This information will help our system keep coaches organized.
       </p>
