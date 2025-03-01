@@ -34,6 +34,7 @@ export interface CreateEventDraftRequest {
   At_Door_End_Date?: string;
 
   Spectator_Pricing?: number;
+  Number_Of_Mats?: number;
   Contact_Email: string;
   Contact_Phone: string;
   X_Link?: string;

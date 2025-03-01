@@ -33,6 +33,7 @@ export const eventService = {
       At_Door_Start_Date: event.atTheDoorCollectionDates?.start?.toISOString(),
       At_Door_End_Date: event.atTheDoorCollectionDates?.end?.toISOString(),
       Spectator_Pricing: event.spectatorPrice,
+      Number_Of_Mats: event.numberOfMats,
       Contact_Email: event.emailAddress,
       Contact_Phone: event.phoneNumber,
       X_Link: event.xLink,

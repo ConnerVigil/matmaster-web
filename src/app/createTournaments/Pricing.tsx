@@ -1,5 +1,5 @@
 import { User01, Users01 } from "@untitled-ui/icons-react";
-import { Segmented, Input } from "antd";
+import { Segmented, InputNumber } from "antd";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import PricingTier from "./PricingTier";
 import { TournamentFormData } from "./zodSchemas";
@@ -104,7 +104,7 @@ const Pricing = ({ control, errors }: Props) => {
               control={control}
               defaultValue={undefined}
               render={({ field: { value, ...fieldProps } }) => (
-                <Input
+                <InputNumber
                   {...fieldProps}
                   value={typeof value === "number" ? value : undefined}
                   prefix="$"

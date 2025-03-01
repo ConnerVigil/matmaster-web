@@ -6,10 +6,10 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { ChevronLeft, Image01 } from "@untitled-ui/icons-react";
-import { Input, Button, Form, Select } from "antd";
+import { Input, Button, Form, Select, InputNumber } from "antd";
 import dayjs from "dayjs";
 import ContactInformation from "./ContactInformation";
-import { EntryTypeENUM, EventTypeENUM, StyleENUM } from "@prisma/client";
+import { EventTypeENUM, StyleENUM } from "@prisma/client";
 import { DatePicker } from "antd";
 import { eventService } from "@/lib/frontend/services/eventService";
 import TermsAndConditions from "./TermsAndConditions";
@@ -258,6 +258,33 @@ const CreateEvent: React.FC = () => {
       </div>
 
       <Pricing control={control} errors={errors} />
+
+      <h2 className="text-black text-xl font-semibold mt-8 mb-4">Mats</h2>
+
+      <div className="mb-6 max-w-[150px]">
+        <label className="block text-sm font-medium text-gray3 mb-1">
+          Number of Mats
+        </label>
+        <Controller
+          name="numberOfMats"
+          control={control}
+          defaultValue={0}
+          render={({ field }) => (
+            <InputNumber
+              {...field}
+              type="number"
+              status={errors.numberOfMats ? "error" : ""}
+              placeholder="Enter number of mats"
+            />
+          )}
+        />
+        {errors.numberOfMats && (
+          <p className="text-red-500 text-xs mt-1">
+            {errors.numberOfMats.message}
+          </p>
+        )}
+      </div>
+
       <ContactInformation control={control} errors={errors} />
       <TermsAndConditions control={control} errors={errors} />
 

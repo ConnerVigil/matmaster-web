@@ -229,6 +229,7 @@ model Event {
   At_Door_Start_Date           DateTime?
   At_Door_End_Date             DateTime?
   Spectator_Pricing            Decimal?      @db.Decimal(10, 2)
+  Number_Of_Mats               Int?
   Contact_Email                String        @db.VarChar(100)
   Contact_Phone                String        @db.VarChar(12)
   X_Link                       String?       @db.VarChar(100)

@@ -77,6 +77,10 @@ export const tournamentBaseSchema = z.object({
     .multipleOf(0.01, "Price must have at most 2 decimal places")
     .optional(),
   spectatorDuration: z.string().optional(),
+  numberOfMats: z
+    .number()
+    .min(1, "Number of mats must be at least 1")
+    .max(100, "Number of mats cannot exceed 100"),
   emailAddress: z.string().email("Invalid email address"),
   phoneNumber: z
     .string()

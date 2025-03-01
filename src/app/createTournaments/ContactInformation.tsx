@@ -1,7 +1,7 @@
 import React from "react";
 import { Controller, Control, FieldErrors } from "react-hook-form";
 import { Input } from "antd";
-import { FaFacebook, FaGlobeAfrica, FaInstagram } from "react-icons/fa";
+import { FaFacebook, FaInstagram } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { TournamentFormData } from "./zodSchemas";
 import { Globe01 } from "@untitled-ui/icons-react";
