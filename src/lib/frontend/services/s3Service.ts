@@ -5,8 +5,6 @@ export const s3Service = {
     try {
       const tempId = uuidv4();
 
-      console.log("tempId", tempId);
-
       const s3Response = await fetch("/api/s3/uploadEventImage", {
         method: "POST",
         headers: {
@@ -15,15 +13,11 @@ export const s3Service = {
         body: JSON.stringify({ fileId: tempId }),
       });
 
-      console.log("s3Response", s3Response);
-
       if (!s3Response.ok) {
         throw new Error("Failed to get presigned URL");
       }
 
       const { signedUrl } = await s3Response.json();
-
-      console.log("signedUrl", signedUrl);
 
       const formData = new FormData();
       Object.entries(signedUrl.fields).forEach(([key, value]) => {
@@ -36,8 +30,6 @@ export const s3Service = {
         method: "POST",
         body: formData,
       });
-
-      console.log("uploadResponse", uploadResponse);
 
       if (!uploadResponse.ok) {
         const errorText = await uploadResponse.text();
@@ -55,8 +47,6 @@ export const s3Service = {
     try {
       const tempId = uuidv4();
 
-      console.log("tempId", tempId);
-
       const s3Response = await fetch("/api/s3/uploadTandCs", {
         method: "POST",
         headers: {
@@ -65,15 +55,11 @@ export const s3Service = {
         body: JSON.stringify({ fileId: tempId }),
       });
 
-      console.log("s3Response", s3Response);
-
       if (!s3Response.ok) {
         throw new Error("Failed to get presigned URL");
       }
 
       const { signedUrl } = await s3Response.json();
-
-      console.log("signedUrl", signedUrl);
 
       const formData = new FormData();
       Object.entries(signedUrl.fields).forEach(([key, value]) => {
@@ -86,8 +72,6 @@ export const s3Service = {
         method: "POST",
         body: formData,
       });
-
-      console.log("uploadResponse", uploadResponse);
 
       if (!uploadResponse.ok) {
         const errorText = await uploadResponse.text();

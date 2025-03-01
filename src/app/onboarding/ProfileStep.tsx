@@ -8,7 +8,6 @@ import { z } from "zod";
 import type { UploadFile } from "antd/es/upload/interface";
 import type { RcFile } from "antd/es/upload";
 import type { Dayjs } from "dayjs";
-import { updateUserMetadata } from "@/lib/auth0";
 
 const { Option } = Select;
 
@@ -78,8 +77,12 @@ const ProfileStep: React.FC = () => {
         lastName: values.lastName,
       });
 
-      await updateUserMetadata(user.Auth0_ID, {
-        Has_Completed_Onboarding: true,
+      await userService.onboardUser(user.ID, {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        gender: values.gender,
+        grade: parseInt(values.grade),
+        dateOfBirth: values.dateOfBirth.format("YYYY-MM-DD"),
       });
 
       message.success("Profile created successfully!");
@@ -96,7 +99,6 @@ const ProfileStep: React.FC = () => {
         });
       } else {
         message.error("An error occurred during onboarding. Please try again.");
-        console.log(error);
       }
     } finally {
       setLoading(false);

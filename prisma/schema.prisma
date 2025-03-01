@@ -31,6 +31,7 @@ model User {
   Coordinator_ID      Int?
   Is_Viewer           Boolean
   Is_Active           Boolean
+  Onboarding_Complete Boolean
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
 

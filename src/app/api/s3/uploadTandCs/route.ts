@@ -8,8 +8,6 @@ export async function POST(req: NextRequest) {
   try {
     const { fileId } = await req.json();
 
-    console.log("fileId", fileId);
-
     if (!fileId) {
       return NextResponse.json(
         { message: "File Id is required" },
