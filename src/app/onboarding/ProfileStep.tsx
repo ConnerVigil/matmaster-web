@@ -8,6 +8,7 @@ import { z } from "zod";
 import type { UploadFile } from "antd/es/upload/interface";
 import type { RcFile } from "antd/es/upload";
 import type { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 
 const { Option } = Select;
 
@@ -191,6 +192,7 @@ const ProfileStep: React.FC = () => {
           <DatePicker
             className="w-full"
             format="YYYY-MM-DD"
+            defaultPickerValue={dayjs("2000-01-01")}
             disabledDate={(current) => {
               // Disable dates less than 14 years ago
               const fourteenYearsAgo = new Date();
