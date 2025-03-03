@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
@@ -13,8 +13,8 @@ import {
 import { Event } from "@prisma/client";
 import { formatDate } from "@/utils/dateFormatter";
 
-function getStatusColor(status: string): string {
-  switch (status.toLowerCase()) {
+function getStateColor(state: string): string {
+  switch (state) {
     case "Early_Bird":
       return "bg-blue-100 text-blue-800";
     case "In_Progress":
@@ -32,8 +32,8 @@ function getStatusColor(status: string): string {
   }
 }
 
-function getStatusText(status: string): string {
-  switch (status.toLowerCase()) {
+function getStateText(state: string): string {
+  switch (state) {
     case "Early_Bird":
       return "Early Bird";
     case "In_Progress":
@@ -47,25 +47,20 @@ function getStatusText(status: string): string {
     case "Registration_Closing":
       return "Registration Closing";
     default:
-      return "";
+      return "Unknown";
   }
 }
 
-function getEventStatus(event: Event): string {
+function getEventState(event: Event): string {
   const now = new Date();
 
   // Check if event has ended
-  if (event.End_Date && new Date(event.End_Date) < now) {
+  if (new Date(event.End_Date) < now) {
     return "Complete";
   }
 
   // Check if event is in progress
-  if (
-    event.Start_Date &&
-    new Date(event.Start_Date) <= now &&
-    event.End_Date &&
-    new Date(event.End_Date) >= now
-  ) {
+  if (new Date(event.Start_Date) <= now && new Date(event.End_Date) >= now) {
     return "In_Progress";
   }
 
@@ -123,7 +118,7 @@ function getEventStatus(event: Event): string {
   }
 
   // Default fallback
-  return event.State || "";
+  return "";
 }
 
 interface EventCardProps {
@@ -132,9 +127,12 @@ interface EventCardProps {
 
 export default function EventCard({ event }: EventCardProps) {
   const router = useRouter();
+  const [eventState, setEventState] = useState("");
 
-  // Determine the current event status based on dates
-  const eventStatus = getEventStatus(event);
+  useEffect(() => {
+    const state = getEventState(event);
+    setEventState(state);
+  }, []);
 
   const handleClick = () => {
     if (event.ID) {
@@ -154,15 +152,16 @@ export default function EventCard({ event }: EventCardProps) {
             alt="Event Image"
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority
           />
         )}
-        {eventStatus && (
+        {eventState && (
           <span
-            className={`absolute bottom-2 right-2 text-xs px-2.5 py-0.5 rounded-full ${getStatusColor(
-              eventStatus
+            className={`absolute bottom-2 right-2 text-xs px-2.5 py-0.5 rounded-full ${getStateColor(
+              eventState
             )}`}
           >
-            {getStatusText(eventStatus)}
+            {getStateText(eventState)}
           </span>
         )}
         {event.Status === "DRAFT" && (

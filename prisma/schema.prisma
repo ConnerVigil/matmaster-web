@@ -204,19 +204,18 @@ enum EventTypeENUM {
   Dualmeet
 }
 
-enum EventStateENUM {
-  Early_Bird
-  In_Progress
-  Complete
-  Registration_Open
-  Registration_Closed
-  Registration_Closing
-}
+// enum EventStateENUM {
+//   Early_Bird
+//   In_Progress
+//   Complete
+//   Registration_Open
+//   Registration_Closed
+//   Registration_Closing
+// }
 
 model Event {
   ID                           Int             @id @default(autoincrement())
   Status                       EventStatusENUM @default(DRAFT)
-  State                        EventStateENUM?
   Name                         String          @db.VarChar(50)
   Event_Type                   EventTypeENUM
   Start_Date                   DateTime

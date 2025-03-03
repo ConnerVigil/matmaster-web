@@ -24,11 +24,11 @@ export default function EventRow({ title }: EventRowProps) {
         <span className="text-primary text-l font-bold">See more</span>
       </div>
       <div className="overflow-x-auto w-full h-72 px-4">
-        <div className="flex space-x-4 w-max">
+        {/* <div className="flex space-x-4 w-max">
           {events.map((event, index) => (
             <EventCard key={index} {...event} />
           ))}
-        </div>
+        </div> */}
       </div>
     </>
   );
