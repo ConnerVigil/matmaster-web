@@ -1,10 +1,12 @@
 import { prisma } from "@/lib/prisma";
 import { formatDate } from "@/utils/dateFormatter";
+import { ChevronLeft } from "@untitled-ui/icons-react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { FaFacebook, FaInstagram, FaXTwitter, FaGlobe } from "react-icons/fa6";
 
-interface PageProps {
+interface Props {
   params: {
     eventId: string;
   };
@@ -17,7 +19,7 @@ const ensureHttpProtocol = (url: string): string => {
     : `https://${url}`;
 };
 
-export default async function EventPage({ params }: PageProps) {
+export default async function EventPage({ params }: Props) {
   const eventId = parseInt(params.eventId);
 
   if (isNaN(eventId)) {
@@ -35,16 +37,29 @@ export default async function EventPage({ params }: PageProps) {
   return (
     <div className="bg-white">
       <div className="shadow-2xl container mx-auto max-w-3xl pb-4">
+        <div className="relative flex justify-between items-center p-4"></div>
+
         <div className="flex justify-center mt-0">
-          <div className="relative w-full h-96">
-            <Image
-              src={event.Image_URL || ""}
-              alt="Event preview"
-              fill
-              sizes="100vw"
-              priority
-              className="object-cover"
-            />
+          <div className="relative w-full h-96 bg-gray5">
+            <Link
+              href="/yourevents"
+              className="absolute top-4 left-4 z-10 px-2 py-1 bg-[#f9f5ff] rounded-lg shadow border flex items-center gap-1 text-primaryLight text-sm font-semibold"
+            >
+              <ChevronLeft className="w-5 h-5 mr-1" />
+              <span>Back</span>
+            </Link>
+
+            {event.Image_URL && (
+              <Image
+                src={event.Image_URL}
+                alt="Event preview"
+                fill
+                sizes="100vw"
+                priority
+                className="object-cover"
+              />
+            )}
+
             <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/60 to-transparent">
               <h1 className="text-3xl font-bold text-white mb-2">
                 {event.Name}

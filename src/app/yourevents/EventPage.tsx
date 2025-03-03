@@ -1,3 +1,5 @@
+"use client";
+
 import EventCard from "@/components/EventCard";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { userService } from "@/lib/frontend/services/userService";
@@ -56,9 +58,9 @@ const EventPage = () => {
             style={event.Style || ""}
             location={event.Location || ""}
             price={event.Regular_Pricing.toString() || "0"}
-            status={event.Status}
             imageSource={event.Image_URL || null}
             draft={event.Status === "DRAFT"}
+            eventId={event.ID}
           />
         ))}
       </div>

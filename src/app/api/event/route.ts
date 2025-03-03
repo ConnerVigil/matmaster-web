@@ -45,6 +45,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 }
 
 export async function DELETE(request: Request): Promise<NextResponse> {
+  // TODO Get this working
   try {
     const { eventId } = await request.json();
     const session = await getSession();

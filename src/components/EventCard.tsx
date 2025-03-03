@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import {
   Calendar,
   CurrencyDollar,
@@ -37,6 +40,7 @@ interface EventCardProps {
   status?: string;
   imageSource: string | null;
   draft?: boolean;
+  eventId?: number;
 }
 
 export default function EventCard({
@@ -49,9 +53,21 @@ export default function EventCard({
   status,
   imageSource,
   draft,
+  eventId,
 }: EventCardProps) {
+  const router = useRouter();
+
+  const handleClick = () => {
+    if (eventId) {
+      router.push(`/event/${eventId}`);
+    }
+  };
+
   return (
-    <div className="w-64 bg-white rounded-lg shadow-md overflow-hidden">
+    <div
+      className="w-64 bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
+      onClick={handleClick}
+    >
       <div className={`h-24 relative ${imageSource ? "" : "bg-gray-100"}`}>
         {imageSource && (
           <Image
