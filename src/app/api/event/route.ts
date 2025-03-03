@@ -43,27 +43,3 @@ export async function POST(request: Request): Promise<NextResponse> {
     );
   }
 }
-
-export async function DELETE(request: Request): Promise<NextResponse> {
-  // TODO Get this working
-  try {
-    const { eventId } = await request.json();
-    const session = await getSession();
-
-    if (!session || !session.user) {
-      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
-    }
-
-    const deletedEvent = await prisma.event.delete({
-      where: { ID: eventId },
-    });
-
-    return NextResponse.json({ event: deletedEvent }, { status: 200 });
-  } catch (error) {
-    console.error("Error deleting event:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
-  }
-}
