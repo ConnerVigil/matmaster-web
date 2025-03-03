@@ -52,19 +52,7 @@ const PreviewEvent: React.FC<Props> = ({ event }) => {
       </div>
 
       <div className="flex justify-center">
-        <EventCard
-          status={"Registration Open"}
-          draft={event.Status === "DRAFT"}
-          title={event.Name}
-          dateRange={`${formatDate(new Date(event.Start_Date))} - ${formatDate(
-            new Date(event.End_Date)
-          )}`}
-          attendees={0}
-          style={event.Style}
-          location={event.Location || ""}
-          price={event.Regular_Pricing?.toString() || "50"}
-          imageSource={event.Image_URL || ""}
-        />
+        <EventCard event={event} />
       </div>
 
       <div className="m-6">

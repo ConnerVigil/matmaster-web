@@ -48,20 +48,7 @@ const EventPage = () => {
     <div className="mx-auto">
       <div className="flex flex-wrap justify-center gap-4">
         {events.map((event, index) => (
-          <EventCard
-            key={index}
-            title={event.Name || "Untitled Event"}
-            dateRange={`${formatDate(
-              new Date(event.Start_Date)
-            )} - ${formatDate(new Date(event.End_Date))}`}
-            attendees={0}
-            style={event.Style || ""}
-            location={event.Location || ""}
-            price={event.Regular_Pricing.toString() || "0"}
-            imageSource={event.Image_URL || null}
-            draft={event.Status === "DRAFT"}
-            eventId={event.ID}
-          />
+          <EventCard key={index} event={event} />
         ))}
       </div>
     </div>
