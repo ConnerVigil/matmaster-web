@@ -204,15 +204,6 @@ enum EventTypeENUM {
   Dualmeet
 }
 
-// enum EventStateENUM {
-//   Early_Bird
-//   In_Progress
-//   Complete
-//   Registration_Open
-//   Registration_Closed
-//   Registration_Closing
-// }
-
 model Event {
   ID                           Int             @id @default(autoincrement())
   Status                       EventStatusENUM @default(DRAFT)

@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { EventStatus } from "@prisma/client";
+import { EventStatusENUM } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 export async function PUT(
@@ -11,7 +11,7 @@ export async function PUT(
 
     const updatedEvent = await prisma.event.update({
       where: { ID: eventId },
-      data: { Status: EventStatus.PUBLISHED },
+      data: { Status: EventStatusENUM.PUBLISHED },
     });
 
     return NextResponse.json(updatedEvent, { status: 200 });

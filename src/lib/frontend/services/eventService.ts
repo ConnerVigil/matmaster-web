@@ -1,6 +1,6 @@
 import { TournamentDatabaseData } from "@/app/createTournaments/zodSchemas";
 import { CreateEventDraftRequest } from "@/types/requests";
-import { Event, EventStatus, EventTypeENUM } from "@prisma/client";
+import { Event, EventStatusENUM, EventTypeENUM } from "@prisma/client";
 
 export const eventService = {
   async createEventAsDraft(
@@ -8,7 +8,7 @@ export const eventService = {
     eventType: EventTypeENUM
   ): Promise<Event> {
     const requestBody: CreateEventDraftRequest = {
-      Status: EventStatus.DRAFT,
+      Status: EventStatusENUM.DRAFT,
       Name: event.eventName,
       Event_Type: eventType,
       Start_Date: event.tournamentDates.start?.toISOString(),
