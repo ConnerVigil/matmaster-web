@@ -35,7 +35,8 @@ interface EventCardProps {
   location: string;
   price: string;
   status?: string;
-  imageSource: string;
+  imageSource: string | null;
+  draft?: boolean;
 }
 
 export default function EventCard({
@@ -47,10 +48,11 @@ export default function EventCard({
   price,
   status,
   imageSource,
+  draft,
 }: EventCardProps) {
   return (
     <div className="w-64 bg-white rounded-lg shadow-md overflow-hidden">
-      <div className={`h-24 ${imageSource ? "relative" : "bg-gray-200"}`}>
+      <div className={`h-24 relative ${imageSource ? "" : "bg-gray-100"}`}>
         {imageSource && (
           <Image
             src={imageSource}
@@ -66,6 +68,11 @@ export default function EventCard({
             )}`}
           >
             {status}
+          </span>
+        )}
+        {draft && (
+          <span className="absolute top-2 left-2 text-xs px-2.5 py-0.5 rounded-full bg-gray-200 text-gray-800">
+            Draft
           </span>
         )}
       </div>

@@ -5,6 +5,9 @@ const nextConfig = {
       {
         hostname: "matmaster-profile-images.s3.us-east-2.amazonaws.com",
       },
+      {
+        hostname: "matmaster-event-images.s3.us-east-2.amazonaws.com",
+      },
     ],
   },
 };

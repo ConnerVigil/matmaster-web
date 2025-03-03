@@ -77,4 +77,53 @@ export const eventService = {
       throw error;
     }
   },
+
+  async getEventById(eventId: number): Promise<Event> {
+    try {
+      const response = await fetch(`/api/event/${eventId}`, {
+        method: "GET",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch event");
+      }
+
+      return (await response.json()).event;
+    } catch (error) {
+      console.error("Error fetching event:", error);
+      throw error;
+    }
+  },
+
+  async deleteEvent(eventId: number): Promise<void> {
+    try {
+      const response = await fetch(`/api/event/${eventId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete event");
+      }
+    } catch (error) {
+      console.error("Error deleting event:", error);
+      throw error;
+    }
+  },
+
+  async getEventsByUserId(userId: number): Promise<Event[]> {
+    try {
+      const response = await fetch(`/api/event/user/${userId}`, {
+        method: "GET",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch events by user ID");
+      }
+
+      return (await response.json()).events as Event[];
+    } catch (error) {
+      console.error("Error fetching events by user ID:", error);
+      throw error;
+    }
+  },
 };
