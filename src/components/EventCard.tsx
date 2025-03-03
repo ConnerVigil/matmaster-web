@@ -28,8 +28,102 @@ function getStatusColor(status: string): string {
     case "Registration_Closing":
       return "bg-red-100 text-red-800";
     default:
-      return "bg-black text-white";
+      return "";
   }
+}
+
+function getStatusText(status: string): string {
+  switch (status.toLowerCase()) {
+    case "Early_Bird":
+      return "Early Bird";
+    case "In_Progress":
+      return "In Progress";
+    case "Complete":
+      return "Complete";
+    case "Registration_Open":
+      return "Registration Open";
+    case "Registration_Closed":
+      return "Registration Closed";
+    case "Registration_Closing":
+      return "Registration Closing";
+    default:
+      return "";
+  }
+}
+
+function getEventStatus(event: Event): string {
+  const now = new Date();
+
+  // Check if event has ended
+  if (event.End_Date && new Date(event.End_Date) < now) {
+    return "Complete";
+  }
+
+  // Check if event is in progress
+  if (
+    event.Start_Date &&
+    new Date(event.Start_Date) <= now &&
+    event.End_Date &&
+    new Date(event.End_Date) >= now
+  ) {
+    return "In_Progress";
+  }
+
+  // Check Early Bird period
+  if (event.Early_Bird_Start_Date && event.Early_Bird_End_Date) {
+    const earlyBirdStart = new Date(event.Early_Bird_Start_Date);
+    const earlyBirdEnd = new Date(event.Early_Bird_End_Date);
+
+    if (now >= earlyBirdStart && now <= earlyBirdEnd) {
+      return "Early_Bird";
+    }
+  }
+
+  // Check Regular registration period
+  if (event.Regular_Start_Date && event.Regular_End_Date) {
+    const regularStart = new Date(event.Regular_Start_Date);
+    const regularEnd = new Date(event.Regular_End_Date);
+
+    if (now >= regularStart && now <= regularEnd) {
+      return "Registration_Open";
+    }
+
+    // If we're approaching the end of regular registration (within 3 days)
+    const threeDaysBeforeEnd = new Date(regularEnd);
+    threeDaysBeforeEnd.setDate(threeDaysBeforeEnd.getDate() - 3);
+
+    if (now >= threeDaysBeforeEnd && now <= regularEnd) {
+      return "Registration_Closing";
+    }
+  }
+
+  // Check Last Minute registration period
+  if (event.Last_Minute_Start_Date && event.Last_Minute_End_Date) {
+    const lastMinuteStart = new Date(event.Last_Minute_Start_Date);
+    const lastMinuteEnd = new Date(event.Last_Minute_End_Date);
+
+    if (now >= lastMinuteStart && now <= lastMinuteEnd) {
+      return "Registration_Open";
+    }
+  }
+
+  // Check At Door registration period
+  if (event.At_Door_Start_Date && event.At_Door_End_Date) {
+    const atDoorStart = new Date(event.At_Door_Start_Date);
+    const atDoorEnd = new Date(event.At_Door_End_Date);
+
+    if (now >= atDoorStart && now <= atDoorEnd) {
+      return "Registration_Open";
+    }
+  }
+
+  // If we're past all registration periods but the event hasn't started yet
+  if (event.Start_Date && new Date(event.Start_Date) > now) {
+    return "Registration_Closed";
+  }
+
+  // Default fallback
+  return event.State || "";
 }
 
 interface EventCardProps {
@@ -38,6 +132,9 @@ interface EventCardProps {
 
 export default function EventCard({ event }: EventCardProps) {
   const router = useRouter();
+
+  // Determine the current event status based on dates
+  const eventStatus = getEventStatus(event);
 
   const handleClick = () => {
     if (event.ID) {
@@ -59,13 +156,13 @@ export default function EventCard({ event }: EventCardProps) {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         )}
-        {event.State && (
+        {eventStatus && (
           <span
             className={`absolute bottom-2 right-2 text-xs px-2.5 py-0.5 rounded-full ${getStatusColor(
-              event.State
+              eventStatus
             )}`}
           >
-            {event.State}
+            {getStatusText(eventStatus)}
           </span>
         )}
         {event.Status === "DRAFT" && (
