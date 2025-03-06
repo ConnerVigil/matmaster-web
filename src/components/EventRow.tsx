@@ -8,7 +8,7 @@ import {
   Prisma,
 } from "@prisma/client";
 
-const events = Array(15)
+const events = Array(5)
   .fill(null)
   .map((_, index) => ({
     ID: index + 1,
