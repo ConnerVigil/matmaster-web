@@ -117,7 +117,6 @@ function getEventState(event: Event): string {
     return "Registration_Closed";
   }
 
-  // Default fallback
   return "";
 }
 
@@ -140,13 +139,18 @@ export default function EventCard({ event }: EventCardProps) {
       className="w-64 bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg hover:scale-105 transition-all duration-200"
       onClick={handleClick}
     >
-      <div className={`h-24 relative ${event.Image_URL ? "" : "bg-gray-100"}`}>
+      <div
+        className={`relative aspect-[2/1] ${
+          event.Image_URL ? "" : "bg-gray-100"
+        }`}
+      >
         {event.Image_URL && (
           <Image
             src={event.Image_URL}
             alt="Event Image"
             fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            sizes="256px"
+            className="object-cover"
             priority
           />
         )}
