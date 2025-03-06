@@ -1,12 +1,12 @@
 import {
   EntryTypeENUM,
-  EventStatus,
+  EventStatusENUM,
   EventTypeENUM,
   StyleENUM,
 } from "@prisma/client";
 
 export interface CreateEventDraftRequest {
-  Status: EventStatus;
+  Status: EventStatusENUM;
   Name: string;
   Event_Type: EventTypeENUM;
   Start_Date: string;
