@@ -1,10 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@auth0/nextjs-auth0";
 
-export async function GET(
-  request: Request,
-  response: Response
-): Promise<Response> {
+export async function GET(): Promise<Response> {
   try {
     const session = await getSession();
 

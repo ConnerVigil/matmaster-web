@@ -7,7 +7,6 @@ import { eventService } from "@/lib/frontend/services/eventService";
 import { Event } from "@prisma/client";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "@/lib/frontend/LoadingSpinner";
-import { formatDate } from "@/utils/dateFormatter";
 
 const EventPage = () => {
   const { user } = useUser();
