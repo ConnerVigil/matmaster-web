@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 // import { PublishCommand } from "@aws-sdk/client-sns";
 // import snsClient from "@/lib/backend/awsSns";
 
-export function generateVerificationCode(length: number = 6): string {
+function generateVerificationCode(length: number = 6): string {
   return Math.random()
     .toString()
     .slice(2, 2 + length);
