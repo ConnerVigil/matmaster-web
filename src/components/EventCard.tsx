@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
@@ -127,12 +127,7 @@ interface EventCardProps {
 
 export default function EventCard({ event }: EventCardProps) {
   const router = useRouter();
-  const [eventState, setEventState] = useState("");
-
-  useEffect(() => {
-    const state = getEventState(event);
-    setEventState(state);
-  }, []);
+  const eventState = getEventState(event);
 
   const handleClick = () => {
     if (event.ID) {
