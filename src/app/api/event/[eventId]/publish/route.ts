@@ -2,11 +2,10 @@ import { prisma } from "@/lib/prisma";
 import { EventStatusENUM } from "@prisma/client";
 import { NextResponse } from "next/server";
 
-export async function PUT({
-  params,
-}: {
-  params: { eventId: string };
-}): Promise<NextResponse> {
+export async function PUT(
+  request: Request,
+  { params }: { params: { eventId: string } }
+): Promise<NextResponse> {
   try {
     const eventId = parseInt(params.eventId);
 
